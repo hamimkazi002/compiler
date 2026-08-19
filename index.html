@@ -3,9 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+    <title>Online Python Compiler</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    
+
+<div class="app">
+
+    <!-- ================= LEFT SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-top">
+
+            <div class="sidebar-logo active">
+                <span>Py</span>
+            </div>
+
+            <button class="sidebar-item" title="Editor">
+                &lt;/&gt;
+            </button>
+
+            <button class="sidebar-item" title="Database">
+                DB
+            </button>
+
+            <button class="sidebar-item" title="Files">
+                F
+            </button>
+
+            <button class="sidebar-item" title="Terminal">
+                &gt;_
+            </button>
+
+        </div>
+
+        <div class="sidebar-bottom">
+            <button class="sidebar-item">
+                ⚙
+            </button>
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN AREA ================= -->
+
+    <main class="main">
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div class="file-name">
+                <span class="python-dot"></span>
+                main.py
+            </div>
+
+
+            <div class="top-actions">
+
+                <button class="visualize-btn">
+                    Visualize
+                </button>
+
+                <button class="run-btn" id="runBtn">
+                    <span class="play-icon">▶</span>
+                    Run
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= WORKSPACE ================= -->
+
+        <div class="workspace">
+
+            <!-- CODE EDITOR -->
+
+            <section class="editor-section">
+
+                <div class="editor-wrapper">
+
+                    <div class="line-numbers" id="lineNumbers">
+                        <span>1</span>
+                        <span>2</span>
+                        <span>3</span>
+                    </div>
+
+                    <textarea
+                        id="codeEditor"
+                        spellcheck="false"
+                    ># Online Python compiler
+# Write Python 3 code here and run it.
+
+print("Start small. Ship something.")</textarea>
+
+                </div>
+
+            </section>
+
+
+            <!-- DIVIDER -->
+
+            <div class="divider" id="divider">
+
+                <div class="divider-handle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+            </div>
+
+
+            <!-- OUTPUT -->
+
+            <section class="output-section">
+
+                <div class="output-header">
+
+                    <span>Output</span>
+
+                    <button
+                        class="clear-btn"
+                        id="clearBtn"
+                        title="Clear Output"
+                    >
+                        Clear
+                    </button>
+
+                </div>
+
+
+                <div class="output-console" id="outputConsole">
+
+                    <div class="output-text">
+                        Start small. Ship something.
+                    </div>
+
+                    <div class="success-message">
+                        === Code Execution Successful ===
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="script.js"></script>
+
 </body>
 </html>
