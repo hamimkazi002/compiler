@@ -1,0 +1,674 @@
+/* ===============================
+   GLOBAL
+================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #15171c;
+    color: #ffffff;
+    overflow: hidden;
+}
+
+button {
+    font-family: inherit;
+}
+
+
+/* ===============================
+   APP
+================================ */
+
+.app {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+
+    background: #191c22;
+}
+
+
+/* ===============================
+   SIDEBAR
+================================ */
+
+.sidebar {
+    width: 58px;
+    min-width: 58px;
+
+    height: 100vh;
+
+    background: #292c32;
+
+    border-right: 1px solid #3a3e46;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    padding: 8px 7px;
+}
+
+
+.sidebar-top {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+
+.sidebar-logo,
+.sidebar-item {
+
+    width: 43px;
+    height: 43px;
+
+    border-radius: 3px;
+
+    border: 1px solid #51555d;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    transition: 0.2s ease;
+}
+
+
+.sidebar-logo {
+    background: #146df5;
+    border-color: #146df5;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+.sidebar-item:hover {
+    background: #383c44;
+    border-color: #676c76;
+}
+
+
+/* ===============================
+   MAIN
+================================ */
+
+.main {
+    flex: 1;
+
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+
+/* ===============================
+   TOPBAR
+================================ */
+
+.topbar {
+
+    height: 48px;
+    min-height: 48px;
+
+    background: #292c32;
+
+    border-bottom: 1px solid #444851;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.file-name {
+
+    height: 100%;
+
+    min-width: 160px;
+
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    background: #1f2229;
+
+    border-right: 1px solid #3b3f47;
+
+    font-family: Consolas, monospace;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.python-dot {
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #2d82ff;
+}
+
+
+.top-actions {
+
+    display: flex;
+    align-items: center;
+
+    height: 100%;
+
+    padding-right: 14px;
+
+    gap: 14px;
+}
+
+
+.visualize-btn {
+
+    height: 34px;
+
+    min-width: 100px;
+
+    padding: 0 18px;
+
+    color: #ffffff;
+
+    background: transparent;
+
+    border: 1px solid #555a63;
+
+    border-radius: 2px;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.visualize-btn:hover {
+    background: #353941;
+}
+
+
+.run-btn {
+
+    height: 34px;
+
+    min-width: 82px;
+
+    padding: 0 18px;
+
+    border: none;
+
+    border-radius: 2px;
+
+    background: #086bf0;
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+
+    transition: 0.2s ease;
+}
+
+
+.run-btn:hover {
+    background: #207cff;
+}
+
+
+.run-btn:active {
+    transform: scale(0.97);
+}
+
+
+.play-icon {
+    font-size: 10px;
+}
+
+
+/* ===============================
+   WORKSPACE
+================================ */
+
+.workspace {
+
+    flex: 1;
+
+    display: flex;
+
+    min-height: 0;
+
+    background: #191c22;
+}
+
+
+/* ===============================
+   EDITOR
+================================ */
+
+.editor-section {
+
+    width: 50%;
+
+    min-width: 250px;
+
+    background: #1c2130;
+}
+
+
+.editor-wrapper {
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+/* LINE NUMBERS */
+
+.line-numbers {
+
+    width: 55px;
+
+    flex-shrink: 0;
+
+    padding-top: 12px;
+
+    background: #1c2130;
+
+    color: #697186;
+
+    font-family: Consolas, "Courier New", monospace;
+
+    font-size: 14px;
+
+    line-height: 24px;
+
+    text-align: right;
+
+    padding-right: 14px;
+
+    user-select: none;
+
+    overflow: hidden;
+}
+
+
+.line-numbers span {
+    display: block;
+}
+
+
+/* TEXTAREA */
+
+#codeEditor {
+
+    flex: 1;
+
+    width: 100%;
+    height: 100%;
+
+    resize: none;
+
+    outline: none;
+    border: none;
+
+    padding:
+
+        12px
+        20px
+        30px
+        0;
+
+    background: #1c2130;
+
+    color: #cdd6f4;
+
+    caret-color: #ffffff;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 14px;
+
+    line-height: 24px;
+
+    tab-size: 4;
+
+    white-space: pre;
+
+    overflow: auto;
+}
+
+
+#codeEditor::selection {
+    background: #31598b;
+}
+
+
+/* SCROLLBAR */
+
+#codeEditor::-webkit-scrollbar,
+.output-console::-webkit-scrollbar {
+
+    width: 9px;
+    height: 9px;
+}
+
+
+#codeEditor::-webkit-scrollbar-track,
+.output-console::-webkit-scrollbar-track {
+
+    background: #1b1e24;
+}
+
+
+#codeEditor::-webkit-scrollbar-thumb,
+.output-console::-webkit-scrollbar-thumb {
+
+    background: #484d58;
+
+    border-radius: 5px;
+}
+
+
+#codeEditor::-webkit-scrollbar-thumb:hover,
+.output-console::-webkit-scrollbar-thumb:hover {
+
+    background: #626875;
+}
+
+
+/* ===============================
+   DIVIDER
+================================ */
+
+.divider {
+
+    width: 5px;
+
+    background: #494d56;
+
+    position: relative;
+
+    cursor: col-resize;
+
+    flex-shrink: 0;
+}
+
+
+.divider:hover {
+    background: #1777ed;
+}
+
+
+.divider-handle {
+
+    position: absolute;
+
+    width: 19px;
+    height: 70px;
+
+    left: 50%;
+    top: 45%;
+
+    transform: translate(-50%, -50%);
+
+    background: #353941;
+
+    border: 1px solid #555a63;
+
+    border-radius: 5px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+}
+
+
+.divider-handle span {
+
+    width: 3px;
+    height: 3px;
+
+    background: #7b818d;
+
+    border-radius: 50%;
+}
+
+
+/* ===============================
+   OUTPUT
+================================ */
+
+.output-section {
+
+    flex: 1;
+
+    min-width: 250px;
+
+    background: #1b1d21;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.output-header {
+
+    height: 48px;
+    min-height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 24px;
+
+    border-bottom: 1px solid #30333a;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.clear-btn {
+
+    border: none;
+
+    background: transparent;
+
+    color: #818896;
+
+    cursor: pointer;
+
+    font-size: 12px;
+
+    padding: 5px 10px;
+
+    border-radius: 4px;
+}
+
+
+.clear-btn:hover {
+
+    background: #2b2f36;
+
+    color: #ffffff;
+}
+
+
+/* OUTPUT CONSOLE */
+
+.output-console {
+
+    flex: 1;
+
+    padding: 17px 26px;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 14px;
+
+    line-height: 24px;
+
+    overflow: auto;
+
+    white-space: pre-wrap;
+
+    color: #f1f3f7;
+}
+
+
+.output-text {
+    color: #ffffff;
+}
+
+
+.success-message {
+
+    margin-top: 18px;
+
+    color: #666e7d;
+}
+
+
+.error-message {
+
+    color: #ff6b6b;
+
+    margin-top: 15px;
+}
+
+
+/* ===============================
+   RUNNING
+================================ */
+
+.running {
+
+    color: #ffcc66;
+}
+
+
+.run-btn.running-button {
+
+    opacity: 0.7;
+
+    cursor: wait;
+}
+
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 800px) {
+
+    .sidebar {
+        display: none;
+    }
+
+
+    .workspace {
+
+        flex-direction: column;
+    }
+
+
+    .editor-section {
+
+        width: 100% !important;
+        height: 55%;
+
+        min-width: 0;
+    }
+
+
+    .divider {
+
+        width: 100%;
+        height: 5px;
+
+        cursor: row-resize;
+    }
+
+
+    .divider-handle {
+        display: none;
+    }
+
+
+    .output-section {
+
+        width: 100%;
+        height: 45%;
+
+        min-width: 0;
+    }
+
+
+    .visualize-btn {
+        display: none;
+    }
+
+}
