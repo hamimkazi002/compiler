@@ -1,168 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Online Python Compiler</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="style.css">
+    <title>Python Compiler</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 </head>
+
 
 <body>
 
 <div class="app">
 
-    <!-- ================= LEFT SIDEBAR ================= -->
+    <!-- TOP BAR -->
 
-    <aside class="sidebar">
+    <header class="topbar">
 
-        <div class="sidebar-top">
+        <div class="title">
+            <div class="python-logo">Py</div>
 
-            <div class="sidebar-logo active">
-                <span>Py</span>
-            </div>
+            <span>main.py</span>
+        </div>
 
-            <button class="sidebar-item" title="Editor">
-                &lt;/&gt;
+
+        <div class="actions">
+
+            <button
+                id="clearBtn"
+                class="clear-btn"
+            >
+                Clear
             </button>
 
-            <button class="sidebar-item" title="Database">
-                DB
-            </button>
-
-            <button class="sidebar-item" title="Files">
-                F
-            </button>
-
-            <button class="sidebar-item" title="Terminal">
-                &gt;_
+            <button
+                id="runBtn"
+                class="run-btn"
+            >
+                ▶ Run
             </button>
 
         </div>
 
-        <div class="sidebar-bottom">
-            <button class="sidebar-item">
-                ⚙
-            </button>
-        </div>
-
-    </aside>
+    </header>
 
 
-    <!-- ================= MAIN AREA ================= -->
+    <!-- MAIN WORKSPACE -->
 
-    <main class="main">
+    <main class="workspace">
 
-        <!-- TOP BAR -->
 
-        <header class="topbar">
+        <!-- LEFT SIDE -->
 
-            <div class="file-name">
-                <span class="python-dot"></span>
-                main.py
+        <section class="editor-panel">
+
+            <div class="panel-title">
+                Python Code
             </div>
 
 
-            <div class="top-actions">
+            <div class="editor-container">
 
-                <button class="visualize-btn">
-                    Visualize
-                </button>
-
-                <button class="run-btn" id="runBtn">
-                    <span class="play-icon">▶</span>
-                    Run
-                </button>
-
-            </div>
-
-        </header>
+                <div
+                    class="line-numbers"
+                    id="lineNumbers"
+                ></div>
 
 
-        <!-- ================= WORKSPACE ================= -->
-
-        <div class="workspace">
-
-            <!-- CODE EDITOR -->
-
-            <section class="editor-section">
-
-                <div class="editor-wrapper">
-
-                    <div class="line-numbers" id="lineNumbers">
-                        <span>1</span>
-                        <span>2</span>
-                        <span>3</span>
-                    </div>
-
-                    <textarea
-                        id="codeEditor"
-                        spellcheck="false"
-                    ># Online Python compiler
-# Write Python 3 code here and run it.
-
-print("Start small. Ship something.")</textarea>
-
-                </div>
-
-            </section>
-
-
-            <!-- DIVIDER -->
-
-            <div class="divider" id="divider">
-
-                <div class="divider-handle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
+                <textarea
+                    id="codeEditor"
+                    spellcheck="false"
+                >print("Hello World")</textarea>
 
             </div>
 
 
-            <!-- OUTPUT -->
+            <!-- INPUT -->
 
-            <section class="output-section">
+            <div class="input-section">
 
-                <div class="output-header">
-
-                    <span>Output</span>
-
-                    <button
-                        class="clear-btn"
-                        id="clearBtn"
-                        title="Clear Output"
-                    >
-                        Clear
-                    </button>
-
+                <div class="input-title">
+                    Program Input
                 </div>
 
 
-                <div class="output-console" id="outputConsole">
+                <textarea
+                    id="programInput"
+                    placeholder="input() ব্যবহার করলে এখানে value লিখুন..."
+                    spellcheck="false"
+                ></textarea>
 
-                    <div class="output-text">
-                        Start small. Ship something.
-                    </div>
+            </div>
 
-                    <div class="success-message">
-                        === Code Execution Successful ===
-                    </div>
+        </section>
 
-                </div>
 
-            </section>
+        <!-- RIGHT SIDE -->
 
-        </div>
+        <section class="output-panel">
+
+            <div class="panel-title">
+                Output
+            </div>
+
+
+            <pre
+                id="outputConsole"
+                class="output-console"
+            >Output will appear here...</pre>
+
+        </section>
+
 
     </main>
 
 </div>
 
 
-<script src="script.js"></script>
+<script src="script.js?v=1"></script>
 
 </body>
+
 </html>

@@ -5,25 +5,41 @@ import tempfile
 import subprocess
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 
+
 HOST = "0.0.0.0"
 PORT = 8000
-TIMEOUT_SECONDS = 10
+TIMEOUT = 10
 
 
-class CompilerServer(SimpleHTTPRequestHandler):
+class PythonCompilerServer(SimpleHTTPRequestHandler):
+
+    def end_headers(self):
+        self.send_header(
+            "Cache-Control",
+            "no-store, no-cache, must-revalidate"
+        )
+        super().end_headers()
+
 
     def send_json(self, data, status=200):
-        response = json.dumps(data).encode("utf-8")
+
+        response = json.dumps(
+            data,
+            ensure_ascii=False
+        ).encode("utf-8")
 
         self.send_response(status)
+
         self.send_header(
             "Content-Type",
             "application/json; charset=utf-8"
         )
+
         self.send_header(
             "Content-Length",
             str(len(response))
         )
+
         self.end_headers()
 
         self.wfile.write(response)
@@ -32,31 +48,45 @@ class CompilerServer(SimpleHTTPRequestHandler):
     def do_POST(self):
 
         if self.path != "/run":
+
             self.send_json(
                 {
                     "success": False,
                     "output": "",
-                    "error": "Route not found"
+                    "error": "Route not found."
                 },
                 404
             )
+
             return
 
 
         try:
 
             content_length = int(
-                self.headers.get("Content-Length", 0)
+                self.headers.get(
+                    "Content-Length",
+                    0
+                )
             )
 
-            body = self.rfile.read(content_length)
+            body = self.rfile.read(
+                content_length
+            )
 
             data = json.loads(
                 body.decode("utf-8")
             )
 
-            code = data.get("code", "")
-            stdin_data = data.get("input", "")
+            code = data.get(
+                "code",
+                ""
+            )
+
+            program_input = data.get(
+                "input",
+                ""
+            )
 
 
             if not code.strip():
@@ -70,16 +100,16 @@ class CompilerServer(SimpleHTTPRequestHandler):
                 return
 
 
-            with tempfile.TemporaryDirectory() as temp_dir:
+            with tempfile.TemporaryDirectory() as temp_folder:
 
-                file_path = os.path.join(
-                    temp_dir,
+                python_file = os.path.join(
+                    temp_folder,
                     "main.py"
                 )
 
 
                 with open(
-                    file_path,
+                    python_file,
                     "w",
                     encoding="utf-8"
                 ) as file:
@@ -87,10 +117,15 @@ class CompilerServer(SimpleHTTPRequestHandler):
                     file.write(code)
 
 
-                env = os.environ.copy()
+                environment = os.environ.copy()
 
-                env["PYTHONIOENCODING"] = "utf-8"
-                env["PYTHONUNBUFFERED"] = "1"
+                environment[
+                    "PYTHONIOENCODING"
+                ] = "utf-8"
+
+                environment[
+                    "PYTHONUNBUFFERED"
+                ] = "1"
 
 
                 try:
@@ -100,12 +135,14 @@ class CompilerServer(SimpleHTTPRequestHandler):
                         [
                             sys.executable,
                             "-u",
-                            file_path
+                            python_file
                         ],
 
-                        input=stdin_data,
+                        input=program_input,
 
-                        capture_output=True,
+                        stdout=subprocess.PIPE,
+
+                        stderr=subprocess.PIPE,
 
                         text=True,
 
@@ -113,15 +150,16 @@ class CompilerServer(SimpleHTTPRequestHandler):
 
                         errors="replace",
 
-                        timeout=TIMEOUT_SECONDS,
+                        timeout=TIMEOUT,
 
-                        cwd=temp_dir,
+                        cwd=temp_folder,
 
-                        env=env
+                        env=environment
                     )
 
 
                     stdout = process.stdout
+
                     stderr = process.stderr
 
 
@@ -133,10 +171,7 @@ class CompilerServer(SimpleHTTPRequestHandler):
 
                             "output": stdout,
 
-                            "error": "",
-
-                            "returnCode":
-                                process.returncode
+                            "error": ""
 
                         })
 
@@ -149,31 +184,22 @@ class CompilerServer(SimpleHTTPRequestHandler):
 
                             "output": stdout,
 
-                            "error": stderr,
-
-                            "returnCode":
-                                process.returncode
+                            "error": stderr
 
                         })
 
 
                 except subprocess.TimeoutExpired as error:
 
-                    stdout = error.stdout or ""
-                    stderr = error.stderr or ""
+                    output = error.stdout or ""
 
 
-                    if isinstance(stdout, bytes):
+                    if isinstance(
+                        output,
+                        bytes
+                    ):
 
-                        stdout = stdout.decode(
-                            "utf-8",
-                            errors="replace"
-                        )
-
-
-                    if isinstance(stderr, bytes):
-
-                        stderr = stderr.decode(
+                        output = output.decode(
                             "utf-8",
                             errors="replace"
                         )
@@ -183,13 +209,10 @@ class CompilerServer(SimpleHTTPRequestHandler):
 
                         "success": False,
 
-                        "output": stdout,
+                        "output": output,
 
                         "error":
-                            stderr +
-                            f"\nExecution stopped: program exceeded {TIMEOUT_SECONDS} seconds.",
-
-                        "returnCode": -1
+                            f"\nExecution stopped. Maximum runtime is {TIMEOUT} seconds."
 
                     })
 
@@ -200,7 +223,7 @@ class CompilerServer(SimpleHTTPRequestHandler):
                 {
                     "success": False,
                     "output": "",
-                    "error": "Invalid request data."
+                    "error": "Invalid request."
                 },
                 400
             )
@@ -222,25 +245,29 @@ if __name__ == "__main__":
 
     server = ThreadingHTTPServer(
         (HOST, PORT),
-        CompilerServer
+        PythonCompilerServer
     )
 
+
     print("")
-    print("===================================")
-    print(" Python Compiler Server Running")
-    print("===================================")
+    print("==============================")
+    print(" Python Compiler Running")
+    print("==============================")
     print("")
-    print(f"Host: {HOST}")
     print(f"Port: {PORT}")
     print("")
-    print("Open the forwarded port in Codespaces.")
+    print("Codespaces:")
+    print("Open PORTS tab")
+    print("Then open port 8000")
     print("")
-    print("Press CTRL + C to stop server.")
+    print("CTRL + C to stop")
     print("")
+
 
     try:
 
         server.serve_forever()
+
 
     except KeyboardInterrupt:
 

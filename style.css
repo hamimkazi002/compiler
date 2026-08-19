@@ -1,0 +1,403 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+
+    background: #15171c;
+
+    color: white;
+
+    overflow: hidden;
+}
+
+
+/* APP */
+
+.app {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* TOP BAR */
+
+.topbar {
+    height: 60px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 18px;
+
+    background: #252931;
+
+    border-bottom: 1px solid #3a3f49;
+}
+
+
+.title {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    font-family: Consolas, monospace;
+
+    font-weight: bold;
+}
+
+
+.python-logo {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #1473e6;
+
+    color: white;
+
+    border-radius: 4px;
+
+    font-weight: bold;
+}
+
+
+.actions {
+    display: flex;
+
+    gap: 10px;
+}
+
+
+/* BUTTONS */
+
+button {
+    border: none;
+
+    cursor: pointer;
+
+    font-size: 14px;
+}
+
+
+.run-btn {
+    padding: 10px 22px;
+
+    background: #1473e6;
+
+    color: white;
+
+    border-radius: 4px;
+
+    font-weight: bold;
+}
+
+
+.run-btn:hover {
+    background: #2785f5;
+}
+
+
+.run-btn:disabled {
+    opacity: 0.6;
+
+    cursor: wait;
+}
+
+
+.clear-btn {
+    padding: 10px 20px;
+
+    background: #353a44;
+
+    color: white;
+
+    border-radius: 4px;
+}
+
+
+.clear-btn:hover {
+    background: #454b57;
+}
+
+
+/* WORKSPACE */
+
+.workspace {
+    flex: 1;
+
+    display: flex;
+
+    min-height: 0;
+}
+
+
+/* PANELS */
+
+.editor-panel {
+    width: 50%;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #1d2330;
+
+    border-right: 4px solid #444a55;
+}
+
+
+.output-panel {
+    width: 50%;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #191b20;
+}
+
+
+.panel-title {
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 20px;
+
+    border-bottom: 1px solid #353a44;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+
+/* EDITOR */
+
+.editor-container {
+    flex: 1;
+
+    min-height: 0;
+
+    display: flex;
+
+    overflow: hidden;
+}
+
+
+.line-numbers {
+    width: 55px;
+
+    padding-top: 15px;
+    padding-right: 14px;
+
+    background: #1d2330;
+
+    color: #687287;
+
+    text-align: right;
+
+    font-family: Consolas, monospace;
+
+    font-size: 14px;
+
+    line-height: 24px;
+
+    user-select: none;
+
+    overflow: hidden;
+}
+
+
+.line-numbers div {
+    height: 24px;
+}
+
+
+#codeEditor {
+    flex: 1;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 15px 20px 30px 0;
+
+    border: none;
+    outline: none;
+
+    resize: none;
+
+    background: #1d2330;
+
+    color: #e7edf7;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 14px;
+
+    line-height: 24px;
+
+    tab-size: 4;
+
+    white-space: pre;
+
+    overflow: auto;
+}
+
+
+/* INPUT */
+
+.input-section {
+    height: 150px;
+
+    padding: 12px;
+
+    background: #171b24;
+
+    border-top: 1px solid #353a44;
+}
+
+
+.input-title {
+    margin-bottom: 8px;
+
+    color: #929baa;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    text-transform: uppercase;
+}
+
+
+#programInput {
+    width: 100%;
+    height: 95px;
+
+    padding: 10px;
+
+    resize: none;
+
+    outline: none;
+
+    border: 1px solid #3a414d;
+
+    border-radius: 4px;
+
+    background: #202530;
+
+    color: white;
+
+    font-family: Consolas, monospace;
+
+    font-size: 14px;
+}
+
+
+#programInput:focus {
+    border-color: #1473e6;
+}
+
+
+/* OUTPUT */
+
+.output-console {
+    flex: 1;
+
+    margin: 0;
+
+    padding: 22px;
+
+    overflow: auto;
+
+    background: #191b20;
+
+    color: #ffffff;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 14px;
+
+    line-height: 23px;
+
+    white-space: pre-wrap;
+
+    word-break: break-word;
+}
+
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+}
+
+
+::-webkit-scrollbar-track {
+    background: #191c22;
+}
+
+
+::-webkit-scrollbar-thumb {
+    background: #4b515d;
+
+    border-radius: 5px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .workspace {
+        flex-direction: column;
+    }
+
+
+    .editor-panel,
+    .output-panel {
+        width: 100%;
+    }
+
+
+    .editor-panel {
+        height: 60%;
+
+        border-right: none;
+
+        border-bottom: 4px solid #444a55;
+    }
+
+
+    .output-panel {
+        height: 40%;
+    }
+
+}
