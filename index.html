@@ -11,10 +11,16 @@
 
     <title>Python Compiler</title>
 
+    <!-- CSS -->
     <link
         rel="stylesheet"
-        href="style.css"
+        href="style.css?v=4"
     >
+
+    <!-- Pyodide -->
+    <script
+        src="https://cdn.jsdelivr.net/pyodide/v314.0.3/full/pyodide.js"
+    ></script>
 </head>
 
 
@@ -22,14 +28,22 @@
 
 <div class="app">
 
-    <!-- TOP BAR -->
+    <!-- =========================
+         TOP BAR
+    ========================== -->
 
     <header class="topbar">
 
         <div class="title">
-            <div class="python-logo">Py</div>
 
-            <span>main.py</span>
+            <div class="python-logo">
+                Py
+            </div>
+
+            <span>
+                main.py
+            </span>
+
         </div>
 
 
@@ -38,15 +52,19 @@
             <button
                 id="clearBtn"
                 class="clear-btn"
+                type="button"
             >
                 Clear
             </button>
 
+
             <button
                 id="runBtn"
                 class="run-btn"
+                type="button"
+                disabled
             >
-                ▶ Run
+                Loading Python...
             </button>
 
         </div>
@@ -54,14 +72,19 @@
     </header>
 
 
-    <!-- MAIN WORKSPACE -->
+    <!-- =========================
+         WORKSPACE
+    ========================== -->
 
     <main class="workspace">
 
 
-        <!-- LEFT SIDE -->
+        <!-- =====================
+             LEFT SIDE
+        ====================== -->
 
         <section class="editor-panel">
+
 
             <div class="panel-title">
                 Python Code
@@ -70,21 +93,32 @@
 
             <div class="editor-container">
 
+
+                <!-- LINE NUMBERS -->
+
                 <div
                     class="line-numbers"
                     id="lineNumbers"
                 ></div>
 
 
+                <!-- CODE EDITOR -->
+
                 <textarea
                     id="codeEditor"
                     spellcheck="false"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
                 >print("Hello World")</textarea>
+
 
             </div>
 
 
-            <!-- INPUT -->
+            <!-- =====================
+                 PROGRAM INPUT
+            ====================== -->
 
             <div class="input-section">
 
@@ -101,12 +135,16 @@
 
             </div>
 
+
         </section>
 
 
-        <!-- RIGHT SIDE -->
+        <!-- =====================
+             RIGHT SIDE
+        ====================== -->
 
         <section class="output-panel">
+
 
             <div class="panel-title">
                 Output
@@ -116,17 +154,24 @@
             <pre
                 id="outputConsole"
                 class="output-console"
-            >Output will appear here...</pre>
+            >Loading Python...</pre>
+
 
         </section>
 
 
     </main>
 
+
 </div>
 
 
-<script src="script.js?v=1"></script>
+<!-- =========================
+     COMPILER JAVASCRIPT
+========================== -->
+
+<script src="script.js?v=4"></script>
+
 
 </body>
 
