@@ -15,6 +15,9 @@
         rel="stylesheet"
         href="style.css"
     >
+
+    <!-- Pyodide: Python runs inside the browser -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v314.0.3/full/pyodide.js"></script>
 </head>
 
 
@@ -27,9 +30,15 @@
     <header class="topbar">
 
         <div class="title">
-            <div class="python-logo">Py</div>
 
-            <span>main.py</span>
+            <div class="python-logo">
+                Py
+            </div>
+
+            <span>
+                main.py
+            </span>
+
         </div>
 
 
@@ -38,15 +47,19 @@
             <button
                 id="clearBtn"
                 class="clear-btn"
+                type="button"
             >
                 Clear
             </button>
 
+
             <button
                 id="runBtn"
                 class="run-btn"
+                type="button"
+                disabled
             >
-                ▶ Run
+                Loading Python...
             </button>
 
         </div>
@@ -79,12 +92,15 @@
                 <textarea
                     id="codeEditor"
                     spellcheck="false"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
                 >print("Hello World")</textarea>
 
             </div>
 
 
-            <!-- INPUT -->
+            <!-- PROGRAM INPUT -->
 
             <div class="input-section">
 
@@ -116,7 +132,7 @@
             <pre
                 id="outputConsole"
                 class="output-console"
-            >Output will appear here...</pre>
+            >Loading Python...</pre>
 
         </section>
 
@@ -126,7 +142,8 @@
 </div>
 
 
-<script src="script.js?v=1"></script>
+<!-- Our compiler logic -->
+<script src="script.js?v=2"></script>
 
 </body>
 

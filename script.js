@@ -1,26 +1,69 @@
 const codeEditor =
     document.getElementById("codeEditor");
 
-
 const lineNumbers =
     document.getElementById("lineNumbers");
-
 
 const runBtn =
     document.getElementById("runBtn");
 
-
 const clearBtn =
     document.getElementById("clearBtn");
-
 
 const outputConsole =
     document.getElementById("outputConsole");
 
-
 const programInput =
     document.getElementById("programInput");
 
+
+/* ==================================
+   PYODIDE
+================================== */
+
+const PYODIDE_URL =
+    "https://cdn.jsdelivr.net/pyodide/v314.0.5/full/";
+
+let pyodide = null;
+
+
+/* ==================================
+   LOAD PYTHON
+================================== */
+
+async function initializePython() {
+
+    runBtn.disabled = true;
+
+    outputConsole.textContent =
+        "Loading Python... Please wait.";
+
+
+    try {
+
+        pyodide = await loadPyodide({
+            indexURL: PYODIDE_URL
+        });
+
+
+        outputConsole.textContent =
+            "Python is ready.\n\nWrite code and click Run.";
+
+        runBtn.disabled = false;
+
+    }
+
+    catch (error) {
+
+        outputConsole.textContent =
+            "Failed to load Python.\n\n" +
+            error.message;
+
+    }
+}
+
+
+initializePython();
 
 
 /* ==================================
@@ -45,9 +88,7 @@ function updateLineNumbers() {
         const line =
             document.createElement("div");
 
-
         line.textContent = i;
-
 
         lineNumbers.appendChild(line);
 
@@ -65,7 +106,6 @@ codeEditor.addEventListener(
 );
 
 
-
 /* ==================================
    EDITOR SCROLL
 ================================== */
@@ -79,7 +119,6 @@ codeEditor.addEventListener(
 
     }
 );
-
 
 
 /* ==================================
@@ -98,17 +137,21 @@ codeEditor.addEventListener(
             const start =
                 this.selectionStart;
 
-
             const end =
                 this.selectionEnd;
 
 
             this.value =
-                this.value.substring(0, start)
+                this.value.substring(
+                    0,
+                    start
+                )
                 +
                 "    "
                 +
-                this.value.substring(end);
+                this.value.substring(
+                    end
+                );
 
 
             this.selectionStart =
@@ -119,7 +162,6 @@ codeEditor.addEventListener(
             updateLineNumbers();
 
         }
-
 
 
         /* CTRL + ENTER */
@@ -144,7 +186,6 @@ codeEditor.addEventListener(
 );
 
 
-
 /* ==================================
    RUN PYTHON
 ================================== */
@@ -153,7 +194,6 @@ async function runPython() {
 
     const code =
         codeEditor.value;
-
 
     const input =
         programInput.value;
@@ -169,115 +209,167 @@ async function runPython() {
     }
 
 
+    if (!pyodide) {
+
+        outputConsole.textContent =
+            "Python is still loading. Please wait...";
+
+        return;
+
+    }
+
+
     runBtn.disabled = true;
 
     runBtn.textContent =
         "Running...";
 
-
     outputConsole.textContent =
         "Running Python code...";
 
 
+    let stdout = "";
+    let stderr = "";
+
+
     try {
 
-        const response =
-            await fetch(
-                "/run",
-                {
+        /* ==========================
+           STDOUT
+        ========================== */
 
-                    method: "POST",
+        pyodide.setStdout({
+
+            batched: (text) => {
+
+                stdout += text;
+
+            }
+
+        });
 
 
-                    headers: {
+        /* ==========================
+           STDERR
+        ========================== */
 
-                        "Content-Type":
-                            "application/json"
+        pyodide.setStderr({
 
-                    },
+            batched: (text) => {
+
+                stderr += text;
+
+            }
+
+        });
 
 
-                    body:
-                        JSON.stringify({
+        /* ==========================
+           INPUT()
+        ========================== */
 
-                            code: code,
+        const inputLines =
+            input === ""
+                ? []
+                : input
+                    .replace(/\r/g, "")
+                    .split("\n");
 
-                            input: input
 
-                        })
+        let inputIndex = 0;
+
+
+        pyodide.setStdin({
+
+            stdin: () => {
+
+                if (
+                    inputIndex <
+                    inputLines.length
+                ) {
+
+                    const value =
+                        inputLines[
+                            inputIndex
+                        ];
+
+                    inputIndex++;
+
+                    return value;
 
                 }
-            );
 
 
-        if (!response.ok) {
+                return null;
 
-            throw new Error(
-                "Server returned error "
-                +
-                response.status
+            }
+
+        });
+
+
+        /* ==========================
+           AUTO LOAD PACKAGES
+        ========================== */
+
+        try {
+
+            await pyodide
+                .loadPackagesFromImports(
+                    code
+                );
+
+        }
+
+        catch (packageError) {
+
+            console.log(
+                "Package loading:",
+                packageError
             );
 
         }
 
 
-        const data =
-            await response.json();
+        /* ==========================
+           EXECUTE PYTHON
+        ========================== */
+
+        await pyodide.runPythonAsync(
+            code
+        );
 
 
         let result = "";
 
 
-        if (data.output) {
+        if (stdout) {
 
-            result +=
-                data.output;
+            result += stdout;
 
         }
 
 
-        if (data.error) {
+        if (stderr) {
 
             if (result) {
-
                 result += "\n";
-
             }
 
-
-            result +=
-                data.error;
+            result += stderr;
 
         }
 
 
-        if (data.success) {
-
-            if (result) {
-
-                result += "\n";
-
-            }
-
-
-            result +=
-                "=== Code Execution Successful ===";
-
-        }
-
-
-        if (
-            data.success
-            &&
-            !data.output
-        ) {
+        if (!result.trim()) {
 
             result =
-                "Program finished with no output.\n\n"
-                +
-                "=== Code Execution Successful ===";
+                "Program finished with no output.";
 
         }
+
+
+        result +=
+            "\n\n=== Code Execution Successful ===";
 
 
         outputConsole.textContent =
@@ -285,19 +377,44 @@ async function runPython() {
 
     }
 
-
     catch (error) {
 
-        outputConsole.textContent =
+        let result = "";
 
-            "Cannot connect to Python server.\n\n"
-            +
-            "Make sure app.py is running.\n\n"
-            +
+
+        if (stdout) {
+
+            result += stdout;
+
+        }
+
+
+        if (stderr) {
+
+            if (result) {
+                result += "\n";
+            }
+
+            result += stderr;
+
+        }
+
+
+        if (result) {
+
+            result += "\n";
+
+        }
+
+
+        result +=
             error.message;
 
-    }
 
+        outputConsole.textContent =
+            result;
+
+    }
 
     finally {
 
@@ -311,6 +428,9 @@ async function runPython() {
 }
 
 
+/* ==================================
+   RUN BUTTON
+================================== */
 
 runBtn.addEventListener(
     "click",
@@ -318,9 +438,8 @@ runBtn.addEventListener(
 );
 
 
-
 /* ==================================
-   CLEAR OUTPUT
+   CLEAR
 ================================== */
 
 clearBtn.addEventListener(
