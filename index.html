@@ -11,13 +11,16 @@
 
     <title>Python Compiler</title>
 
+    <!-- CSS -->
     <link
         rel="stylesheet"
-        href="style.css"
+        href="style.css?v=4"
     >
 
-    <!-- Pyodide: Python runs inside the browser -->
-    <script src="https://cdn.jsdelivr.net/pyodide/v314.0.3/full/pyodide.js"></script>
+    <!-- Pyodide -->
+    <script
+        src="https://cdn.jsdelivr.net/pyodide/v314.0.3/full/pyodide.js"
+    ></script>
 </head>
 
 
@@ -25,7 +28,9 @@
 
 <div class="app">
 
-    <!-- TOP BAR -->
+    <!-- =========================
+         TOP BAR
+    ========================== -->
 
     <header class="topbar">
 
@@ -67,14 +72,19 @@
     </header>
 
 
-    <!-- MAIN WORKSPACE -->
+    <!-- =========================
+         WORKSPACE
+    ========================== -->
 
     <main class="workspace">
 
 
-        <!-- LEFT SIDE -->
+        <!-- =====================
+             LEFT SIDE
+        ====================== -->
 
         <section class="editor-panel">
+
 
             <div class="panel-title">
                 Python Code
@@ -83,11 +93,16 @@
 
             <div class="editor-container">
 
+
+                <!-- LINE NUMBERS -->
+
                 <div
                     class="line-numbers"
                     id="lineNumbers"
                 ></div>
 
+
+                <!-- CODE EDITOR -->
 
                 <textarea
                     id="codeEditor"
@@ -97,10 +112,13 @@
                     autocapitalize="off"
                 >print("Hello World")</textarea>
 
+
             </div>
 
 
-            <!-- PROGRAM INPUT -->
+            <!-- =====================
+                 PROGRAM INPUT
+            ====================== -->
 
             <div class="input-section">
 
@@ -117,12 +135,16 @@
 
             </div>
 
+
         </section>
 
 
-        <!-- RIGHT SIDE -->
+        <!-- =====================
+             RIGHT SIDE
+        ====================== -->
 
         <section class="output-panel">
+
 
             <div class="panel-title">
                 Output
@@ -134,16 +156,22 @@
                 class="output-console"
             >Loading Python...</pre>
 
+
         </section>
 
 
     </main>
 
+
 </div>
 
 
-<!-- Our compiler logic -->
-<script src="script.js?v=2"></script>
+<!-- =========================
+     COMPILER JAVASCRIPT
+========================== -->
+
+<script src="script.js?v=4"></script>
+
 
 </body>
 
