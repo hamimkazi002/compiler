@@ -1,6 +1,6 @@
-/* =====================================
+/* =========================================
    ELEMENTS
-===================================== */
+========================================= */
 
 const languageSelect =
     document.getElementById("languageSelect");
@@ -17,8 +17,44 @@ const editorTitle =
 const outputTitle =
     document.getElementById("outputTitle");
 
+const outputType =
+    document.getElementById("outputType");
+
+const normalEditor =
+    document.getElementById("normalEditor");
+
+const webEditors =
+    document.getElementById("webEditors");
+
 const codeEditor =
     document.getElementById("codeEditor");
+
+const htmlEditor =
+    document.getElementById("htmlEditor");
+
+const cssEditor =
+    document.getElementById("cssEditor");
+
+const htmlBox =
+    document.getElementById("htmlBox");
+
+const cssBox =
+    document.getElementById("cssBox");
+
+const webResizer =
+    document.getElementById("webResizer");
+
+const workspace =
+    document.getElementById("workspace");
+
+const editorPanel =
+    document.getElementById("editorPanel");
+
+const outputPanel =
+    document.getElementById("outputPanel");
+
+const mainResizer =
+    document.getElementById("mainResizer");
 
 const lineNumbers =
     document.getElementById("lineNumbers");
@@ -26,8 +62,14 @@ const lineNumbers =
 const runBtn =
     document.getElementById("runBtn");
 
+const runText =
+    document.getElementById("runText");
+
 const clearBtn =
     document.getElementById("clearBtn");
+
+const themeBtn =
+    document.getElementById("themeBtn");
 
 const outputConsole =
     document.getElementById("outputConsole");
@@ -35,166 +77,196 @@ const outputConsole =
 const previewFrame =
     document.getElementById("previewFrame");
 
+const jsRunnerFrame =
+    document.getElementById("jsRunnerFrame");
+
 const inputSection =
     document.getElementById("inputSection");
 
 const programInput =
     document.getElementById("programInput");
 
+const engineStatus =
+    document.getElementById("engineStatus");
 
-/* =====================================
-   LANGUAGE CONFIG
-===================================== */
-
-const languages = {
-
-    python: {
-
-        name: "Python",
-
-        logo: "Py",
-
-        file: "main.py",
-
-        title: "Python Code",
-
-        starter:
-`print("Hello World")`
-
-    },
+const statusText =
+    document.getElementById("statusText");
 
 
-    javascript: {
+/* =========================================
+   STARTER CODE
+========================================= */
 
-        name: "JavaScript",
+const pythonStarter =
+`print("Hello World")
 
-        logo: "JS",
+name = "Hamim"
 
-        file: "main.js",
-
-        title: "JavaScript Code",
-
-        starter:
-`const a = 10;
-const b = 20;
-
-console.log("Result:", a + b);`
-
-    },
+print("Welcome,", name)`;
 
 
-    html: {
+const javascriptStarter =
+`const name = "Hamim";
 
-        name: "HTML",
+const numbers = [10, 20, 30];
 
-        logo: "HTML",
+const total = numbers.reduce(
+    (sum, number) => sum + number,
+    0
+);
 
-        file: "index.html",
-
-        title: "HTML Code",
-
-        starter:
-`<!DOCTYPE html>
-<html>
-<head>
-    <title>My Website</title>
-</head>
-
-<body>
-
-    <h1>Hello World</h1>
-
-    <p>
-        This HTML is running inside the preview.
-    </p>
-
-    <button>
-        Click Me
-    </button>
-
-</body>
-</html>`
-
-    },
+console.log("Hello", name);
+console.log("Total:", total);`;
 
 
-    css: {
+let savedPython =
+    pythonStarter;
 
-        name: "CSS",
 
-        logo: "CSS",
+let savedJavaScript =
+    javascriptStarter;
 
-        file: "style.css",
 
-        title: "CSS Code",
+let currentLanguage =
+    "python";
 
-        starter:
-`body {
-    background: #f5f5f5;
-    font-family: Arial, sans-serif;
-    padding: 40px;
-}
 
-.card {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-}
+/* =========================================
+   THEME
+========================================= */
 
-h1 {
-    color: #2563eb;
-}
+function setTheme(theme) {
 
-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}`
+    document.documentElement
+        .setAttribute(
+            "data-theme",
+            theme
+        );
+
+
+    if (theme === "dark") {
+
+        themeBtn.textContent =
+            "☀";
+
+        themeBtn.title =
+            "Switch to light theme";
 
     }
 
-};
+    else {
+
+        themeBtn.textContent =
+            "☾";
+
+        themeBtn.title =
+            "Switch to dark theme";
+
+    }
 
 
-/* Store code while switching languages */
+    localStorage.setItem(
+        "compiler-theme",
+        theme
+    );
 
-const savedCode = {
-
-    python:
-        languages.python.starter,
-
-    javascript:
-        languages.javascript.starter,
-
-    html:
-        languages.html.starter,
-
-    css:
-        languages.css.starter
-
-};
+}
 
 
-let currentLanguage = "python";
+const storedTheme =
+    localStorage.getItem(
+        "compiler-theme"
+    );
 
 
-/* =====================================
-   PYTHON
-===================================== */
-
-let pyodide = null;
-
-let pythonReady = false;
-
-let pythonLoadError = false;
+setTheme(
+    storedTheme || "dark"
+);
 
 
-/* =====================================
-   INITIALIZE PYTHON
-===================================== */
+themeBtn.addEventListener(
+    "click",
+    () => {
+
+        const current =
+            document.documentElement
+                .getAttribute(
+                    "data-theme"
+                );
+
+
+        setTheme(
+            current === "dark"
+                ? "light"
+                : "dark"
+        );
+
+    }
+);
+
+
+/* =========================================
+   PYTHON ENGINE
+========================================= */
+
+let pyodide =
+    null;
+
+
+let pythonReady =
+    false;
+
+
+let pythonFailed =
+    false;
+
+
+/* =========================================
+   STATUS
+========================================= */
+
+function setStatus(
+    text,
+    ready = false
+) {
+
+    statusText.textContent =
+        text;
+
+
+    if (ready) {
+
+        engineStatus
+            .classList
+            .add(
+                "ready"
+            );
+
+    }
+
+    else {
+
+        engineStatus
+            .classList
+            .remove(
+                "ready"
+            );
+
+    }
+
+}
+
+
+/* =========================================
+   LOAD PYTHON
+========================================= */
 
 async function initializePython() {
+
+    setStatus(
+        "Loading Python"
+    );
+
 
     try {
 
@@ -204,27 +276,28 @@ async function initializePython() {
         ) {
 
             throw new Error(
-                "Pyodide could not be loaded."
+                "Pyodide library could not be loaded."
             );
 
         }
 
 
-        /*
-            IMPORTANT:
-
-            We DO NOT manually set indexURL.
-
-            This prevents version mismatch.
-        */
-
         pyodide =
             await loadPyodide();
 
 
-        pythonReady = true;
+        pythonReady =
+            true;
 
-        pythonLoadError = false;
+
+        pythonFailed =
+            false;
+
+
+        setStatus(
+            "Python Ready",
+            true
+        );
 
 
         if (
@@ -244,9 +317,17 @@ async function initializePython() {
 
     catch (error) {
 
-        pythonLoadError = true;
+        pythonReady =
+            false;
 
-        pythonReady = false;
+
+        pythonFailed =
+            true;
+
+
+        setStatus(
+            "Python Failed"
+        );
 
 
         if (
@@ -255,7 +336,8 @@ async function initializePython() {
         ) {
 
             outputConsole.textContent =
-                "Failed to load Python.\n\n" +
+                "Failed to load Python.\n\n"
+                +
                 error.message;
 
         }
@@ -268,9 +350,9 @@ async function initializePython() {
 }
 
 
-/* =====================================
+/* =========================================
    RUN BUTTON STATE
-===================================== */
+========================================= */
 
 function updateRunButton() {
 
@@ -279,30 +361,40 @@ function updateRunButton() {
         "python"
     ) {
 
-        if (pythonReady) {
+        if (
+            pythonReady
+        ) {
 
-            runBtn.disabled = false;
+            runBtn.disabled =
+                false;
 
-            runBtn.textContent =
-                "▶ Run";
+
+            runText.textContent =
+                "Run";
 
         }
 
-        else if (pythonLoadError) {
+        else if (
+            pythonFailed
+        ) {
 
-            runBtn.disabled = true;
+            runBtn.disabled =
+                true;
 
-            runBtn.textContent =
-                "Python Failed";
+
+            runText.textContent =
+                "Failed";
 
         }
 
         else {
 
-            runBtn.disabled = true;
+            runBtn.disabled =
+                true;
 
-            runBtn.textContent =
-                "Loading Python...";
+
+            runText.textContent =
+                "Loading";
 
         }
 
@@ -310,146 +402,33 @@ function updateRunButton() {
 
     else {
 
-        runBtn.disabled = false;
+        runBtn.disabled =
+            false;
 
-        runBtn.textContent =
-            "▶ Run";
+
+        runText.textContent =
+            "Run";
 
     }
 
 }
 
 
-/* =====================================
+/* =========================================
    LANGUAGE CHANGE
-===================================== */
+========================================= */
 
 function changeLanguage(
-    newLanguage
+    language
 ) {
 
-    /*
-        Save current code
-    */
-
-    savedCode[
-        currentLanguage
-    ] =
-        codeEditor.value;
-
-
-    currentLanguage =
-        newLanguage;
-
-
-    const config =
-        languages[
-            currentLanguage
-        ];
-
-
-    codeEditor.value =
-        savedCode[
-            currentLanguage
-        ];
-
-
-    languageLogo.textContent =
-        config.logo;
-
-
-    fileName.textContent =
-        config.file;
-
-
-    editorTitle.textContent =
-        config.title;
-
-
-    /*
-        Python Input only
-    */
-
     if (
         currentLanguage ===
         "python"
     ) {
 
-        inputSection.classList.remove(
-            "hidden"
-        );
-
-    }
-
-    else {
-
-        inputSection.classList.add(
-            "hidden"
-        );
-
-    }
-
-
-    /*
-        Preview / Output
-    */
-
-    if (
-        currentLanguage === "html" ||
-        currentLanguage === "css"
-    ) {
-
-        outputTitle.textContent =
-            "Preview";
-
-
-        outputConsole.hidden =
-            true;
-
-
-        previewFrame.hidden =
-            false;
-
-    }
-
-    else {
-
-        outputTitle.textContent =
-            "Output";
-
-
-        previewFrame.hidden =
-            true;
-
-
-        outputConsole.hidden =
-            false;
-
-    }
-
-
-    /*
-        Initial messages
-    */
-
-    if (
-        currentLanguage ===
-        "python"
-    ) {
-
-        if (pythonReady) {
-
-            outputConsole.textContent =
-                "Python is ready.\n\nWrite code and click Run.";
-
-        }
-
-        else {
-
-            outputConsole.textContent =
-                "Loading Python...";
-
-        }
+        savedPython =
+            codeEditor.value;
 
     }
 
@@ -459,22 +438,244 @@ function changeLanguage(
         "javascript"
     ) {
 
+        savedJavaScript =
+            codeEditor.value;
+
+    }
+
+
+    currentLanguage =
+        language;
+
+
+    /* =====================================
+       PYTHON
+    ===================================== */
+
+    if (
+        language ===
+        "python"
+    ) {
+
+        normalEditor
+            .classList
+            .remove(
+                "hidden"
+            );
+
+
+        webEditors
+            .classList
+            .add(
+                "hidden"
+            );
+
+
+        inputSection
+            .classList
+            .remove(
+                "hidden"
+            );
+
+
+        outputConsole.hidden =
+            false;
+
+
+        previewFrame.hidden =
+            true;
+
+
+        languageLogo.textContent =
+            "Py";
+
+
+        fileName.textContent =
+            "main.py";
+
+
+        editorTitle.textContent =
+            "Python Code";
+
+
+        outputTitle.textContent =
+            "Output";
+
+
+        outputType.textContent =
+            "Console";
+
+
+        codeEditor.value =
+            savedPython;
+
+
+        if (
+            pythonReady
+        ) {
+
+            outputConsole.textContent =
+                "Python is ready.\n\nWrite code and click Run.";
+
+        }
+
+        else if (
+            pythonFailed
+        ) {
+
+            outputConsole.textContent =
+                "Python engine failed to load.";
+
+        }
+
+        else {
+
+            outputConsole.textContent =
+                "Loading Python engine...";
+
+        }
+
+    }
+
+
+    /* =====================================
+       JAVASCRIPT
+    ===================================== */
+
+    if (
+        language ===
+        "javascript"
+    ) {
+
+        normalEditor
+            .classList
+            .remove(
+                "hidden"
+            );
+
+
+        webEditors
+            .classList
+            .add(
+                "hidden"
+            );
+
+
+        inputSection
+            .classList
+            .add(
+                "hidden"
+            );
+
+
+        outputConsole.hidden =
+            false;
+
+
+        previewFrame.hidden =
+            true;
+
+
+        languageLogo.textContent =
+            "JS";
+
+
+        fileName.textContent =
+            "main.js";
+
+
+        editorTitle.textContent =
+            "JavaScript Code";
+
+
+        outputTitle.textContent =
+            "Output";
+
+
+        outputType.textContent =
+            "Console";
+
+
+        codeEditor.value =
+            savedJavaScript;
+
+
         outputConsole.textContent =
-            "JavaScript ready.\n\nClick Run.";
+            "JavaScript is ready.\n\nWrite code and click Run.";
+
+    }
+
+
+    /* =====================================
+       HTML + CSS
+    ===================================== */
+
+    if (
+        language ===
+        "web"
+    ) {
+
+        normalEditor
+            .classList
+            .add(
+                "hidden"
+            );
+
+
+        webEditors
+            .classList
+            .remove(
+                "hidden"
+            );
+
+
+        inputSection
+            .classList
+            .add(
+                "hidden"
+            );
+
+
+        outputConsole.hidden =
+            true;
+
+
+        previewFrame.hidden =
+            false;
+
+
+        languageLogo.textContent =
+            "Web";
+
+
+        fileName.textContent =
+            "index.html + style.css";
+
+
+        outputTitle.textContent =
+            "Live Preview";
+
+
+        outputType.textContent =
+            "Browser";
+
+
+        runWeb();
 
     }
 
 
     updateLineNumbers();
 
+
     updateRunButton();
 
 }
 
 
-/* =====================================
-   LANGUAGE SELECT EVENT
-===================================== */
+/* =========================================
+   LANGUAGE EVENT
+========================================= */
 
 languageSelect.addEventListener(
     "change",
@@ -488,9 +689,9 @@ languageSelect.addEventListener(
 );
 
 
-/* =====================================
+/* =========================================
    LINE NUMBERS
-===================================== */
+========================================= */
 
 function updateLineNumbers() {
 
@@ -520,16 +721,14 @@ function updateLineNumbers() {
             i;
 
 
-        lineNumbers.appendChild(
-            line
-        );
+        lineNumbers
+            .appendChild(
+                line
+            );
 
     }
 
 }
-
-
-updateLineNumbers();
 
 
 codeEditor.addEventListener(
@@ -537,10 +736,6 @@ codeEditor.addEventListener(
     updateLineNumbers
 );
 
-
-/* =====================================
-   SCROLL LINE NUMBERS
-===================================== */
 
 codeEditor.addEventListener(
     "scroll",
@@ -553,132 +748,148 @@ codeEditor.addEventListener(
 );
 
 
-/* =====================================
+/* =========================================
    TAB SUPPORT
-===================================== */
+========================================= */
 
-codeEditor.addEventListener(
-    "keydown",
-    function (event) {
+function addTabSupport(
+    editor
+) {
 
-        if (
-            event.key ===
-            "Tab"
-        ) {
+    editor.addEventListener(
+        "keydown",
+        function (event) {
 
-            event.preventDefault();
+            if (
+                event.key ===
+                "Tab"
+            ) {
 
-
-            const start =
-                this.selectionStart;
-
-
-            const end =
-                this.selectionEnd;
+                event.preventDefault();
 
 
-            this.value =
+                const start =
+                    this.selectionStart;
 
-                this.value.substring(
-                    0,
-                    start
+
+                const end =
+                    this.selectionEnd;
+
+
+                this.value =
+                    this.value.substring(
+                        0,
+                        start
+                    )
+                    +
+                    "    "
+                    +
+                    this.value.substring(
+                        end
+                    );
+
+
+                this.selectionStart =
+                    this.selectionEnd =
+                        start + 4;
+
+
+                if (
+                    editor ===
+                    codeEditor
+                ) {
+
+                    updateLineNumbers();
+
+                }
+
+            }
+
+
+            if (
+                event.key ===
+                    "Enter"
+                &&
+                (
+                    event.ctrlKey
+                    ||
+                    event.metaKey
                 )
+            ) {
 
-                +
-
-                "    "
-
-                +
-
-                this.value.substring(
-                    end
-                );
+                event.preventDefault();
 
 
-            this.selectionStart =
-                this.selectionEnd =
-                    start + 4;
+                runSelected();
 
-
-            updateLineNumbers();
+            }
 
         }
+    );
+
+}
 
 
-        /*
-            CTRL + ENTER
-        */
-
-        if (
-            event.key === "Enter"
-            &&
-            (
-                event.ctrlKey ||
-                event.metaKey
-            )
-        ) {
-
-            event.preventDefault();
-
-            runSelectedLanguage();
-
-        }
-
-    }
+addTabSupport(
+    codeEditor
 );
 
 
-/* =====================================
-   MAIN RUN
-===================================== */
-
-async function runSelectedLanguage() {
-
-    savedCode[
-        currentLanguage
-    ] =
-        codeEditor.value;
+addTabSupport(
+    htmlEditor
+);
 
 
-    switch (
-        currentLanguage
+addTabSupport(
+    cssEditor
+);
+
+
+/* =========================================
+   RUN SELECTED
+========================================= */
+
+async function runSelected() {
+
+    if (
+        currentLanguage ===
+        "python"
     ) {
 
-        case "python":
+        await runPython();
 
-            await runPython();
+        return;
 
-            break;
-
-
-        case "javascript":
-
-            await runJavaScript();
-
-            break;
+    }
 
 
-        case "html":
+    if (
+        currentLanguage ===
+        "javascript"
+    ) {
 
-            runHTML();
+        await runJavaScript();
 
-            break;
+        return;
+
+    }
 
 
-        case "css":
+    if (
+        currentLanguage ===
+        "web"
+    ) {
 
-            runCSS();
-
-            break;
+        runWeb();
 
     }
 
 }
 
 
-/* =====================================
+/* =========================================
    PYTHON RUNNER
-===================================== */
+========================================= */
 
 async function runPython() {
 
@@ -691,7 +902,7 @@ async function runPython() {
     ) {
 
         outputConsole.textContent =
-            "Please write Python code.";
+            "Please write Python code first.";
 
         return;
 
@@ -699,7 +910,8 @@ async function runPython() {
 
 
     if (
-        !pythonReady ||
+        !pythonReady
+        ||
         !pyodide
     ) {
 
@@ -715,58 +927,53 @@ async function runPython() {
         true;
 
 
-    runBtn.textContent =
-        "Running...";
+    runText.textContent =
+        "Running";
 
 
     outputConsole.textContent =
         "Running Python...";
 
 
-    let stdout = "";
+    let stdout =
+        "";
 
-    let stderr = "";
+
+    let stderr =
+        "";
 
 
     try {
 
-        /*
-            PRINT OUTPUT
-        */
-
         pyodide.setStdout({
 
-            batched: (text) => {
+            batched:
+                (text) => {
 
-                stdout +=
-                    text +
-                    "\n";
+                    stdout +=
+                        text
+                        +
+                        "\n";
 
-            }
+                }
 
         });
 
-
-        /*
-            ERRORS
-        */
 
         pyodide.setStderr({
 
-            batched: (text) => {
+            batched:
+                (text) => {
 
-                stderr +=
-                    text +
-                    "\n";
+                    stderr +=
+                        text
+                        +
+                        "\n";
 
-            }
+                }
 
         });
 
-
-        /*
-            input()
-        */
 
         const rawInput =
             programInput.value
@@ -790,38 +997,28 @@ async function runPython() {
 
         pyodide.setStdin({
 
-            stdin: () => {
+            stdin:
+                () => {
 
-                if (
-                    inputIndex <
-                    inputLines.length
-                ) {
+                    if (
+                        inputIndex
+                        <
+                        inputLines.length
+                    ) {
 
-                    const value =
-                        inputLines[
-                            inputIndex
+                        return inputLines[
+                            inputIndex++
                         ];
 
+                    }
 
-                    inputIndex++;
 
-
-                    return value;
+                    return null;
 
                 }
 
-
-                return null;
-
-            }
-
         });
 
-
-        /*
-            Load packages included
-            with Pyodide
-        */
 
         try {
 
@@ -842,10 +1039,6 @@ async function runPython() {
 
         }
 
-
-        /*
-            RUN
-        */
 
         const returnValue =
             await pyodide
@@ -872,7 +1065,9 @@ async function runPython() {
             stderr.trim()
         ) {
 
-            if (result) {
+            if (
+                result
+            ) {
 
                 result +=
                     "\n\n";
@@ -885,11 +1080,6 @@ async function runPython() {
 
         }
 
-
-        /*
-            Show expression result
-            if nothing printed
-        */
 
         if (
             !result
@@ -913,22 +1103,18 @@ async function runPython() {
             catch {
 
                 result =
-                    "Python execution completed.";
+                    "Execution completed.";
 
             }
 
         }
 
 
-        /*
-            Destroy PyProxy
-        */
-
         if (
             returnValue
             &&
-            typeof returnValue.destroy ===
-                "function"
+            typeof returnValue.destroy
+            === "function"
         ) {
 
             returnValue.destroy();
@@ -936,7 +1122,9 @@ async function runPython() {
         }
 
 
-        if (!result) {
+        if (
+            !result
+        ) {
 
             result =
                 "Program finished with no output.";
@@ -945,7 +1133,7 @@ async function runPython() {
 
 
         result +=
-            "\n\n=== Code Execution Successful ===";
+            "\n\n✓ Code Execution Successful";
 
 
         outputConsole.textContent =
@@ -973,7 +1161,9 @@ async function runPython() {
             stderr.trim()
         ) {
 
-            if (result) {
+            if (
+                result
+            ) {
 
                 result +=
                     "\n\n";
@@ -987,7 +1177,9 @@ async function runPython() {
         }
 
 
-        if (result) {
+        if (
+            result
+        ) {
 
             result +=
                 "\n\n";
@@ -996,7 +1188,8 @@ async function runPython() {
 
 
         result +=
-            error.message ||
+            error.message
+            ||
             String(error);
 
 
@@ -1011,19 +1204,72 @@ async function runPython() {
             false;
 
 
-        runBtn.textContent =
-            "▶ Run";
+        runText.textContent =
+            "Run";
 
     }
 
 }
 
 
-/* =====================================
-   JAVASCRIPT RUNNER DOCUMENT
-===================================== */
+/* =========================================
+   JAVASCRIPT RUNNER
+========================================= */
 
-const javascriptRunnerDocument =
+async function runJavaScript() {
+
+    const code =
+        codeEditor.value;
+
+
+    if (
+        !code.trim()
+    ) {
+
+        outputConsole.textContent =
+            "Please write JavaScript code first.";
+
+        return;
+
+    }
+
+
+    runBtn.disabled =
+        true;
+
+
+    runText.textContent =
+        "Running";
+
+
+    outputConsole.textContent =
+        "Running JavaScript...";
+
+
+    const runId =
+        Date.now().toString()
+        +
+        Math.random()
+            .toString(36);
+
+
+    const safeCode =
+        JSON.stringify(
+            code
+        )
+        .replace(
+            /</g,
+            "\\u003c"
+        );
+
+
+    const safeRunId =
+        JSON.stringify(
+            runId
+        );
+
+
+    const runnerDocument =
 `
 <!DOCTYPE html>
 
@@ -1036,6 +1282,15 @@ const javascriptRunnerDocument =
 <body>
 
 <script>
+
+const runId =
+    ${safeRunId};
+
+const userCode =
+    ${safeCode};
+
+const logs = [];
+
 
 function formatValue(value) {
 
@@ -1067,191 +1322,138 @@ function formatValue(value) {
 }
 
 
-function send(
-    type,
-    runId,
-    content
-) {
+console.log =
+    (...args) => {
 
-    parent.postMessage(
-        {
-            source:
-                "compiler-js-runner",
+        logs.push(
+            args
+                .map(formatValue)
+                .join(" ")
+        );
 
-            type:
-                type,
-
-            runId:
-                runId,
-
-            content:
-                content
-        },
-        "*"
-    );
-
-}
+    };
 
 
-window.addEventListener(
-    "message",
-    async (event) => {
+console.warn =
+    (...args) => {
 
-        const data =
-            event.data;
+        logs.push(
+            "Warning: "
+            +
+            args
+                .map(formatValue)
+                .join(" ")
+        );
+
+    };
+
+
+console.error =
+    (...args) => {
+
+        logs.push(
+            "Error: "
+            +
+            args
+                .map(formatValue)
+                .join(" ")
+        );
+
+    };
+
+
+(async () => {
+
+    try {
+
+        const AsyncFunction =
+            Object.getPrototypeOf(
+                async function(){}
+            ).constructor;
+
+
+        const execute =
+            new AsyncFunction(
+                userCode
+            );
+
+
+        const returnValue =
+            await execute();
 
 
         if (
-            !data ||
-            data.type !==
-                "execute-javascript"
+            returnValue !==
+            undefined
         ) {
 
-            return;
-
-        }
-
-
-        const runId =
-            data.runId;
-
-
-        const originalLog =
-            console.log;
-
-
-        const originalError =
-            console.error;
-
-
-        const originalWarn =
-            console.warn;
-
-
-        console.log =
-            (...args) => {
-
-                send(
-                    "console",
-                    runId,
-                    args
-                        .map(
-                            formatValue
-                        )
-                        .join(" ")
-                );
-
-            };
-
-
-        console.error =
-            (...args) => {
-
-                send(
-                    "error",
-                    runId,
-                    args
-                        .map(
-                            formatValue
-                        )
-                        .join(" ")
-                );
-
-            };
-
-
-        console.warn =
-            (...args) => {
-
-                send(
-                    "warn",
-                    runId,
-                    args
-                        .map(
-                            formatValue
-                        )
-                        .join(" ")
-                );
-
-            };
-
-
-        try {
-
-            const AsyncFunction =
-                Object.getPrototypeOf(
-                    async function(){}
-                ).constructor;
-
-
-            const fn =
-                new AsyncFunction(
-                    data.code
-                );
-
-
-            const value =
-                await fn();
-
-
-            if (
-                value !==
-                undefined
-            ) {
-
-                send(
-                    "return",
-                    runId,
-                    formatValue(
-                        value
-                    )
-                );
-
-            }
-
-
-            send(
-                "done",
-                runId,
-                true
+            logs.push(
+                formatValue(
+                    returnValue
+                )
             );
 
         }
 
-        catch (error) {
 
-            send(
-                "runtime-error",
-                runId,
-                error.stack ||
-                error.message ||
-                String(error)
-            );
+        parent.postMessage(
+            {
 
+                source:
+                    "hamim-compiler",
 
-            send(
-                "done",
-                runId,
-                false
-            );
+                type:
+                    "javascript-result",
 
-        }
+                runId:
+                    runId,
 
-        finally {
+                success:
+                    true,
 
-            console.log =
-                originalLog;
+                output:
+                    logs.join("\\n")
 
-            console.error =
-                originalError;
-
-            console.warn =
-                originalWarn;
-
-        }
+            },
+            "*"
+        );
 
     }
-);
+
+    catch (error) {
+
+        parent.postMessage(
+            {
+
+                source:
+                    "hamim-compiler",
+
+                type:
+                    "javascript-result",
+
+                runId:
+                    runId,
+
+                success:
+                    false,
+
+                output:
+                    logs.join("\\n"),
+
+                error:
+                    error.stack
+                    ||
+                    error.message
+                    ||
+                    String(error)
+
+            },
+            "*"
+        );
+
+    }
+
+})();
 
 <\/script>
 
@@ -1259,51 +1461,6 @@ window.addEventListener(
 
 </html>
 `;
-
-
-/* =====================================
-   JAVASCRIPT RUNNER
-===================================== */
-
-async function runJavaScript() {
-
-    const code =
-        codeEditor.value;
-
-
-    if (
-        !code.trim()
-    ) {
-
-        outputConsole.textContent =
-            "Please write JavaScript code.";
-
-        return;
-
-    }
-
-
-    runBtn.disabled =
-        true;
-
-
-    runBtn.textContent =
-        "Running...";
-
-
-    outputConsole.textContent =
-        "Running JavaScript...";
-
-
-    const runId =
-        Date.now().toString()
-        +
-        Math.random()
-            .toString(36);
-
-
-    const outputLines =
-        [];
 
 
     await new Promise(
@@ -1330,21 +1487,15 @@ async function runJavaScript() {
                             true;
 
 
-                        window.removeEventListener(
-                            "message",
-                            messageHandler
-                        );
-
-
-                        outputLines.push(
-                            "Execution timeout."
-                        );
+                        window
+                            .removeEventListener(
+                                "message",
+                                handler
+                            );
 
 
                         outputConsole.textContent =
-                            outputLines.join(
-                                "\n"
-                            );
+                            "JavaScript execution timed out.";
 
 
                         resolve();
@@ -1354,13 +1505,13 @@ async function runJavaScript() {
                 );
 
 
-            function messageHandler(
+            function handler(
                 event
             ) {
 
                 if (
                     event.source !==
-                    previewFrame.contentWindow
+                    jsRunnerFrame.contentWindow
                 ) {
 
                     return;
@@ -1376,7 +1527,10 @@ async function runJavaScript() {
                     !data
                     ||
                     data.source !==
-                        "compiler-js-runner"
+                        "hamim-compiler"
+                    ||
+                    data.type !==
+                        "javascript-result"
                     ||
                     data.runId !==
                         runId
@@ -1387,175 +1541,86 @@ async function runJavaScript() {
                 }
 
 
-                if (
-                    data.type ===
-                    "console"
-                ) {
-
-                    outputLines.push(
-                        data.content
-                    );
-
-                }
+                finished =
+                    true;
 
 
-                if (
-                    data.type ===
-                    "warn"
-                ) {
-
-                    outputLines.push(
-                        "Warning: " +
-                        data.content
-                    );
-
-                }
+                clearTimeout(
+                    timeout
+                );
 
 
-                if (
-                    data.type ===
-                    "error"
-                ) {
-
-                    outputLines.push(
-                        "Error: " +
-                        data.content
-                    );
-
-                }
-
-
-                if (
-                    data.type ===
-                    "return"
-                ) {
-
-                    outputLines.push(
-                        data.content
-                    );
-
-                }
-
-
-                if (
-                    data.type ===
-                    "runtime-error"
-                ) {
-
-                    outputLines.push(
-                        data.content
-                    );
-
-                }
-
-
-                if (
-                    data.type !==
-                    "done"
-                ) {
-
-                    outputConsole.textContent =
-                        outputLines.join(
-                            "\n"
-                        );
-
-                }
-
-
-                if (
-                    data.type ===
-                    "done"
-                ) {
-
-                    finished =
-                        true;
-
-
-                    clearTimeout(
-                        timeout
-                    );
-
-
-                    window.removeEventListener(
+                window
+                    .removeEventListener(
                         "message",
-                        messageHandler
+                        handler
                     );
 
 
+                let result =
+                    data.output
+                    ||
+                    "";
+
+
+                if (
+                    data.error
+                ) {
+
                     if (
-                        outputLines.length ===
-                        0
+                        result
                     ) {
 
-                        outputLines.push(
-                            "Program finished with no output."
-                        );
+                        result +=
+                            "\n\n";
 
                     }
 
 
-                    if (
-                        data.content ===
-                        true
-                    ) {
-
-                        outputLines.push(
-                            "",
-                            "=== Code Execution Successful ==="
-                        );
-
-                    }
-
-
-                    outputConsole.textContent =
-                        outputLines.join(
-                            "\n"
-                        );
-
-
-                    resolve();
+                    result +=
+                        data.error;
 
                 }
+
+
+                if (
+                    data.success
+                ) {
+
+                    if (
+                        !result
+                    ) {
+
+                        result =
+                            "Program finished with no output.";
+
+                    }
+
+
+                    result +=
+                        "\n\n✓ Code Execution Successful";
+
+                }
+
+
+                outputConsole.textContent =
+                    result;
+
+
+                resolve();
 
             }
 
 
-            window.addEventListener(
-                "message",
-                messageHandler
-            );
+            window
+                .addEventListener(
+                    "message",
+                    handler
+                );
 
 
-            /*
-                Load isolated runner
-            */
-
-            previewFrame.onload =
-                () => {
-
-                    previewFrame
-                        .contentWindow
-                        .postMessage(
-                            {
-
-                                type:
-                                    "execute-javascript",
-
-                                runId:
-                                    runId,
-
-                                code:
-                                    code
-
-                            },
-                            "*"
-                        );
-
-                };
-
-
-            previewFrame.srcdoc =
-                javascriptRunnerDocument;
+            jsRunnerFrame.srcdoc =
+                runnerDocument;
 
         }
     );
@@ -1565,58 +1630,27 @@ async function runJavaScript() {
         false;
 
 
-    runBtn.textContent =
-        "▶ Run";
+    runText.textContent =
+        "Run";
 
 }
 
 
-/* =====================================
-   HTML PREVIEW
-===================================== */
+/* =========================================
+   HTML + CSS PREVIEW
+========================================= */
 
-function runHTML() {
+function runWeb() {
 
-    const code =
-        codeEditor.value;
+    const html =
+        htmlEditor.value;
 
-
-    if (
-        !code.trim()
-    ) {
-
-        previewFrame.srcdoc =
-            "<p>Please write HTML code.</p>";
-
-        return;
-
-    }
-
-
-    previewFrame.srcdoc =
-        code;
-
-}
-
-
-/* =====================================
-   CSS PREVIEW
-===================================== */
-
-function runCSS() {
 
     const css =
-        codeEditor.value;
+        cssEditor.value;
 
 
-    /*
-        CSS needs HTML to be visible.
-
-        This demo HTML gives CSS
-        elements to style.
-    */
-
-    const previewHTML =
+    const documentCode =
 `
 <!DOCTYPE html>
 
@@ -1639,49 +1673,9 @@ ${css}
 
 </head>
 
-
 <body>
 
-<div class="card">
-
-    <h1>
-        CSS Preview
-    </h1>
-
-
-    <p>
-        Your CSS is applied to this preview.
-    </p>
-
-
-    <p>
-        Try styling body, .card, h1,
-        p, button, input and links.
-    </p>
-
-
-    <input
-        type="text"
-        placeholder="Input field"
-    >
-
-
-    <br><br>
-
-
-    <button>
-        Sample Button
-    </button>
-
-
-    <br><br>
-
-
-    <a href="#">
-        Sample Link
-    </a>
-
-</div>
+${html}
 
 </body>
 
@@ -1690,24 +1684,24 @@ ${css}
 
 
     previewFrame.srcdoc =
-        previewHTML;
+        documentCode;
 
 }
 
 
-/* =====================================
+/* =========================================
    RUN BUTTON
-===================================== */
+========================================= */
 
 runBtn.addEventListener(
     "click",
-    runSelectedLanguage
+    runSelected
 );
 
 
-/* =====================================
-   CLEAR
-===================================== */
+/* =========================================
+   CLEAR BUTTON
+========================================= */
 
 clearBtn.addEventListener(
     "click",
@@ -1715,10 +1709,7 @@ clearBtn.addEventListener(
 
         if (
             currentLanguage ===
-                "html"
-            ||
-            currentLanguage ===
-                "css"
+            "web"
         ) {
 
             previewFrame.srcdoc =
@@ -1737,13 +1728,336 @@ clearBtn.addEventListener(
 );
 
 
-/* =====================================
-   INITIAL SETUP
-===================================== */
+/* =========================================
+   HTML / CSS RESIZER
+========================================= */
+
+function initWebResizer() {
+
+    if (
+        !webResizer
+        ||
+        !htmlBox
+        ||
+        !cssBox
+        ||
+        !webEditors
+    ) {
+
+        return;
+
+    }
+
+
+    let dragging =
+        false;
+
+
+    const minimumHeight =
+        100;
+
+
+    webResizer.addEventListener(
+        "mousedown",
+        (event) => {
+
+            dragging =
+                true;
+
+
+            document.body.style
+                .userSelect =
+                "none";
+
+
+            document.body.style
+                .cursor =
+                "row-resize";
+
+
+            event.preventDefault();
+
+        }
+    );
+
+
+    window.addEventListener(
+        "mousemove",
+        (event) => {
+
+            if (
+                !dragging
+            ) {
+
+                return;
+
+            }
+
+
+            const rect =
+                webEditors
+                    .getBoundingClientRect();
+
+
+            const resizerHeight =
+                webResizer
+                    .offsetHeight;
+
+
+            const usableHeight =
+                rect.height
+                -
+                resizerHeight;
+
+
+            let htmlHeight =
+                event.clientY
+                -
+                rect.top;
+
+
+            htmlHeight =
+                Math.max(
+                    minimumHeight,
+                    htmlHeight
+                );
+
+
+            htmlHeight =
+                Math.min(
+                    usableHeight
+                    -
+                    minimumHeight,
+                    htmlHeight
+                );
+
+
+            const cssHeight =
+                usableHeight
+                -
+                htmlHeight;
+
+
+            htmlBox.style.height =
+                htmlHeight
+                +
+                "px";
+
+
+            cssBox.style.height =
+                cssHeight
+                +
+                "px";
+
+        }
+    );
+
+
+    window.addEventListener(
+        "mouseup",
+        () => {
+
+            if (
+                !dragging
+            ) {
+
+                return;
+
+            }
+
+
+            dragging =
+                false;
+
+
+            document.body.style
+                .userSelect =
+                "";
+
+
+            document.body.style
+                .cursor =
+                "";
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   LEFT / RIGHT RESIZER
+========================================= */
+
+function initMainResizer() {
+
+    if (
+        !mainResizer
+        ||
+        !workspace
+        ||
+        !editorPanel
+        ||
+        !outputPanel
+    ) {
+
+        return;
+
+    }
+
+
+    let dragging =
+        false;
+
+
+    mainResizer.addEventListener(
+        "mousedown",
+        (event) => {
+
+            if (
+                window.innerWidth
+                <=
+                760
+            ) {
+
+                return;
+
+            }
+
+
+            dragging =
+                true;
+
+
+            document.body.style
+                .userSelect =
+                "none";
+
+
+            document.body.style
+                .cursor =
+                "col-resize";
+
+
+            event.preventDefault();
+
+        }
+    );
+
+
+    window.addEventListener(
+        "mousemove",
+        (event) => {
+
+            if (
+                !dragging
+            ) {
+
+                return;
+
+            }
+
+
+            const rect =
+                workspace
+                    .getBoundingClientRect();
+
+
+            const total =
+                rect.width;
+
+
+            let leftWidth =
+                event.clientX
+                -
+                rect.left;
+
+
+            const minimum =
+                280;
+
+
+            leftWidth =
+                Math.max(
+                    minimum,
+                    leftWidth
+                );
+
+
+            leftWidth =
+                Math.min(
+                    total
+                    -
+                    minimum,
+                    leftWidth
+                );
+
+
+            editorPanel.style.width =
+                leftWidth
+                +
+                "px";
+
+
+            editorPanel.style.flex =
+                "none";
+
+
+            outputPanel.style.flex =
+                "1";
+
+        }
+    );
+
+
+    window.addEventListener(
+        "mouseup",
+        () => {
+
+            if (
+                !dragging
+            ) {
+
+                return;
+
+            }
+
+
+            dragging =
+                false;
+
+
+            document.body.style
+                .userSelect =
+                "";
+
+
+            document.body.style
+                .cursor =
+                "";
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   INITIALIZE
+========================================= */
+
+updateLineNumbers();
+
 
 changeLanguage(
     "python"
 );
+
+
+initWebResizer();
+
+
+initMainResizer();
 
 
 initializePython();

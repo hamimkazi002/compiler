@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -9,26 +9,31 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Multi Language Compiler</title>
+    <title>Hamim Code Compiler</title>
 
     <link
         rel="stylesheet"
-        href="style.css?v=10"
+        href="style.css?v=40"
     >
 
-    <!-- Python / Pyodide -->
+    <!-- Python Engine -->
     <script
         src="https://cdn.jsdelivr.net/pyodide/v314.0.3/full/pyodide.js"
     ></script>
 </head>
 
+
 <body>
 
 <div class="app">
 
-    <!-- TOP BAR -->
+    <!-- =================================
+         TOP BAR
+    ================================== -->
 
     <header class="topbar">
+
+        <!-- LEFT -->
 
         <div class="top-left">
 
@@ -39,15 +44,26 @@
                 Py
             </div>
 
-            <span
-                class="file-name"
-                id="fileName"
-            >
-                main.py
-            </span>
+
+            <div class="file-info">
+
+                <span
+                    class="file-name"
+                    id="fileName"
+                >
+                    main.py
+                </span>
+
+                <span class="student-info">
+                    Hamim Kazi · 241005048
+                </span>
+
+            </div>
 
         </div>
 
+
+        <!-- CENTER -->
 
         <div class="top-center">
 
@@ -55,6 +71,7 @@
                 id="languageSelect"
                 class="language-select"
             >
+
                 <option value="python">
                     Python
                 </option>
@@ -63,28 +80,57 @@
                     JavaScript
                 </option>
 
-                <option value="html">
-                    HTML
+                <option value="web">
+                    HTML + CSS
                 </option>
 
-                <option value="css">
-                    CSS
-                </option>
             </select>
 
         </div>
 
 
+        <!-- RIGHT -->
+
         <div class="actions">
+
+            <div
+                class="engine-status"
+                id="engineStatus"
+            >
+
+                <span class="status-dot"></span>
+
+                <span id="statusText">
+                    Loading...
+                </span>
+
+            </div>
+
+
+            <!-- THEME -->
+
+            <button
+                id="themeBtn"
+                class="icon-btn"
+                type="button"
+                title="Switch Theme"
+            >
+                ☀
+            </button>
+
+
+            <!-- CLEAR -->
 
             <button
                 id="clearBtn"
-                class="clear-btn"
+                class="secondary-btn"
                 type="button"
             >
                 Clear
             </button>
 
+
+            <!-- RUN -->
 
             <button
                 id="runBtn"
@@ -92,7 +138,15 @@
                 type="button"
                 disabled
             >
-                Loading Python...
+
+                <span class="run-icon">
+                    ▶
+                </span>
+
+                <span id="runText">
+                    Loading
+                </span>
+
             </button>
 
         </div>
@@ -100,50 +154,262 @@
     </header>
 
 
-    <!-- WORKSPACE -->
+    <!-- =================================
+         WORKSPACE
+    ================================== -->
 
-    <main class="workspace">
+    <main
+        class="workspace"
+        id="workspace"
+    >
 
-        <!-- LEFT -->
 
-        <section class="editor-panel">
+        <!-- =================================
+             LEFT PANEL
+        ================================== -->
+
+        <section
+            class="editor-panel"
+            id="editorPanel"
+        >
+
+
+            <!-- NORMAL EDITOR
+                 Python / JavaScript -->
 
             <div
-                class="panel-title"
-                id="editorTitle"
+                id="normalEditor"
+                class="normal-editor"
             >
-                Python Code
+
+                <div class="panel-header">
+
+                    <span
+                        class="panel-title"
+                        id="editorTitle"
+                    >
+                        Python Code
+                    </span>
+
+                    <span class="keyboard-hint">
+                        Ctrl + Enter to Run
+                    </span>
+
+                </div>
+
+
+                <div class="editor-container">
+
+                    <div
+                        class="line-numbers"
+                        id="lineNumbers"
+                    ></div>
+
+
+                    <textarea
+                        id="codeEditor"
+                        spellcheck="false"
+                        autocomplete="off"
+                        autocorrect="off"
+                        autocapitalize="off"
+                    >print("Hello World")</textarea>
+
+                </div>
+
             </div>
 
 
-            <div class="editor-container">
+            <!-- =================================
+                 HTML + CSS EDITORS
+            ================================== -->
+
+            <div
+                id="webEditors"
+                class="web-editors hidden"
+            >
+
+
+                <!-- HTML -->
 
                 <div
-                    class="line-numbers"
-                    id="lineNumbers"
-                ></div>
+                    id="htmlBox"
+                    class="web-editor-box html-box"
+                >
+
+                    <div class="panel-header">
+
+                        <div class="web-title">
+
+                            <span class="html-badge">
+                                HTML
+                            </span>
+
+                            <span>
+                                index.html
+                            </span>
+
+                        </div>
+
+                    </div>
 
 
-                <textarea
-                    id="codeEditor"
-                    spellcheck="false"
-                    autocomplete="off"
-                    autocorrect="off"
-                    autocapitalize="off"
-                >print("Hello World")</textarea>
+                    <textarea
+                        id="htmlEditor"
+                        class="web-code-editor"
+                        spellcheck="false"
+                        autocomplete="off"
+                    ><div class="card">
+
+    <span class="badge">
+        HTML + CSS
+    </span>
+
+    <h1>Hello World</h1>
+
+    <p>
+        Build something amazing with your code.
+    </p>
+
+    <button>
+        Explore Now
+    </button>
+
+</div></textarea>
+
+                </div>
+
+
+                <!-- HTML/CSS RESIZER -->
+
+                <div
+                    id="webResizer"
+                    class="web-resizer"
+                    title="Drag to resize HTML and CSS"
+                >
+                    <span></span>
+                </div>
+
+
+                <!-- CSS -->
+
+                <div
+                    id="cssBox"
+                    class="web-editor-box css-box"
+                >
+
+                    <div class="panel-header">
+
+                        <div class="web-title">
+
+                            <span class="css-badge">
+                                CSS
+                            </span>
+
+                            <span>
+                                style.css
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <textarea
+                        id="cssEditor"
+                        class="web-code-editor"
+                        spellcheck="false"
+                        autocomplete="off"
+                    >body {
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: Arial, sans-serif;
+
+    background: #f4f7fb;
+}
+
+.card {
+    width: 360px;
+
+    padding: 40px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0, 0, 0, 0.12);
+}
+
+.badge {
+    display: inline-block;
+
+    padding: 7px 12px;
+
+    background: #e8f0ff;
+
+    color: #2563eb;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+}
+
+h1 {
+    color: #172033;
+}
+
+p {
+    color: #657086;
+
+    line-height: 1.6;
+}
+
+button {
+    margin-top: 15px;
+
+    padding: 12px 22px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #2563eb;
+
+    color: white;
+
+    cursor: pointer;
+}</textarea>
+
+                </div>
 
             </div>
 
 
-            <!-- PYTHON INPUT -->
+            <!-- =================================
+                 PYTHON INPUT
+            ================================== -->
 
             <div
                 class="input-section"
                 id="inputSection"
             >
 
-                <div class="input-title">
-                    Program Input
+                <div class="input-header">
+
+                    <span>
+                        Program Input
+                    </span>
+
+                    <span class="input-help">
+                        stdin / input()
+                    </span>
+
                 </div>
 
 
@@ -158,27 +424,59 @@
         </section>
 
 
-        <!-- RIGHT -->
+        <!-- =================================
+             MAIN RESIZER
+        ================================== -->
 
-        <section class="output-panel">
+        <div
+            id="mainResizer"
+            class="main-resizer"
+            title="Drag to resize editor and output"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
 
-            <div
-                class="panel-title"
-                id="outputTitle"
-            >
-                Output
+
+        <!-- =================================
+             RIGHT PANEL
+        ================================== -->
+
+        <section
+            class="output-panel"
+            id="outputPanel"
+        >
+
+            <div class="panel-header output-header">
+
+                <span
+                    class="panel-title"
+                    id="outputTitle"
+                >
+                    Output
+                </span>
+
+
+                <span
+                    class="output-type"
+                    id="outputType"
+                >
+                    Console
+                </span>
+
             </div>
 
 
-            <!-- Console Output -->
+            <!-- CONSOLE -->
 
             <pre
                 id="outputConsole"
                 class="output-console"
-            >Loading Python...</pre>
+            >Loading Python engine...</pre>
 
 
-            <!-- HTML / CSS Preview -->
+            <!-- WEB PREVIEW -->
 
             <iframe
                 id="previewFrame"
@@ -187,14 +485,44 @@
                 hidden
             ></iframe>
 
+
+            <!-- JAVASCRIPT RUNNER -->
+
+            <iframe
+                id="jsRunnerFrame"
+                sandbox="allow-scripts"
+                hidden
+            ></iframe>
+
         </section>
 
     </main>
 
+
+    <!-- =================================
+         FOOTER
+    ================================== -->
+
+    <footer class="footer">
+
+        <span>
+            Multi Language Compiler
+        </span>
+
+        <span class="footer-dot">
+            •
+        </span>
+
+        <span>
+            Hamim Kazi · 241005048
+        </span>
+
+    </footer>
+
 </div>
 
 
-<script src="script.js?v=10"></script>
+<script src="script.js?v=40"></script>
 
 </body>
 
