@@ -9,40 +9,68 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Python Compiler</title>
+    <title>Multi Language Compiler</title>
 
-    <!-- CSS -->
     <link
         rel="stylesheet"
-        href="style.css?v=4"
+        href="style.css?v=10"
     >
 
-    <!-- Pyodide -->
+    <!-- Python / Pyodide -->
     <script
         src="https://cdn.jsdelivr.net/pyodide/v314.0.3/full/pyodide.js"
     ></script>
 </head>
 
-
 <body>
 
 <div class="app">
 
-    <!-- =========================
-         TOP BAR
-    ========================== -->
+    <!-- TOP BAR -->
 
     <header class="topbar">
 
-        <div class="title">
+        <div class="top-left">
 
-            <div class="python-logo">
+            <div
+                class="language-logo"
+                id="languageLogo"
+            >
                 Py
             </div>
 
-            <span>
+            <span
+                class="file-name"
+                id="fileName"
+            >
                 main.py
             </span>
+
+        </div>
+
+
+        <div class="top-center">
+
+            <select
+                id="languageSelect"
+                class="language-select"
+            >
+                <option value="python">
+                    Python
+                </option>
+
+                <option value="javascript">
+                    JavaScript
+                </option>
+
+                <option value="html">
+                    HTML
+                </option>
+
+                <option value="css">
+                    CSS
+                </option>
+            </select>
 
         </div>
 
@@ -72,37 +100,29 @@
     </header>
 
 
-    <!-- =========================
-         WORKSPACE
-    ========================== -->
+    <!-- WORKSPACE -->
 
     <main class="workspace">
 
-
-        <!-- =====================
-             LEFT SIDE
-        ====================== -->
+        <!-- LEFT -->
 
         <section class="editor-panel">
 
-
-            <div class="panel-title">
+            <div
+                class="panel-title"
+                id="editorTitle"
+            >
                 Python Code
             </div>
 
 
             <div class="editor-container">
 
-
-                <!-- LINE NUMBERS -->
-
                 <div
                     class="line-numbers"
                     id="lineNumbers"
                 ></div>
 
-
-                <!-- CODE EDITOR -->
 
                 <textarea
                     id="codeEditor"
@@ -112,15 +132,15 @@
                     autocapitalize="off"
                 >print("Hello World")</textarea>
 
-
             </div>
 
 
-            <!-- =====================
-                 PROGRAM INPUT
-            ====================== -->
+            <!-- PYTHON INPUT -->
 
-            <div class="input-section">
+            <div
+                class="input-section"
+                id="inputSection"
+            >
 
                 <div class="input-title">
                     Program Input
@@ -135,21 +155,22 @@
 
             </div>
 
-
         </section>
 
 
-        <!-- =====================
-             RIGHT SIDE
-        ====================== -->
+        <!-- RIGHT -->
 
         <section class="output-panel">
 
-
-            <div class="panel-title">
+            <div
+                class="panel-title"
+                id="outputTitle"
+            >
                 Output
             </div>
 
+
+            <!-- Console Output -->
 
             <pre
                 id="outputConsole"
@@ -157,21 +178,23 @@
             >Loading Python...</pre>
 
 
+            <!-- HTML / CSS Preview -->
+
+            <iframe
+                id="previewFrame"
+                class="preview-frame"
+                sandbox="allow-scripts"
+                hidden
+            ></iframe>
+
         </section>
 
-
     </main>
-
 
 </div>
 
 
-<!-- =========================
-     COMPILER JAVASCRIPT
-========================== -->
-
-<script src="script.js?v=4"></script>
-
+<script src="script.js?v=10"></script>
 
 </body>
 
