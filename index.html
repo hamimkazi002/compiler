@@ -6,9 +6,10 @@
 
   <title>Hamim Code Compiler</title>
 
+  <!-- GitHub Pages compatible -->
   <link
     rel="stylesheet"
-    href="/style.css?v=60"
+    href="./style.css?v=70"
   />
 </head>
 
@@ -16,9 +17,9 @@
 
   <div class="app-shell">
 
-    <!-- =========================================
+    <!-- =====================================================
          TOP BAR
-    ========================================== -->
+    ====================================================== -->
 
     <header class="topbar">
 
@@ -94,19 +95,18 @@
 
 
 
-    <!-- =========================================
-         MAIN WORKSPACE
-    ========================================== -->
+    <!-- =====================================================
+         WORKSPACE
+    ====================================================== -->
 
     <main class="workspace">
 
 
-      <!-- =====================================
-           LEFT SIDE - CODE EDITOR
-      ====================================== -->
+      <!-- =================================================
+           LEFT SIDE
+      ================================================== -->
 
       <section class="editor-panel panel">
-
 
         <div class="panel-head">
 
@@ -124,11 +124,6 @@
 
         </div>
 
-
-
-        <!-- =================================
-             CODE EDITOR
-        ================================== -->
 
         <div class="editor-wrap">
 
@@ -150,11 +145,6 @@ print(c)</textarea>
         </div>
 
 
-
-        <!-- =================================
-             PROGRAM INPUT
-        ================================== -->
-
         <div class="input-section">
 
           <div class="input-title">
@@ -169,26 +159,22 @@ print(c)</textarea>
 
         </div>
 
-
       </section>
 
 
 
-      <!-- =====================================
+      <!-- =================================================
            RIGHT SIDE
-      ====================================== -->
+      ================================================== -->
 
       <section class="result-panel panel">
 
 
-        <!-- =================================
+        <!-- ===============================================
              TABS
-        ================================== -->
+        ================================================ -->
 
-        <div
-          class="tabs"
-          role="tablist"
-        >
+        <div class="tabs">
 
           <button
             class="tab active"
@@ -211,9 +197,9 @@ print(c)</textarea>
 
 
 
-        <!-- =================================
-             OUTPUT TAB
-        ================================== -->
+        <!-- ===============================================
+             OUTPUT
+        ================================================ -->
 
         <div
           id="outputView"
@@ -229,19 +215,14 @@ print(c)</textarea>
 
 
 
-        <!-- =================================
-             VISUALIZER TAB
-        ================================== -->
+        <!-- ===============================================
+             VISUALIZER
+        ================================================ -->
 
         <div
           id="visualizerView"
           class="tab-view"
         >
-
-
-          <!-- ===============================
-               VISUALIZER HEADER
-          ================================ -->
 
           <div class="visualizer-heading">
 
@@ -257,7 +238,6 @@ print(c)</textarea>
 
             </div>
 
-
             <span class="legend-dot">
               Live stages
             </span>
@@ -266,17 +246,10 @@ print(c)</textarea>
 
 
 
-          <!-- ===============================
-               COMPILER PIPELINE
-          ================================ -->
-
           <div class="pipeline">
 
 
-
-            <!-- =============================
-                 01 SOURCE CODE
-            ============================== -->
+            <!-- 01 -->
 
             <article
               class="stage"
@@ -285,9 +258,7 @@ print(c)</textarea>
 
               <div class="stage-top">
 
-                <span>
-                  01
-                </span>
+                <span>01</span>
 
                 <h3>
                   Source Code
@@ -299,16 +270,13 @@ print(c)</textarea>
 
               </div>
 
-
               <pre id="sourceOutput">—</pre>
 
             </article>
 
 
 
-            <!-- =============================
-                 02 LEXICAL ANALYSIS
-            ============================== -->
+            <!-- 02 -->
 
             <article
               class="stage"
@@ -317,9 +285,7 @@ print(c)</textarea>
 
               <div class="stage-top">
 
-                <span>
-                  02
-                </span>
+                <span>02</span>
 
                 <h3>
                   Lexical Analysis
@@ -331,16 +297,13 @@ print(c)</textarea>
 
               </div>
 
-
               <pre id="lexicalOutput">—</pre>
 
             </article>
 
 
 
-            <!-- =============================
-                 03 SYNTAX ANALYSIS
-            ============================== -->
+            <!-- 03 -->
 
             <article
               class="stage"
@@ -349,9 +312,7 @@ print(c)</textarea>
 
               <div class="stage-top">
 
-                <span>
-                  03
-                </span>
+                <span>03</span>
 
                 <h3>
                   Syntax Analysis
@@ -363,16 +324,13 @@ print(c)</textarea>
 
               </div>
 
-
               <pre id="syntaxOutput">—</pre>
 
             </article>
 
 
 
-            <!-- =============================
-                 04 ABSTRACT SYNTAX TREE
-            ============================== -->
+            <!-- 04 -->
 
             <article
               class="stage"
@@ -381,9 +339,7 @@ print(c)</textarea>
 
               <div class="stage-top">
 
-                <span>
-                  04
-                </span>
+                <span>04</span>
 
                 <h3>
                   Abstract Syntax Tree
@@ -395,16 +351,13 @@ print(c)</textarea>
 
               </div>
 
-
               <pre id="astOutput">—</pre>
 
             </article>
 
 
 
-            <!-- =============================
-                 05 SEMANTIC ANALYSIS
-            ============================== -->
+            <!-- 05 -->
 
             <article
               class="stage"
@@ -413,9 +366,7 @@ print(c)</textarea>
 
               <div class="stage-top">
 
-                <span>
-                  05
-                </span>
+                <span>05</span>
 
                 <h3>
                   Semantic Analysis
@@ -427,16 +378,13 @@ print(c)</textarea>
 
               </div>
 
-
               <pre id="semanticOutput">—</pre>
 
             </article>
 
 
 
-            <!-- =============================
-                 06 SYMBOL TABLE
-            ============================== -->
+            <!-- 06 -->
 
             <article
               class="stage"
@@ -445,9 +393,7 @@ print(c)</textarea>
 
               <div class="stage-top">
 
-                <span>
-                  06
-                </span>
+                <span>06</span>
 
                 <h3>
                   Symbol Table
@@ -459,16 +405,13 @@ print(c)</textarea>
 
               </div>
 
-
               <pre id="symbolOutput">—</pre>
 
             </article>
 
 
 
-            <!-- =============================
-                 07 INTERMEDIATE CODE
-            ============================== -->
+            <!-- 07 -->
 
             <article
               class="stage"
@@ -477,9 +420,7 @@ print(c)</textarea>
 
               <div class="stage-top">
 
-                <span>
-                  07
-                </span>
+                <span>07</span>
 
                 <h3>
                   Intermediate Code
@@ -491,16 +432,13 @@ print(c)</textarea>
 
               </div>
 
-
               <pre id="intermediateOutput">—</pre>
 
             </article>
 
 
 
-            <!-- =============================
-                 08 CODE OPTIMIZATION
-            ============================== -->
+            <!-- 08 -->
 
             <article
               class="stage"
@@ -509,9 +447,7 @@ print(c)</textarea>
 
               <div class="stage-top">
 
-                <span>
-                  08
-                </span>
+                <span>08</span>
 
                 <h3>
                   Code Optimization
@@ -523,16 +459,13 @@ print(c)</textarea>
 
               </div>
 
-
               <pre id="optimizationOutput">—</pre>
 
             </article>
 
 
 
-            <!-- =============================
-                 09 TARGET CODE
-            ============================== -->
+            <!-- 09 -->
 
             <article
               class="stage"
@@ -541,9 +474,7 @@ print(c)</textarea>
 
               <div class="stage-top">
 
-                <span>
-                  09
-                </span>
+                <span>09</span>
 
                 <h3>
                   Target Code
@@ -555,16 +486,13 @@ print(c)</textarea>
 
               </div>
 
-
               <pre id="targetOutput">—</pre>
 
             </article>
 
 
 
-            <!-- =============================
-                 10 BINARY REPRESENTATION
-            ============================== -->
+            <!-- 10 -->
 
             <article
               class="stage"
@@ -573,9 +501,7 @@ print(c)</textarea>
 
               <div class="stage-top">
 
-                <span>
-                  10
-                </span>
+                <span>10</span>
 
                 <h3>
                   Binary Representation
@@ -587,16 +513,13 @@ print(c)</textarea>
 
               </div>
 
-
               <pre id="binaryOutput">—</pre>
 
             </article>
 
 
 
-            <!-- =============================
-                 11 EXECUTION + OUTPUT
-            ============================== -->
+            <!-- 11 -->
 
             <article
               class="stage"
@@ -605,9 +528,7 @@ print(c)</textarea>
 
               <div class="stage-top">
 
-                <span>
-                  11
-                </span>
+                <span>11</span>
 
                 <h3>
                   Execution & Final Output
@@ -618,7 +539,6 @@ print(c)</textarea>
                 </b>
 
               </div>
-
 
               <pre id="executionOutput">—</pre>
 
@@ -637,23 +557,20 @@ print(c)</textarea>
 
 
 
-  <!-- =========================================
+  <!-- =====================================================
        PYODIDE
-  ========================================== -->
+  ====================================================== -->
 
   <script
     src="https://cdn.jsdelivr.net/pyodide/v314.0.4/full/pyodide.js"
   ></script>
 
 
-  <!-- =========================================
-       MAIN JAVASCRIPT
-  ========================================== -->
+  <!-- GitHub Pages compatible -->
 
   <script
-    src="/script.js?v=60"
+    src="./script.js?v=70"
   ></script>
-
 
 </body>
 </html>
