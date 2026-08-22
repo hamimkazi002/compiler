@@ -1,919 +1,659 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+  <title>Hamim Code Compiler</title>
 
-    <title>Hamim Code Compiler</title>
-
-    <!-- Main CSS -->
-    <link
-        rel="stylesheet"
-        href="style.css?v=50"
-    >
-
-    <!-- Python Engine -->
-    <script
-        src="https://cdn.jsdelivr.net/pyodide/v314.0.3/full/pyodide.js"
-    ></script>
+  <link
+    rel="stylesheet"
+    href="/style.css?v=60"
+  />
 </head>
-
 
 <body>
 
-<div class="app">
+  <div class="app-shell">
 
-    <!-- =================================
+    <!-- =========================================
          TOP BAR
-    ================================== -->
+    ========================================== -->
 
     <header class="topbar">
 
-        <!-- LEFT -->
+      <div class="brand-row">
 
-        <div class="top-left">
+        <div class="file-badge">
+          Py
+        </div>
 
-            <div
-                class="language-logo"
-                id="languageLogo"
-            >
-                Py
-            </div>
+        <div>
 
+          <div class="title">
+            main.py
+          </div>
 
-            <div class="file-info">
-
-                <span
-                    class="file-name"
-                    id="fileName"
-                >
-                    main.py
-                </span>
-
-                <span class="student-info">
-                    Hamim Kazi · 241005048
-                </span>
-
-            </div>
+          <div class="student">
+            Hamim Kazi · 241005048
+          </div>
 
         </div>
 
-
-        <!-- CENTER -->
-
-        <div class="top-center">
-
-            <select
-                id="languageSelect"
-                class="language-select"
-            >
-
-                <option value="python">
-                    Python
-                </option>
-
-                <option value="javascript">
-                    JavaScript
-                </option>
-
-                <option value="web">
-                    HTML + CSS
-                </option>
-
-            </select>
-
-        </div>
+      </div>
 
 
-        <!-- RIGHT -->
+      <div class="toolbar">
 
-        <div class="actions">
-
-            <!-- STATUS -->
-
-            <div
-                class="engine-status"
-                id="engineStatus"
-            >
-
-                <span class="status-dot"></span>
-
-                <span id="statusText">
-                    Loading...
-                </span>
-
-            </div>
+        <span
+          id="backendStatus"
+          class="status-pill"
+        >
+          Backend checking...
+        </span>
 
 
-            <!-- THEME -->
-
-            <button
-                id="themeBtn"
-                class="icon-btn"
-                type="button"
-                title="Switch Theme"
-            >
-                ☀
-            </button>
+        <button
+          id="themeBtn"
+          class="btn ghost"
+          type="button"
+        >
+          Theme
+        </button>
 
 
-            <!-- VISUALIZE -->
-
-            <button
-                id="visualizeBtn"
-                class="visualize-btn"
-                type="button"
-            >
-                ◈ Visualize
-            </button>
+        <button
+          id="clearBtn"
+          class="btn ghost"
+          type="button"
+        >
+          Clear
+        </button>
 
 
-            <!-- CLEAR -->
-
-            <button
-                id="clearBtn"
-                class="secondary-btn"
-                type="button"
-            >
-                Clear
-            </button>
+        <button
+          id="visualizeBtn"
+          class="btn secondary"
+          type="button"
+        >
+          Visualize
+        </button>
 
 
-            <!-- RUN -->
+        <button
+          id="runBtn"
+          class="btn primary"
+          type="button"
+        >
+          Run
+        </button>
 
-            <button
-                id="runBtn"
-                class="run-btn"
-                type="button"
-                disabled
-            >
-
-                <span class="run-icon">
-                    ▶
-                </span>
-
-                <span id="runText">
-                    Loading
-                </span>
-
-            </button>
-
-        </div>
+      </div>
 
     </header>
 
 
-    <!-- =================================
-         WORKSPACE
-    ================================== -->
 
-    <main
-        class="workspace"
-        id="workspace"
-    >
+    <!-- =========================================
+         MAIN WORKSPACE
+    ========================================== -->
 
+    <main class="workspace">
 
-        <!-- =================================
-             LEFT PANEL
-        ================================== -->
 
-        <section
-            class="editor-panel"
-            id="editorPanel"
-        >
+      <!-- =====================================
+           LEFT SIDE - CODE EDITOR
+      ====================================== -->
 
+      <section class="editor-panel panel">
 
-            <!-- NORMAL EDITOR -->
 
-            <div
-                id="normalEditor"
-                class="normal-editor"
-            >
+        <div class="panel-head">
 
-                <div class="panel-header">
+          <div>
 
-                    <span
-                        class="panel-title"
-                        id="editorTitle"
-                    >
-                        Python Code
-                    </span>
+            <strong>
+              Python Editor
+            </strong>
 
-                    <span class="keyboard-hint">
-                        Ctrl + Enter to Run
-                    </span>
+            <span>
+              Source Code
+            </span>
 
-                </div>
+          </div>
 
-
-                <div class="editor-container">
-
-                    <div
-                        class="line-numbers"
-                        id="lineNumbers"
-                    ></div>
-
-
-                    <textarea
-                        id="codeEditor"
-                        spellcheck="false"
-                        autocomplete="off"
-                        autocorrect="off"
-                        autocapitalize="off"
-                    >print("Hello World")</textarea>
-
-                </div>
-
-            </div>
-
-
-            <!-- =================================
-                 HTML + CSS EDITORS
-            ================================== -->
-
-            <div
-                id="webEditors"
-                class="web-editors hidden"
-            >
-
-
-                <!-- HTML -->
-
-                <div
-                    id="htmlBox"
-                    class="web-editor-box html-box"
-                >
-
-                    <div class="panel-header">
-
-                        <div class="web-title">
-
-                            <span class="html-badge">
-                                HTML
-                            </span>
-
-                            <span>
-                                index.html
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <textarea
-                        id="htmlEditor"
-                        class="web-code-editor"
-                        spellcheck="false"
-                        autocomplete="off"
-                    ><div class="card">
-
-    <span class="badge">
-        HTML + CSS
-    </span>
-
-    <h1>Hello World</h1>
-
-    <p>
-        Build something amazing with your code.
-    </p>
-
-    <button>
-        Explore Now
-    </button>
-
-</div></textarea>
-
-                </div>
-
-
-                <!-- HTML / CSS RESIZER -->
-
-                <div
-                    id="webResizer"
-                    class="web-resizer"
-                    title="Drag to resize HTML and CSS"
-                >
-                    <span></span>
-                </div>
-
-
-                <!-- CSS -->
-
-                <div
-                    id="cssBox"
-                    class="web-editor-box css-box"
-                >
-
-                    <div class="panel-header">
-
-                        <div class="web-title">
-
-                            <span class="css-badge">
-                                CSS
-                            </span>
-
-                            <span>
-                                style.css
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <textarea
-                        id="cssEditor"
-                        class="web-code-editor"
-                        spellcheck="false"
-                        autocomplete="off"
-                    >body {
-    margin: 0;
-    min-height: 100vh;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-family: Arial, sans-serif;
-
-    background: #f4f7fb;
-}
-
-.card {
-    width: 360px;
-
-    padding: 40px;
-
-    background: white;
-
-    border-radius: 20px;
-
-    box-shadow:
-        0 20px 60px
-        rgba(0, 0, 0, 0.12);
-}
-
-.badge {
-    display: inline-block;
-
-    padding: 7px 12px;
-
-    background: #e8f0ff;
-
-    color: #2563eb;
-
-    border-radius: 20px;
-
-    font-size: 12px;
-}
-
-h1 {
-    color: #172033;
-}
-
-p {
-    color: #657086;
-
-    line-height: 1.6;
-}
-
-button {
-    margin-top: 15px;
-
-    padding: 12px 22px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background: #2563eb;
-
-    color: white;
-
-    cursor: pointer;
-}</textarea>
-
-                </div>
-
-            </div>
-
-
-            <!-- =================================
-                 PYTHON INPUT
-            ================================== -->
-
-            <div
-                class="input-section"
-                id="inputSection"
-            >
-
-                <div class="input-header">
-
-                    <span>
-                        Program Input
-                    </span>
-
-                    <span class="input-help">
-                        stdin / input()
-                    </span>
-
-                </div>
-
-
-                <textarea
-                    id="programInput"
-                    placeholder="input() ব্যবহার করলে এখানে value লিখুন..."
-                    spellcheck="false"
-                ></textarea>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================
-             MAIN LEFT / RIGHT RESIZER
-        ================================== -->
-
-        <div
-            id="mainResizer"
-            class="main-resizer"
-            title="Drag to resize editor and output"
-        >
-            <span></span>
-            <span></span>
-            <span></span>
         </div>
 
 
+
         <!-- =================================
-             RIGHT PANEL
+             CODE EDITOR
         ================================== -->
 
-        <section
-            class="output-panel"
-            id="outputPanel"
+        <div class="editor-wrap">
+
+          <pre
+            id="lineNumbers"
+            class="line-numbers"
+          >1</pre>
+
+
+          <textarea
+            id="codeEditor"
+            spellcheck="false"
+            aria-label="Python code editor"
+          >a = 10
+b = 20
+c = a + b
+print(c)</textarea>
+
+        </div>
+
+
+
+        <!-- =================================
+             PROGRAM INPUT
+        ================================== -->
+
+        <div class="input-section">
+
+          <div class="input-title">
+            Program Input
+          </div>
+
+
+          <textarea
+            id="programInput"
+            placeholder="Optional input() values, one per line"
+          ></textarea>
+
+        </div>
+
+
+      </section>
+
+
+
+      <!-- =====================================
+           RIGHT SIDE
+      ====================================== -->
+
+      <section class="result-panel panel">
+
+
+        <!-- =================================
+             TABS
+        ================================== -->
+
+        <div
+          class="tabs"
+          role="tablist"
+        >
+
+          <button
+            class="tab active"
+            id="outputTab"
+            type="button"
+          >
+            Output
+          </button>
+
+
+          <button
+            class="tab"
+            id="visualizerTab"
+            type="button"
+          >
+            Visualizer
+          </button>
+
+        </div>
+
+
+
+        <!-- =================================
+             OUTPUT TAB
+        ================================== -->
+
+        <div
+          id="outputView"
+          class="tab-view active"
+        >
+
+          <pre
+            id="outputConsole"
+            class="console"
+          >Ready. Click Run.</pre>
+
+        </div>
+
+
+
+        <!-- =================================
+             VISUALIZER TAB
+        ================================== -->
+
+        <div
+          id="visualizerView"
+          class="tab-view"
         >
 
 
-            <!-- RIGHT PANEL HEADER -->
+          <!-- ===============================
+               VISUALIZER HEADER
+          ================================ -->
 
-            <div class="panel-header output-header">
+          <div class="visualizer-heading">
 
-                <div class="output-tabs">
+            <div>
 
-                    <button
-                        id="outputTabBtn"
-                        class="output-tab active"
-                        type="button"
-                    >
-                        Output
-                    </button>
+              <h2>
+                Compiler Pipeline
+              </h2>
 
-                    <button
-                        id="visualizerTabBtn"
-                        class="output-tab"
-                        type="button"
-                    >
-                        Visualizer
-                    </button>
+              <p id="visualizerSubtitle">
+                Backend-powered Python compiler visualization
+              </p>
 
-                </div>
+            </div>
 
 
-                <span
-                    class="output-type"
-                    id="outputType"
-                >
-                    Console
+            <span class="legend-dot">
+              Live stages
+            </span>
+
+          </div>
+
+
+
+          <!-- ===============================
+               COMPILER PIPELINE
+          ================================ -->
+
+          <div class="pipeline">
+
+
+
+            <!-- =============================
+                 01 SOURCE CODE
+            ============================== -->
+
+            <article
+              class="stage"
+              id="stageSource"
+            >
+
+              <div class="stage-top">
+
+                <span>
+                  01
                 </span>
 
-            </div>
+                <h3>
+                  Source Code
+                </h3>
+
+                <b>
+                  Waiting
+                </b>
+
+              </div>
 
 
-            <!-- =================================
-                 OUTPUT VIEW
-            ================================== -->
+              <pre id="sourceOutput">—</pre>
 
-            <div
-                id="outputView"
-                class="output-view"
+            </article>
+
+
+
+            <!-- =============================
+                 02 LEXICAL ANALYSIS
+            ============================== -->
+
+            <article
+              class="stage"
+              id="stageLexical"
             >
 
-                <!-- CONSOLE -->
+              <div class="stage-top">
 
-                <pre
-                    id="outputConsole"
-                    class="output-console"
-                >Loading Python engine...</pre>
+                <span>
+                  02
+                </span>
 
+                <h3>
+                  Lexical Analysis
+                </h3>
 
-                <!-- WEB PREVIEW -->
+                <b>
+                  Waiting
+                </b>
 
-                <iframe
-                    id="previewFrame"
-                    class="preview-frame"
-                    sandbox="allow-scripts"
-                    hidden
-                ></iframe>
-
-
-                <!-- JAVASCRIPT RUNNER -->
-
-                <iframe
-                    id="jsRunnerFrame"
-                    sandbox="allow-scripts"
-                    hidden
-                ></iframe>
-
-            </div>
+              </div>
 
 
-            <!-- =================================
-                 VISUALIZER VIEW
-            ================================== -->
+              <pre id="lexicalOutput">—</pre>
 
-            <div
-                id="visualizerView"
-                class="visualizer-view hidden"
+            </article>
+
+
+
+            <!-- =============================
+                 03 SYNTAX ANALYSIS
+            ============================== -->
+
+            <article
+              class="stage"
+              id="stageSyntax"
             >
 
-                <div class="visualizer-header">
+              <div class="stage-top">
 
-                    <div>
+                <span>
+                  03
+                </span>
 
-                        <h2>
-                            Compiler Pipeline
-                        </h2>
+                <h3>
+                  Syntax Analysis
+                </h3>
 
-                        <p id="visualizerSubtitle">
-                            Python compilation and execution stages
-                        </p>
+                <b>
+                  Waiting
+                </b>
 
-                    </div>
+              </div>
 
-                </div>
 
+              <pre id="syntaxOutput">—</pre>
 
-                <!-- 01 SOURCE -->
+            </article>
 
-                <div
-                    class="pipeline-stage"
-                    id="stageSource"
-                >
 
-                    <div class="stage-number">
-                        01
-                    </div>
 
-                    <div class="stage-content">
+            <!-- =============================
+                 04 ABSTRACT SYNTAX TREE
+            ============================== -->
 
-                        <div class="stage-title">
-                            Source Code
-                        </div>
+            <article
+              class="stage"
+              id="stageAst"
+            >
 
-                        <pre
-                            class="stage-output"
-                            id="sourceOutput"
-                        >Waiting for visualization...</pre>
+              <div class="stage-top">
 
-                    </div>
+                <span>
+                  04
+                </span>
 
-                </div>
+                <h3>
+                  Abstract Syntax Tree
+                </h3>
 
+                <b>
+                  Waiting
+                </b>
 
-                <div class="pipeline-arrow">
-                    ↓
-                </div>
+              </div>
 
 
-                <!-- 02 LEXICAL -->
+              <pre id="astOutput">—</pre>
 
-                <div
-                    class="pipeline-stage"
-                    id="stageLexical"
-                >
+            </article>
 
-                    <div class="stage-number">
-                        02
-                    </div>
 
-                    <div class="stage-content">
 
-                        <div class="stage-title">
-                            Lexical Analysis
-                        </div>
+            <!-- =============================
+                 05 SEMANTIC ANALYSIS
+            ============================== -->
 
-                        <div class="stage-description">
-                            Source code is converted into tokens.
-                        </div>
+            <article
+              class="stage"
+              id="stageSemantic"
+            >
 
-                        <pre
-                            class="stage-output"
-                            id="lexicalOutput"
-                        >Tokens will appear here.</pre>
+              <div class="stage-top">
 
-                    </div>
+                <span>
+                  05
+                </span>
 
-                </div>
+                <h3>
+                  Semantic Analysis
+                </h3>
 
+                <b>
+                  Waiting
+                </b>
 
-                <div class="pipeline-arrow">
-                    ↓
-                </div>
+              </div>
 
 
-                <!-- 03 SYNTAX -->
+              <pre id="semanticOutput">—</pre>
 
-                <div
-                    class="pipeline-stage"
-                    id="stageSyntax"
-                >
+            </article>
 
-                    <div class="stage-number">
-                        03
-                    </div>
 
-                    <div class="stage-content">
 
-                        <div class="stage-title">
-                            Syntax Analysis
-                        </div>
+            <!-- =============================
+                 06 SYMBOL TABLE
+            ============================== -->
 
-                        <div class="stage-description">
-                            Tokens are checked against language grammar.
-                        </div>
+            <article
+              class="stage"
+              id="stageSymbol"
+            >
 
-                        <pre
-                            class="stage-output"
-                            id="syntaxOutput"
-                        >AST / syntax tree will appear here.</pre>
+              <div class="stage-top">
 
-                    </div>
+                <span>
+                  06
+                </span>
 
-                </div>
+                <h3>
+                  Symbol Table
+                </h3>
 
+                <b>
+                  Waiting
+                </b>
 
-                <div class="pipeline-arrow">
-                    ↓
-                </div>
+              </div>
 
 
-                <!-- 04 SEMANTIC -->
+              <pre id="symbolOutput">—</pre>
 
-                <div
-                    class="pipeline-stage"
-                    id="stageSemantic"
-                >
+            </article>
 
-                    <div class="stage-number">
-                        04
-                    </div>
 
-                    <div class="stage-content">
 
-                        <div class="stage-title">
-                            Semantic Analysis
-                        </div>
+            <!-- =============================
+                 07 INTERMEDIATE CODE
+            ============================== -->
 
-                        <div class="stage-description">
-                            Variables, operations and meaning are analyzed.
-                        </div>
+            <article
+              class="stage"
+              id="stageIntermediate"
+            >
 
-                        <pre
-                            class="stage-output"
-                            id="semanticOutput"
-                        >Semantic information will appear here.</pre>
+              <div class="stage-top">
 
-                    </div>
+                <span>
+                  07
+                </span>
 
-                </div>
+                <h3>
+                  Intermediate Code
+                </h3>
 
+                <b>
+                  Waiting
+                </b>
 
-                <div class="pipeline-arrow">
-                    ↓
-                </div>
+              </div>
 
 
-                <!-- 05 INTERMEDIATE CODE -->
+              <pre id="intermediateOutput">—</pre>
 
-                <div
-                    class="pipeline-stage"
-                    id="stageIntermediate"
-                >
+            </article>
 
-                    <div class="stage-number">
-                        05
-                    </div>
 
-                    <div class="stage-content">
 
-                        <div class="stage-title">
-                            Intermediate Code Generation
-                        </div>
+            <!-- =============================
+                 08 CODE OPTIMIZATION
+            ============================== -->
 
-                        <div class="stage-description">
-                            An educational intermediate representation is generated.
-                        </div>
+            <article
+              class="stage"
+              id="stageOptimization"
+            >
 
-                        <pre
-                            class="stage-output"
-                            id="intermediateOutput"
-                        >Intermediate representation will appear here.</pre>
+              <div class="stage-top">
 
-                    </div>
+                <span>
+                  08
+                </span>
 
-                </div>
+                <h3>
+                  Code Optimization
+                </h3>
 
+                <b>
+                  Waiting
+                </b>
 
-                <div class="pipeline-arrow">
-                    ↓
-                </div>
+              </div>
 
 
-                <!-- 06 OPTIMIZATION -->
+              <pre id="optimizationOutput">—</pre>
 
-                <div
-                    class="pipeline-stage"
-                    id="stageOptimization"
-                >
+            </article>
 
-                    <div class="stage-number">
-                        06
-                    </div>
 
-                    <div class="stage-content">
 
-                        <div class="stage-title">
-                            Code Optimization
-                        </div>
+            <!-- =============================
+                 09 TARGET CODE
+            ============================== -->
 
-                        <div class="stage-description">
-                            Possible simplifications and optimizations are analyzed.
-                        </div>
+            <article
+              class="stage"
+              id="stageTarget"
+            >
 
-                        <pre
-                            class="stage-output"
-                            id="optimizationOutput"
-                        >Optimization information will appear here.</pre>
+              <div class="stage-top">
 
-                    </div>
+                <span>
+                  09
+                </span>
 
-                </div>
+                <h3>
+                  Target Code
+                </h3>
 
+                <b>
+                  Waiting
+                </b>
 
-                <div class="pipeline-arrow">
-                    ↓
-                </div>
+              </div>
 
 
-                <!-- 07 TARGET CODE -->
+              <pre id="targetOutput">—</pre>
 
-                <div
-                    class="pipeline-stage"
-                    id="stageTarget"
-                >
+            </article>
 
-                    <div class="stage-number">
-                        07
-                    </div>
 
-                    <div class="stage-content">
 
-                        <div class="stage-title">
-                            Target Code Generation
-                        </div>
+            <!-- =============================
+                 10 BINARY REPRESENTATION
+            ============================== -->
 
-                        <div class="stage-description">
-                            Python bytecode / target instructions are generated.
-                        </div>
+            <article
+              class="stage"
+              id="stageBinary"
+            >
 
-                        <pre
-                            class="stage-output"
-                            id="targetOutput"
-                        >Target code will appear here.</pre>
+              <div class="stage-top">
 
-                    </div>
+                <span>
+                  10
+                </span>
 
-                </div>
+                <h3>
+                  Binary Representation
+                </h3>
 
+                <b>
+                  Waiting
+                </b>
 
-                <div class="pipeline-arrow">
-                    ↓
-                </div>
+              </div>
 
 
-                <!-- 08 MACHINE -->
+              <pre id="binaryOutput">—</pre>
 
-                <div
-                    class="pipeline-stage"
-                    id="stageMachine"
-                >
+            </article>
 
-                    <div class="stage-number">
-                        08
-                    </div>
 
-                    <div class="stage-content">
 
-                        <div class="stage-title">
-                            Machine Code / Runtime
-                        </div>
+            <!-- =============================
+                 11 EXECUTION + OUTPUT
+            ============================== -->
 
-                        <div class="stage-description">
-                            The runtime executes through Pyodide and WebAssembly.
-                        </div>
+            <article
+              class="stage"
+              id="stageExecution"
+            >
 
-                        <pre
-                            class="stage-output"
-                            id="machineOutput"
-                        >Python Bytecode
-↓
-CPython Runtime
-↓
-Pyodide
-↓
-WebAssembly
-↓
-Browser Runtime
-↓
-CPU</pre>
+              <div class="stage-top">
 
-                    </div>
+                <span>
+                  11
+                </span>
 
-                </div>
+                <h3>
+                  Execution & Final Output
+                </h3>
 
+                <b>
+                  Waiting
+                </b>
 
-                <div class="pipeline-arrow">
-                    ↓
-                </div>
+              </div>
 
 
-                <!-- 09 OUTPUT -->
+              <pre id="executionOutput">—</pre>
 
-                <div
-                    class="pipeline-stage output-stage"
-                    id="stageFinalOutput"
-                >
+            </article>
 
-                    <div class="stage-number">
-                        09
-                    </div>
 
-                    <div class="stage-content">
+          </div>
 
-                        <div class="stage-title">
-                            Final Output
-                        </div>
+        </div>
 
-                        <pre
-                            class="stage-output"
-                            id="finalVisualizerOutput"
-                        >Program output will appear here.</pre>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-        </section>
+      </section>
 
     </main>
 
-
-    <!-- =================================
-         FOOTER
-    ================================== -->
-
-    <footer class="footer">
-
-        <span>
-            Multi Language Compiler
-        </span>
-
-        <span class="footer-dot">
-            •
-        </span>
-
-        <span>
-            Hamim Kazi · 241005048
-        </span>
-
-    </footer>
-
-</div>
+  </div>
 
 
-<script src="script.js?v=50"></script>
+
+  <!-- =========================================
+       PYODIDE
+  ========================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/pyodide/v314.0.4/full/pyodide.js"
+  ></script>
+
+
+  <!-- =========================================
+       MAIN JAVASCRIPT
+  ========================================== -->
+
+  <script
+    src="/script.js?v=60"
+  ></script>
+
 
 </body>
-
 </html>
