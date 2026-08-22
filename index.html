@@ -11,9 +11,10 @@
 
     <title>Hamim Code Compiler</title>
 
+    <!-- Main CSS -->
     <link
         rel="stylesheet"
-        href="style.css?v=40"
+        href="style.css?v=50"
     >
 
     <!-- Python Engine -->
@@ -93,6 +94,8 @@
 
         <div class="actions">
 
+            <!-- STATUS -->
+
             <div
                 class="engine-status"
                 id="engineStatus"
@@ -116,6 +119,17 @@
                 title="Switch Theme"
             >
                 ☀
+            </button>
+
+
+            <!-- VISUALIZE -->
+
+            <button
+                id="visualizeBtn"
+                class="visualize-btn"
+                type="button"
+            >
+                ◈ Visualize
             </button>
 
 
@@ -174,8 +188,7 @@
         >
 
 
-            <!-- NORMAL EDITOR
-                 Python / JavaScript -->
+            <!-- NORMAL EDITOR -->
 
             <div
                 id="normalEditor"
@@ -279,7 +292,7 @@
                 </div>
 
 
-                <!-- HTML/CSS RESIZER -->
+                <!-- HTML / CSS RESIZER -->
 
                 <div
                     id="webResizer"
@@ -425,7 +438,7 @@ button {
 
 
         <!-- =================================
-             MAIN RESIZER
+             MAIN LEFT / RIGHT RESIZER
         ================================== -->
 
         <div
@@ -448,14 +461,30 @@ button {
             id="outputPanel"
         >
 
+
+            <!-- RIGHT PANEL HEADER -->
+
             <div class="panel-header output-header">
 
-                <span
-                    class="panel-title"
-                    id="outputTitle"
-                >
-                    Output
-                </span>
+                <div class="output-tabs">
+
+                    <button
+                        id="outputTabBtn"
+                        class="output-tab active"
+                        type="button"
+                    >
+                        Output
+                    </button>
+
+                    <button
+                        id="visualizerTabBtn"
+                        class="output-tab"
+                        type="button"
+                    >
+                        Visualizer
+                    </button>
+
+                </div>
 
 
                 <span
@@ -468,31 +497,392 @@ button {
             </div>
 
 
-            <!-- CONSOLE -->
+            <!-- =================================
+                 OUTPUT VIEW
+            ================================== -->
 
-            <pre
-                id="outputConsole"
-                class="output-console"
-            >Loading Python engine...</pre>
+            <div
+                id="outputView"
+                class="output-view"
+            >
+
+                <!-- CONSOLE -->
+
+                <pre
+                    id="outputConsole"
+                    class="output-console"
+                >Loading Python engine...</pre>
 
 
-            <!-- WEB PREVIEW -->
+                <!-- WEB PREVIEW -->
 
-            <iframe
-                id="previewFrame"
-                class="preview-frame"
-                sandbox="allow-scripts"
-                hidden
-            ></iframe>
+                <iframe
+                    id="previewFrame"
+                    class="preview-frame"
+                    sandbox="allow-scripts"
+                    hidden
+                ></iframe>
 
 
-            <!-- JAVASCRIPT RUNNER -->
+                <!-- JAVASCRIPT RUNNER -->
 
-            <iframe
-                id="jsRunnerFrame"
-                sandbox="allow-scripts"
-                hidden
-            ></iframe>
+                <iframe
+                    id="jsRunnerFrame"
+                    sandbox="allow-scripts"
+                    hidden
+                ></iframe>
+
+            </div>
+
+
+            <!-- =================================
+                 VISUALIZER VIEW
+            ================================== -->
+
+            <div
+                id="visualizerView"
+                class="visualizer-view hidden"
+            >
+
+                <div class="visualizer-header">
+
+                    <div>
+
+                        <h2>
+                            Compiler Pipeline
+                        </h2>
+
+                        <p id="visualizerSubtitle">
+                            Python compilation and execution stages
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 01 SOURCE -->
+
+                <div
+                    class="pipeline-stage"
+                    id="stageSource"
+                >
+
+                    <div class="stage-number">
+                        01
+                    </div>
+
+                    <div class="stage-content">
+
+                        <div class="stage-title">
+                            Source Code
+                        </div>
+
+                        <pre
+                            class="stage-output"
+                            id="sourceOutput"
+                        >Waiting for visualization...</pre>
+
+                    </div>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    ↓
+                </div>
+
+
+                <!-- 02 LEXICAL -->
+
+                <div
+                    class="pipeline-stage"
+                    id="stageLexical"
+                >
+
+                    <div class="stage-number">
+                        02
+                    </div>
+
+                    <div class="stage-content">
+
+                        <div class="stage-title">
+                            Lexical Analysis
+                        </div>
+
+                        <div class="stage-description">
+                            Source code is converted into tokens.
+                        </div>
+
+                        <pre
+                            class="stage-output"
+                            id="lexicalOutput"
+                        >Tokens will appear here.</pre>
+
+                    </div>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    ↓
+                </div>
+
+
+                <!-- 03 SYNTAX -->
+
+                <div
+                    class="pipeline-stage"
+                    id="stageSyntax"
+                >
+
+                    <div class="stage-number">
+                        03
+                    </div>
+
+                    <div class="stage-content">
+
+                        <div class="stage-title">
+                            Syntax Analysis
+                        </div>
+
+                        <div class="stage-description">
+                            Tokens are checked against language grammar.
+                        </div>
+
+                        <pre
+                            class="stage-output"
+                            id="syntaxOutput"
+                        >AST / syntax tree will appear here.</pre>
+
+                    </div>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    ↓
+                </div>
+
+
+                <!-- 04 SEMANTIC -->
+
+                <div
+                    class="pipeline-stage"
+                    id="stageSemantic"
+                >
+
+                    <div class="stage-number">
+                        04
+                    </div>
+
+                    <div class="stage-content">
+
+                        <div class="stage-title">
+                            Semantic Analysis
+                        </div>
+
+                        <div class="stage-description">
+                            Variables, operations and meaning are analyzed.
+                        </div>
+
+                        <pre
+                            class="stage-output"
+                            id="semanticOutput"
+                        >Semantic information will appear here.</pre>
+
+                    </div>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    ↓
+                </div>
+
+
+                <!-- 05 INTERMEDIATE CODE -->
+
+                <div
+                    class="pipeline-stage"
+                    id="stageIntermediate"
+                >
+
+                    <div class="stage-number">
+                        05
+                    </div>
+
+                    <div class="stage-content">
+
+                        <div class="stage-title">
+                            Intermediate Code Generation
+                        </div>
+
+                        <div class="stage-description">
+                            An educational intermediate representation is generated.
+                        </div>
+
+                        <pre
+                            class="stage-output"
+                            id="intermediateOutput"
+                        >Intermediate representation will appear here.</pre>
+
+                    </div>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    ↓
+                </div>
+
+
+                <!-- 06 OPTIMIZATION -->
+
+                <div
+                    class="pipeline-stage"
+                    id="stageOptimization"
+                >
+
+                    <div class="stage-number">
+                        06
+                    </div>
+
+                    <div class="stage-content">
+
+                        <div class="stage-title">
+                            Code Optimization
+                        </div>
+
+                        <div class="stage-description">
+                            Possible simplifications and optimizations are analyzed.
+                        </div>
+
+                        <pre
+                            class="stage-output"
+                            id="optimizationOutput"
+                        >Optimization information will appear here.</pre>
+
+                    </div>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    ↓
+                </div>
+
+
+                <!-- 07 TARGET CODE -->
+
+                <div
+                    class="pipeline-stage"
+                    id="stageTarget"
+                >
+
+                    <div class="stage-number">
+                        07
+                    </div>
+
+                    <div class="stage-content">
+
+                        <div class="stage-title">
+                            Target Code Generation
+                        </div>
+
+                        <div class="stage-description">
+                            Python bytecode / target instructions are generated.
+                        </div>
+
+                        <pre
+                            class="stage-output"
+                            id="targetOutput"
+                        >Target code will appear here.</pre>
+
+                    </div>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    ↓
+                </div>
+
+
+                <!-- 08 MACHINE -->
+
+                <div
+                    class="pipeline-stage"
+                    id="stageMachine"
+                >
+
+                    <div class="stage-number">
+                        08
+                    </div>
+
+                    <div class="stage-content">
+
+                        <div class="stage-title">
+                            Machine Code / Runtime
+                        </div>
+
+                        <div class="stage-description">
+                            The runtime executes through Pyodide and WebAssembly.
+                        </div>
+
+                        <pre
+                            class="stage-output"
+                            id="machineOutput"
+                        >Python Bytecode
+↓
+CPython Runtime
+↓
+Pyodide
+↓
+WebAssembly
+↓
+Browser Runtime
+↓
+CPU</pre>
+
+                    </div>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    ↓
+                </div>
+
+
+                <!-- 09 OUTPUT -->
+
+                <div
+                    class="pipeline-stage output-stage"
+                    id="stageFinalOutput"
+                >
+
+                    <div class="stage-number">
+                        09
+                    </div>
+
+                    <div class="stage-content">
+
+                        <div class="stage-title">
+                            Final Output
+                        </div>
+
+                        <pre
+                            class="stage-output"
+                            id="finalVisualizerOutput"
+                        >Program output will appear here.</pre>
+
+                    </div>
+
+                </div>
+
+
+            </div>
 
         </section>
 
@@ -522,7 +912,7 @@ button {
 </div>
 
 
-<script src="script.js?v=40"></script>
+<script src="script.js?v=50"></script>
 
 </body>
 

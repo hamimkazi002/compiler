@@ -3,43 +3,50 @@
 ========================================= */
 
 :root {
+    --bg: #090d14;
+    --bg-soft: #0d121c;
 
-    --bg: #0b0f17;
+    --topbar: rgba(15, 20, 30, 0.97);
 
-    --topbar: rgba(17, 22, 33, 0.97);
+    --panel: #121823;
+    --panel-soft: #151c28;
+    --panel-secondary: #0f151f;
 
-    --panel: #121824;
+    --editor: #101722;
+    --input-bg: #161e2a;
 
-    --panel-secondary: #0f141e;
+    --text: #f5f7fb;
+    --text-secondary: #a0aabd;
+    --text-muted: #6f7c91;
 
-    --editor: #111824;
+    --border: #283244;
+    --border-hover: #41506a;
 
-    --input-bg: #161e2b;
+    --accent: #4f7cff;
+    --accent-2: #775cff;
 
-    --text: #f4f7fb;
+    --accent-hover: #678eff;
 
-    --text-secondary: #9ea9ba;
-
-    --text-muted: #69778c;
-
-    --border: #273142;
-
-    --border-hover: #43516a;
-
-    --accent: #4c7dff;
-
-    --accent-hover: #6a93ff;
-
-    --accent-soft:
-        rgba(76, 125, 255, 0.12);
+    --accent-soft: rgba(79, 124, 255, 0.12);
 
     --secondary-button: #202938;
+    --secondary-hover: #2b3547;
 
-    --secondary-hover: #2a3547;
+    --success: #34cf99;
+    --success-soft: rgba(52, 207, 153, 0.12);
 
-    --success: #3bd29f;
+    --warning: #f0ad4e;
+
+    --danger: #ff6277;
+    --danger-soft: rgba(255, 98, 119, 0.12);
 
     --preview-bg: #ffffff;
+
+    --shadow:
+        0 18px 45px rgba(0, 0, 0, 0.28);
+
+    --small-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.18);
 }
 
 
@@ -48,44 +55,50 @@
 ========================================= */
 
 html[data-theme="light"] {
+    --bg: #edf2f8;
+    --bg-soft: #f5f7fb;
 
-    --bg: #eef2f8;
-
-    --topbar:
-        rgba(255, 255, 255, 0.97);
+    --topbar: rgba(255, 255, 255, 0.97);
 
     --panel: #ffffff;
-
-    --panel-secondary: #f7f9fc;
+    --panel-soft: #f8faff;
+    --panel-secondary: #f6f8fc;
 
     --editor: #fbfcfe;
-
     --input-bg: #f4f7fb;
 
     --text: #172033;
+    --text-secondary: #59677b;
+    --text-muted: #8a96a8;
 
-    --text-secondary: #5f6b7d;
-
-    --text-muted: #8b95a5;
-
-    --border: #dce2ec;
-
-    --border-hover: #bdc7d5;
+    --border: #dce3ed;
+    --border-hover: #bdc8d7;
 
     --accent: #356df3;
+    --accent-2: #6c54e8;
 
-    --accent-hover: #235adc;
+    --accent-hover: #2459dc;
 
-    --accent-soft:
-        rgba(53, 109, 243, 0.10);
+    --accent-soft: rgba(53, 109, 243, 0.10);
 
     --secondary-button: #edf1f7;
+    --secondary-hover: #e2e8f1;
 
-    --secondary-hover: #e1e7f0;
+    --success: #159c6e;
+    --success-soft: rgba(21, 156, 110, 0.10);
 
-    --success: #1ba876;
+    --warning: #d9912e;
+
+    --danger: #e74c61;
+    --danger-soft: rgba(231, 76, 97, 0.10);
 
     --preview-bg: #ffffff;
+
+    --shadow:
+        0 16px 45px rgba(32, 52, 82, 0.10);
+
+    --small-shadow:
+        0 7px 20px rgba(32, 52, 82, 0.08);
 }
 
 
@@ -95,36 +108,29 @@ html[data-theme="light"] {
 
 * {
     margin: 0;
-
     padding: 0;
-
     box-sizing: border-box;
 }
 
 
 html,
 body {
-
     width: 100%;
-
     height: 100%;
 }
 
 
 html {
-
     color-scheme: dark;
 }
 
 
 html[data-theme="light"] {
-
     color-scheme: light;
 }
 
 
 body {
-
     font-family:
         Inter,
         -apple-system,
@@ -133,20 +139,21 @@ body {
         Arial,
         sans-serif;
 
-    background:
-        var(--bg);
+    background: var(--bg);
 
-    color:
-        var(--text);
+    color: var(--text);
 
     overflow: hidden;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease;
 }
 
 
 button,
 textarea,
 select {
-
     font-family: inherit;
 }
 
@@ -156,33 +163,33 @@ select {
 ========================================= */
 
 .app {
-
     width: 100vw;
-
     height: 100vh;
 
     display: flex;
-
     flex-direction: column;
 
     background:
         radial-gradient(
-            circle at top left,
+            circle at 0% 0%,
             var(--accent-soft),
             transparent 30%
+        ),
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(119, 92, 255, 0.07),
+            transparent 28%
         ),
         var(--bg);
 }
 
 
 /* =========================================
-   TOPBAR
+   TOP BAR
 ========================================= */
 
 .topbar {
-
     height: 68px;
-
     min-height: 68px;
 
     display: grid;
@@ -190,20 +197,18 @@ select {
     grid-template-columns:
         minmax(230px, 1fr)
         auto
-        minmax(350px, 1fr);
+        minmax(470px, 1fr);
 
     align-items: center;
 
     padding: 0 18px;
 
-    background:
-        var(--topbar);
+    background: var(--topbar);
 
     border-bottom:
         1px solid var(--border);
 
-    backdrop-filter:
-        blur(18px);
+    backdrop-filter: blur(18px);
 
     z-index: 20;
 }
@@ -214,11 +219,9 @@ select {
 ========================================= */
 
 .top-left {
-
     min-width: 0;
 
     display: flex;
-
     align-items: center;
 
     gap: 12px;
@@ -226,46 +229,41 @@ select {
 
 
 .language-logo {
-
     width: 44px;
-
     height: 44px;
 
     min-width: 44px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
-    border-radius: 12px;
+    border-radius: 13px;
 
     background:
         linear-gradient(
             135deg,
             var(--accent),
-            #795cff
+            var(--accent-2)
         );
 
     color: #ffffff;
 
     font-size: 11px;
-
     font-weight: 800;
+
+    letter-spacing: 0.3px;
 
     box-shadow:
         0 9px 25px
-        rgba(76, 125, 255, 0.25);
+        rgba(79, 124, 255, 0.28);
 }
 
 
 .file-info {
-
     min-width: 0;
 
     display: flex;
-
     flex-direction: column;
 
     gap: 3px;
@@ -273,28 +271,29 @@ select {
 
 
 .file-name {
-
-    color:
-        var(--text);
+    color: var(--text);
 
     font-family:
         Consolas,
+        "Courier New",
         monospace;
 
     font-size: 14px;
-
     font-weight: 600;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
 .student-info {
-
-    color:
-        var(--text-muted);
+    color: var(--text-muted);
 
     font-size: 10px;
 
-    letter-spacing: 0.2px;
+    letter-spacing: 0.25px;
 }
 
 
@@ -303,23 +302,20 @@ select {
 ========================================= */
 
 .top-center {
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 }
 
 
 .language-select {
-
     min-width: 170px;
 
     height: 40px;
 
     padding:
-        0 38px 0 14px;
+        0 38px
+        0 14px;
 
     border:
         1px solid var(--border);
@@ -328,25 +324,26 @@ select {
 
     outline: none;
 
-    background:
-        var(--panel);
+    background: var(--panel);
 
-    color:
-        var(--text);
+    color: var(--text);
 
     font-size: 13px;
-
     font-weight: 600;
 
     cursor: pointer;
 
+    box-shadow:
+        var(--small-shadow);
+
     transition:
-        0.2s ease;
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
 }
 
 
 .language-select:hover {
-
     border-color:
         var(--border-hover);
 
@@ -356,7 +353,6 @@ select {
 
 
 .language-select:focus {
-
     border-color:
         var(--accent);
 
@@ -371,13 +367,10 @@ select {
 ========================================= */
 
 .actions {
-
     min-width: 0;
 
     display: flex;
-
     align-items: center;
-
     justify-content: flex-end;
 
     gap: 9px;
@@ -389,11 +382,9 @@ select {
 ========================================= */
 
 .engine-status {
-
     height: 34px;
 
     display: flex;
-
     align-items: center;
 
     gap: 7px;
@@ -413,28 +404,29 @@ select {
         var(--text-secondary);
 
     font-size: 11px;
+
+    box-shadow:
+        var(--small-shadow);
 }
 
 
 .status-dot {
-
     width: 7px;
-
     height: 7px;
 
     border-radius: 50%;
 
-    background: #e5a84d;
+    background:
+        var(--warning);
 
     box-shadow:
         0 0 10px
-        #e5a84d;
+        var(--warning);
 }
 
 
 .engine-status.ready
 .status-dot {
-
     background:
         var(--success);
 
@@ -445,13 +437,11 @@ select {
 
 
 /* =========================================
-   BUTTON
+   BUTTON BASE
 ========================================= */
 
 button {
-
     border: none;
-
     outline: none;
 
     cursor: pointer;
@@ -459,37 +449,35 @@ button {
     transition:
         transform 0.18s ease,
         background 0.18s ease,
-        box-shadow 0.18s ease;
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        color 0.18s ease;
 }
 
 
 button:hover:not(:disabled) {
-
     transform:
         translateY(-2px);
 }
 
 
 button:active:not(:disabled) {
-
     transform:
         translateY(0)
         scale(0.97);
 }
 
 
-/* THEME BUTTON */
+/* =========================================
+   THEME BUTTON
+========================================= */
 
 .icon-btn {
-
     width: 40px;
-
     height: 40px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     border:
@@ -504,24 +492,84 @@ button:active:not(:disabled) {
         var(--text);
 
     font-size: 17px;
+
+    box-shadow:
+        var(--small-shadow);
 }
 
 
 .icon-btn:hover {
+    border-color:
+        var(--accent);
 
     background:
         var(--accent-soft);
 
     box-shadow:
-        0 10px 24px
-        rgba(76, 125, 255, 0.18);
+        0 10px 25px
+        rgba(79, 124, 255, 0.18);
 }
 
 
-/* CLEAR */
+/* =========================================
+   VISUALIZE BUTTON
+========================================= */
+
+.visualize-btn {
+    height: 40px;
+
+    padding:
+        0 16px;
+
+    border:
+        1px solid
+        rgba(119, 92, 255, 0.42);
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(79, 124, 255, 0.13),
+            rgba(119, 92, 255, 0.16)
+        );
+
+    color:
+        var(--text);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    box-shadow:
+        var(--small-shadow);
+}
+
+
+.visualize-btn:hover {
+    border-color:
+        var(--accent);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(79, 124, 255, 0.20),
+            rgba(119, 92, 255, 0.23)
+        );
+
+    color:
+        var(--accent-hover);
+
+    box-shadow:
+        0 11px 28px
+        rgba(79, 124, 255, 0.18);
+}
+
+
+/* =========================================
+   CLEAR BUTTON
+========================================= */
 
 .secondary-btn {
-
     height: 40px;
 
     padding:
@@ -539,22 +587,27 @@ button:active:not(:disabled) {
         var(--text);
 
     font-size: 13px;
-
     font-weight: 600;
+
+    box-shadow:
+        var(--small-shadow);
 }
 
 
 .secondary-btn:hover {
+    border-color:
+        var(--border-hover);
 
     background:
         var(--secondary-hover);
 }
 
 
-/* RUN */
+/* =========================================
+   RUN BUTTON
+========================================= */
 
 .run-btn {
-
     height: 40px;
 
     min-width: 105px;
@@ -563,9 +616,7 @@ button:active:not(:disabled) {
         0 18px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     gap: 8px;
@@ -576,31 +627,29 @@ button:active:not(:disabled) {
         linear-gradient(
             135deg,
             var(--accent),
-            #795cff
+            var(--accent-2)
         );
 
-    color: #ffffff;
+    color:
+        #ffffff;
 
     font-size: 13px;
-
     font-weight: 700;
 
     box-shadow:
-        0 9px 22px
-        rgba(76, 125, 255, 0.25);
+        0 9px 25px
+        rgba(79, 124, 255, 0.28);
 }
 
 
 .run-btn:hover:not(:disabled) {
-
     box-shadow:
-        0 13px 30px
-        rgba(76, 125, 255, 0.38);
+        0 14px 34px
+        rgba(79, 124, 255, 0.42);
 }
 
 
 .run-btn:disabled {
-
     opacity: 0.55;
 
     cursor: wait;
@@ -610,7 +659,6 @@ button:active:not(:disabled) {
 
 
 .run-icon {
-
     font-size: 10px;
 }
 
@@ -620,11 +668,9 @@ button:active:not(:disabled) {
 ========================================= */
 
 .workspace {
-
     flex: 1;
 
     min-width: 0;
-
     min-height: 0;
 
     display: flex;
@@ -632,19 +678,16 @@ button:active:not(:disabled) {
 
 
 /* =========================================
-   LEFT EDITOR
+   LEFT EDITOR PANEL
 ========================================= */
 
 .editor-panel {
-
     width: 50%;
 
     min-width: 280px;
-
     min-height: 0;
 
     display: flex;
-
     flex-direction: column;
 
     background:
@@ -657,9 +700,7 @@ button:active:not(:disabled) {
 ========================================= */
 
 .main-resizer {
-
     width: 8px;
-
     min-width: 8px;
 
     flex-shrink: 0;
@@ -667,11 +708,9 @@ button:active:not(:disabled) {
     position: relative;
 
     display: flex;
-
     flex-direction: column;
 
     align-items: center;
-
     justify-content: center;
 
     gap: 4px;
@@ -694,9 +733,7 @@ button:active:not(:disabled) {
 
 
 .main-resizer span {
-
     width: 3px;
-
     height: 3px;
 
     border-radius: 50%;
@@ -707,33 +744,28 @@ button:active:not(:disabled) {
 
 
 .main-resizer:hover {
-
     background:
         var(--accent-soft);
 }
 
 
 .main-resizer:hover span {
-
     background:
         var(--accent);
 }
 
 
 /* =========================================
-   OUTPUT
+   RIGHT OUTPUT PANEL
 ========================================= */
 
 .output-panel {
-
     flex: 1;
 
     min-width: 280px;
-
     min-height: 0;
 
     display: flex;
-
     flex-direction: column;
 
     background:
@@ -746,18 +778,14 @@ button:active:not(:disabled) {
 ========================================= */
 
 .panel-header {
-
     height: 46px;
-
     min-height: 46px;
 
     padding:
         0 17px;
 
     display: flex;
-
     align-items: center;
-
     justify-content:
         space-between;
 
@@ -770,18 +798,17 @@ button:active:not(:disabled) {
 
 
 .panel-title {
-
     color:
         var(--text);
 
     font-size: 12px;
-
     font-weight: 700;
+
+    letter-spacing: 0.2px;
 }
 
 
 .keyboard-hint {
-
     color:
         var(--text-muted);
 
@@ -789,8 +816,81 @@ button:active:not(:disabled) {
 }
 
 
-.output-type {
+/* =========================================
+   OUTPUT TABS
+========================================= */
 
+.output-header {
+    gap: 12px;
+}
+
+
+.output-tabs {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 3px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 9px;
+
+    background:
+        var(--panel-secondary);
+}
+
+
+.output-tab {
+    height: 29px;
+
+    padding:
+        0 12px;
+
+    border-radius: 7px;
+
+    background:
+        transparent;
+
+    color:
+        var(--text-muted);
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+.output-tab:hover {
+    color:
+        var(--text);
+
+    background:
+        var(--accent-soft);
+
+    transform: none;
+}
+
+
+.output-tab.active {
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent),
+            var(--accent-2)
+        );
+
+    color:
+        #ffffff;
+
+    box-shadow:
+        0 5px 15px
+        rgba(79, 124, 255, 0.22);
+}
+
+
+.output-type {
     padding:
         5px 9px;
 
@@ -803,7 +903,6 @@ button:active:not(:disabled) {
         var(--accent);
 
     font-size: 10px;
-
     font-weight: 700;
 }
 
@@ -813,23 +912,19 @@ button:active:not(:disabled) {
 ========================================= */
 
 .normal-editor {
-
     flex: 1;
 
     min-height: 0;
 
     display: flex;
-
     flex-direction: column;
 }
 
 
 .editor-container {
-
     flex: 1;
 
     min-width: 0;
-
     min-height: 0;
 
     display: flex;
@@ -838,16 +933,15 @@ button:active:not(:disabled) {
 }
 
 
-/* LINE NUMBERS */
+/* =========================================
+   LINE NUMBERS
+========================================= */
 
 .line-numbers {
-
     width: 54px;
-
     min-width: 54px;
 
     padding-top: 16px;
-
     padding-right: 13px;
 
     text-align: right;
@@ -860,10 +954,10 @@ button:active:not(:disabled) {
 
     font-family:
         Consolas,
+        "Courier New",
         monospace;
 
     font-size: 13px;
-
     line-height: 24px;
 
     user-select: none;
@@ -873,30 +967,28 @@ button:active:not(:disabled) {
 
 
 .line-numbers div {
-
     height: 24px;
 }
 
 
-/* CODE */
+/* =========================================
+   MAIN CODE EDITOR
+========================================= */
 
 #codeEditor {
-
     flex: 1;
 
     width: 100%;
-
     height: 100%;
 
     min-width: 0;
-
     min-height: 0;
 
     padding:
-        16px 20px 30px 16px;
+        16px 20px
+        30px 16px;
 
     border: none;
-
     outline: none;
 
     resize: none;
@@ -916,7 +1008,6 @@ button:active:not(:disabled) {
         monospace;
 
     font-size: 13.5px;
-
     line-height: 24px;
 
     tab-size: 4;
@@ -928,9 +1019,8 @@ button:active:not(:disabled) {
 
 
 #codeEditor::selection {
-
     background:
-        rgba(76, 125, 255, 0.25);
+        rgba(79, 124, 255, 0.26);
 }
 
 
@@ -939,13 +1029,11 @@ button:active:not(:disabled) {
 ========================================= */
 
 .web-editors {
-
     flex: 1;
 
     min-height: 0;
 
     display: flex;
-
     flex-direction: column;
 
     overflow: hidden;
@@ -953,13 +1041,10 @@ button:active:not(:disabled) {
 
 
 .web-editor-box {
-
     min-width: 0;
-
     min-height: 100px;
 
     display: flex;
-
     flex-direction: column;
 
     overflow: hidden;
@@ -967,7 +1052,6 @@ button:active:not(:disabled) {
 
 
 .html-box {
-
     height: 50%;
 
     flex: none;
@@ -975,7 +1059,6 @@ button:active:not(:disabled) {
 
 
 .css-box {
-
     height: 50%;
 
     flex: none;
@@ -983,9 +1066,7 @@ button:active:not(:disabled) {
 
 
 .web-title {
-
     display: flex;
-
     align-items: center;
 
     gap: 9px;
@@ -1003,7 +1084,6 @@ button:active:not(:disabled) {
 
 .html-badge,
 .css-badge {
-
     padding:
         4px 7px;
 
@@ -1014,13 +1094,13 @@ button:active:not(:disabled) {
         sans-serif;
 
     font-size: 9px;
-
     font-weight: 800;
+
+    letter-spacing: 0.3px;
 }
 
 
 .html-badge {
-
     background:
         rgba(239, 104, 54, 0.13);
 
@@ -1030,9 +1110,8 @@ button:active:not(:disabled) {
 
 
 .css-badge {
-
     background:
-        rgba(76, 125, 255, 0.13);
+        rgba(79, 124, 255, 0.13);
 
     color:
         var(--accent);
@@ -1040,20 +1119,17 @@ button:active:not(:disabled) {
 
 
 .web-code-editor {
-
     flex: 1;
 
     width: 100%;
 
     min-width: 0;
-
     min-height: 0;
 
     padding:
         15px 18px 25px;
 
     border: none;
-
     outline: none;
 
     resize: none;
@@ -1073,7 +1149,6 @@ button:active:not(:disabled) {
         monospace;
 
     font-size: 13px;
-
     line-height: 22px;
 
     tab-size: 4;
@@ -1083,13 +1158,11 @@ button:active:not(:disabled) {
 
 
 /* =========================================
-   HTML/CSS RESIZER
+   HTML / CSS RESIZER
 ========================================= */
 
 .web-resizer {
-
     height: 10px;
-
     min-height: 10px;
 
     flex-shrink: 0;
@@ -1111,15 +1184,12 @@ button:active:not(:disabled) {
 
 
 .web-resizer span {
-
     position: absolute;
 
     top: 50%;
-
     left: 50%;
 
     width: 48px;
-
     height: 4px;
 
     transform:
@@ -1131,34 +1201,31 @@ button:active:not(:disabled) {
         var(--text-muted);
 
     transition:
-        0.2s ease;
+        width 0.2s ease,
+        background 0.2s ease;
 }
 
 
 .web-resizer:hover {
-
     background:
         var(--accent-soft);
 }
 
 
 .web-resizer:hover span {
+    width: 62px;
 
     background:
         var(--accent);
-
-    width: 60px;
 }
 
 
 /* =========================================
-   PROGRAM INPUT
+   PYTHON PROGRAM INPUT
 ========================================= */
 
 .input-section {
-
     height: 140px;
-
     min-height: 140px;
 
     padding: 12px;
@@ -1172,13 +1239,10 @@ button:active:not(:disabled) {
 
 
 .input-header {
-
     margin-bottom: 8px;
 
     display: flex;
-
     align-items: center;
-
     justify-content:
         space-between;
 
@@ -1186,16 +1250,16 @@ button:active:not(:disabled) {
         var(--text-secondary);
 
     font-size: 10px;
-
     font-weight: 700;
 
     text-transform:
         uppercase;
+
+    letter-spacing: 0.4px;
 }
 
 
 .input-help {
-
     color:
         var(--text-muted);
 
@@ -1206,9 +1270,7 @@ button:active:not(:disabled) {
 
 
 #programInput {
-
     width: 100%;
-
     height: 90px;
 
     padding:
@@ -1231,16 +1293,19 @@ button:active:not(:disabled) {
 
     font-family:
         Consolas,
+        "Courier New",
         monospace;
 
     font-size: 12px;
-
     line-height: 20px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 
 #programInput:focus {
-
     border-color:
         var(--accent);
 
@@ -1250,12 +1315,31 @@ button:active:not(:disabled) {
 }
 
 
+#programInput::placeholder {
+    color:
+        var(--text-muted);
+}
+
+
+/* =========================================
+   OUTPUT VIEW
+========================================= */
+
+.output-view {
+    flex: 1;
+
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
 /* =========================================
    OUTPUT CONSOLE
 ========================================= */
 
 .output-console {
-
     flex: 1;
 
     min-height: 0;
@@ -1274,10 +1358,10 @@ button:active:not(:disabled) {
 
     font-family:
         Consolas,
+        "Courier New",
         monospace;
 
     font-size: 13px;
-
     line-height: 23px;
 
     white-space:
@@ -1293,7 +1377,6 @@ button:active:not(:disabled) {
 ========================================= */
 
 .preview-frame {
-
     flex: 1;
 
     width: 100%;
@@ -1308,19 +1391,425 @@ button:active:not(:disabled) {
 
 
 /* =========================================
+   VISUALIZER VIEW
+========================================= */
+
+.visualizer-view {
+    flex: 1;
+
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding:
+        22px 24px 50px;
+
+    background:
+        linear-gradient(
+            180deg,
+            var(--panel-secondary),
+            var(--bg-soft)
+        );
+}
+
+
+/* =========================================
+   VISUALIZER HEADER
+========================================= */
+
+.visualizer-header {
+    margin-bottom: 22px;
+
+    padding:
+        17px 18px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--panel),
+            var(--panel-soft)
+        );
+
+    box-shadow:
+        var(--small-shadow);
+}
+
+
+.visualizer-header h2 {
+    margin-bottom: 5px;
+
+    color:
+        var(--text);
+
+    font-size: 16px;
+    font-weight: 750;
+}
+
+
+.visualizer-header p {
+    color:
+        var(--text-muted);
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   PIPELINE STAGE
+========================================= */
+
+.pipeline-stage {
+    position: relative;
+
+    display: flex;
+
+    gap: 14px;
+
+    width: 100%;
+
+    padding:
+        15px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--panel),
+            var(--panel-soft)
+        );
+
+    box-shadow:
+        var(--small-shadow);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.pipeline-stage:hover {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        var(--border-hover);
+
+    box-shadow:
+        var(--shadow);
+}
+
+
+/* =========================================
+   STAGE NUMBER
+========================================= */
+
+.stage-number {
+    width: 36px;
+    height: 36px;
+
+    min-width: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    background:
+        var(--panel-secondary);
+
+    color:
+        var(--text-muted);
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+
+/* =========================================
+   STAGE CONTENT
+========================================= */
+
+.stage-content {
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.stage-title {
+    margin-bottom: 5px;
+
+    color:
+        var(--text);
+
+    font-size: 13px;
+    font-weight: 750;
+}
+
+
+.stage-description {
+    margin-bottom: 10px;
+
+    color:
+        var(--text-muted);
+
+    font-size: 10.5px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   STAGE OUTPUT
+========================================= */
+
+.stage-output {
+    width: 100%;
+
+    max-height: 260px;
+
+    margin-top: 9px;
+
+    padding:
+        12px 13px;
+
+    overflow: auto;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    background:
+        var(--editor);
+
+    color:
+        var(--text-secondary);
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 11px;
+    line-height: 19px;
+
+    white-space:
+        pre-wrap;
+
+    word-break:
+        break-word;
+}
+
+
+/* =========================================
+   PIPELINE ARROW
+========================================= */
+
+.pipeline-arrow {
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color:
+        var(--accent);
+
+    font-size: 22px;
+    font-weight: 700;
+
+    text-shadow:
+        0 0 16px
+        rgba(79, 124, 255, 0.35);
+}
+
+
+/* =========================================
+   VISUALIZER STAGE STATES
+========================================= */
+
+.pipeline-stage.active {
+    border-color:
+        var(--accent);
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--panel),
+            var(--accent-soft)
+        );
+
+    box-shadow:
+        0 0 0 2px
+        rgba(79, 124, 255, 0.07),
+        0 15px 35px
+        rgba(79, 124, 255, 0.14);
+}
+
+
+.pipeline-stage.active
+.stage-number {
+    border-color:
+        var(--accent);
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent),
+            var(--accent-2)
+        );
+
+    color:
+        #ffffff;
+}
+
+
+.pipeline-stage.completed {
+    border-color:
+        rgba(52, 207, 153, 0.38);
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--panel),
+            var(--success-soft)
+        );
+}
+
+
+.pipeline-stage.completed
+.stage-number {
+    border-color:
+        var(--success);
+
+    background:
+        var(--success-soft);
+
+    color:
+        var(--success);
+}
+
+
+.pipeline-stage.completed
+.stage-number::after {
+    content: "✓";
+
+    margin-left: 3px;
+
+    font-size: 9px;
+}
+
+
+.pipeline-stage.error {
+    border-color:
+        rgba(255, 98, 119, 0.45);
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--panel),
+            var(--danger-soft)
+        );
+}
+
+
+.pipeline-stage.error
+.stage-number {
+    border-color:
+        var(--danger);
+
+    color:
+        var(--danger);
+}
+
+
+/* =========================================
+   FINAL OUTPUT STAGE
+========================================= */
+
+.output-stage {
+    border-color:
+        rgba(52, 207, 153, 0.30);
+}
+
+
+.output-stage
+.stage-title {
+    color:
+        var(--success);
+}
+
+
+/* =========================================
+   PIPELINE ANIMATION
+========================================= */
+
+@keyframes stageGlow {
+
+    0% {
+        box-shadow:
+            0 0 0
+            rgba(79, 124, 255, 0);
+    }
+
+    50% {
+        box-shadow:
+            0 0 30px
+            rgba(79, 124, 255, 0.16);
+    }
+
+    100% {
+        box-shadow:
+            0 0 0
+            rgba(79, 124, 255, 0);
+    }
+
+}
+
+
+.pipeline-stage.processing {
+    border-color:
+        var(--accent);
+
+    animation:
+        stageGlow
+        1.3s ease
+        infinite;
+}
+
+
+/* =========================================
    FOOTER
 ========================================= */
 
 .footer {
-
     height: 28px;
-
     min-height: 28px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     gap: 7px;
@@ -1335,11 +1824,12 @@ button:active:not(:disabled) {
         var(--text-muted);
 
     font-size: 9px;
+
+    letter-spacing: 0.25px;
 }
 
 
 .footer-dot {
-
     color:
         var(--accent);
 }
@@ -1350,13 +1840,11 @@ button:active:not(:disabled) {
 ========================================= */
 
 .hidden {
-
     display: none !important;
 }
 
 
 [hidden] {
-
     display: none !important;
 }
 
@@ -1366,22 +1854,18 @@ button:active:not(:disabled) {
 ========================================= */
 
 ::-webkit-scrollbar {
-
     width: 8px;
-
     height: 8px;
 }
 
 
 ::-webkit-scrollbar-track {
-
     background:
         transparent;
 }
 
 
 ::-webkit-scrollbar-thumb {
-
     background:
         var(--border-hover);
 
@@ -1390,21 +1874,47 @@ button:active:not(:disabled) {
 
 
 ::-webkit-scrollbar-thumb:hover {
-
     background:
         var(--text-muted);
 }
 
 
 /* =========================================
-   MOBILE
+   RESPONSIVE
 ========================================= */
 
-@media (max-width: 900px) {
+@media (max-width: 1120px) {
 
     .engine-status {
-
         display: none;
+    }
+
+
+    .topbar {
+        grid-template-columns:
+            minmax(200px, 1fr)
+            auto
+            minmax(380px, 1fr);
+    }
+
+}
+
+
+@media (max-width: 950px) {
+
+    .topbar {
+        grid-template-columns:
+            minmax(180px, 1fr)
+            auto
+            minmax(330px, 1fr);
+    }
+
+
+    .visualize-btn {
+        padding:
+            0 11px;
+
+        font-size: 11px;
     }
 
 }
@@ -1413,13 +1923,11 @@ button:active:not(:disabled) {
 @media (max-width: 760px) {
 
     body {
-
         overflow: auto;
     }
 
 
     .app {
-
         height: auto;
 
         min-height: 100vh;
@@ -1427,13 +1935,10 @@ button:active:not(:disabled) {
 
 
     .topbar {
-
         height: auto;
-
-        min-height: 125px;
+        min-height: 130px;
 
         display: flex;
-
         flex-wrap: wrap;
 
         gap: 10px;
@@ -1444,13 +1949,11 @@ button:active:not(:disabled) {
 
 
     .top-left {
-
         flex: 1;
     }
 
 
     .top-center {
-
         width: 100%;
 
         order: 3;
@@ -1458,20 +1961,22 @@ button:active:not(:disabled) {
 
 
     .language-select {
-
         width: 100%;
     }
 
 
-    .workspace {
+    .actions {
+        gap: 6px;
+    }
 
+
+    .workspace {
         flex-direction: column;
     }
 
 
     .editor-panel,
     .output-panel {
-
         width: 100% !important;
 
         min-width: 0;
@@ -1479,7 +1984,6 @@ button:active:not(:disabled) {
 
 
     .editor-panel {
-
         height: 65vh;
 
         border-bottom:
@@ -1488,56 +1992,103 @@ button:active:not(:disabled) {
 
 
     .main-resizer {
-
         display: none;
     }
 
 
     .output-panel {
-
-        min-height: 45vh;
+        min-height: 55vh;
     }
 
 
     .keyboard-hint {
-
         display: none;
+    }
+
+
+    .visualizer-view {
+        padding:
+            16px 14px
+            35px;
+    }
+
+
+    .pipeline-stage {
+        padding:
+            13px;
     }
 
 }
 
 
-@media (max-width: 480px) {
+@media (max-width: 520px) {
 
     .student-info {
-
         display: none;
     }
 
 
     .language-logo {
-
         width: 38px;
-
         height: 38px;
 
         min-width: 38px;
     }
 
 
-    .secondary-btn {
+    .visualize-btn {
+        width: 40px;
 
+        overflow: hidden;
+
+        padding: 0;
+
+        font-size: 0;
+    }
+
+
+    .visualize-btn::before {
+        content: "◈";
+
+        font-size: 16px;
+    }
+
+
+    .secondary-btn {
         padding:
             0 12px;
     }
 
 
     .run-btn {
-
-        min-width: 85px;
+        min-width: 82px;
 
         padding:
-            0 13px;
+            0 12px;
+    }
+
+
+    .output-tabs {
+        gap: 2px;
+    }
+
+
+    .output-tab {
+        padding:
+            0 8px;
+    }
+
+
+    .stage-number {
+        width: 32px;
+        height: 32px;
+
+        min-width: 32px;
+    }
+
+
+    .stage-output {
+        font-size: 10px;
     }
 
 }
