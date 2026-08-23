@@ -742,3 +742,63 @@ button {
   }
 
 }
+/* =========================================================
+   FIXED LEFT EDITOR + SCROLLABLE RIGHT ANALYZER
+========================================================= */
+
+@media (min-width: 901px) {
+
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .app-shell {
+    height: 100vh;
+    min-height: 0;
+  }
+
+  .topbar {
+    flex-shrink: 0;
+  }
+
+  .workspace {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* LEFT SIDE WILL STAY FIXED */
+  .editor-panel {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .editor-wrap {
+    flex: 1;
+    min-height: 0;
+  }
+
+  #codeEditor {
+    min-height: 0;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  /* ONLY RIGHT SIDE WILL SCROLL */
+  .result-panel {
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  /* Output / Visualizer tabs stay visible */
+  .tabs {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--panel);
+  }
+}
