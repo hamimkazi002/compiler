@@ -41,6 +41,7 @@ body {
 body {
   background: var(--bg);
   color: var(--text);
+
   font-family:
     Inter,
     ui-sans-serif,
@@ -62,6 +63,7 @@ button {
 
 .app-shell {
   min-height: 100vh;
+
   display: flex;
   flex-direction: column;
 }
@@ -73,23 +75,44 @@ button {
 
 .topbar {
   min-height: 72px;
-  padding: 12px 18px;
+
+  padding:
+    12px
+    18px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
   gap: 16px;
 
-  border-bottom: 1px solid var(--border);
+  border-bottom:
+    1px
+    solid
+    var(--border);
 
   background: var(--panel);
+
+  /* HEADER WILL STAY VISIBLE */
+  position: sticky;
+
+  top: 0;
+
+  z-index: 100;
+
+  flex-shrink: 0;
+
+  width: 100%;
 }
 
 .brand-row,
 .toolbar {
   display: flex;
+
   align-items: center;
+
   gap: 10px;
 
   flex-wrap: wrap;
@@ -97,27 +120,33 @@ button {
 
 .file-badge {
   width: 40px;
+
   height: 40px;
 
   border-radius: 12px;
 
   display: grid;
+
   place-items: center;
 
   font-weight: 800;
 
   background: var(--accent);
+
   color: white;
 }
 
 .title {
   font-size: 15px;
+
   font-weight: 750;
 }
 
 .student {
   color: var(--muted);
+
   font-size: 12px;
+
   margin-top: 3px;
 }
 
@@ -127,11 +156,16 @@ button {
 ========================================================= */
 
 .status-pill {
-  border: 1px solid var(--border);
+  border:
+    1px
+    solid
+    var(--border);
 
   border-radius: 999px;
 
-  padding: 8px 11px;
+  padding:
+    8px
+    11px;
 
   color: var(--muted);
 
@@ -140,11 +174,13 @@ button {
 
 .status-pill.ok {
   color: var(--success);
+
   border-color: var(--success);
 }
 
 .status-pill.bad {
   color: var(--danger);
+
   border-color: var(--danger);
 }
 
@@ -154,11 +190,16 @@ button {
 ========================================================= */
 
 .btn {
-  border: 1px solid var(--border);
+  border:
+    1px
+    solid
+    var(--border);
 
   border-radius: 10px;
 
-  padding: 9px 13px;
+  padding:
+    9px
+    13px;
 
   color: var(--text);
 
@@ -168,12 +209,15 @@ button {
 }
 
 .btn:hover {
-  transform: translateY(-1px);
+  transform:
+    translateY(-1px);
+
   border-color: var(--accent);
 }
 
 .btn.primary {
   background: var(--accent);
+
   color: #ffffff;
 
   border-color: transparent;
@@ -226,19 +270,30 @@ button {
 ========================================================= */
 
 .editor-panel {
-  border-right: 1px solid var(--border);
+  border-right:
+    1px
+    solid
+    var(--border);
 
   display: flex;
+
   flex-direction: column;
 }
 
 .panel-head {
-  padding: 14px 16px;
+  padding:
+    14px
+    16px;
 
-  border-bottom: 1px solid var(--border);
+  border-bottom:
+    1px
+    solid
+    var(--border);
 
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 }
 
@@ -288,7 +343,10 @@ button {
 
   color: #647087;
 
-  border-right: 1px solid var(--border);
+  border-right:
+    1px
+    solid
+    var(--border);
 
   font:
     14px/1.65
@@ -339,7 +397,10 @@ button {
 ========================================================= */
 
 .input-section {
-  border-top: 1px solid var(--border);
+  border-top:
+    1px
+    solid
+    var(--border);
 
   padding:
     12px
@@ -362,7 +423,10 @@ button {
 
   resize: vertical;
 
-  border: 1px solid var(--border);
+  border:
+    1px
+    solid
+    var(--border);
 
   border-radius: 10px;
 
@@ -372,7 +436,9 @@ button {
 
   outline: none;
 
-  padding: 10px 12px;
+  padding:
+    10px
+    12px;
 
   font:
     13px/1.5
@@ -382,8 +448,6 @@ button {
     Consolas,
     monospace;
 }
-
-
 /* =========================================================
    RIGHT RESULT PANEL
 ========================================================= */
@@ -411,7 +475,12 @@ button {
     12px
     0;
 
-  border-bottom: 1px solid var(--border);
+  border-bottom:
+    1px
+    solid
+    var(--border);
+
+  background: var(--panel);
 }
 
 .tab {
@@ -421,7 +490,9 @@ button {
 
   color: var(--muted);
 
-  padding: 10px 14px;
+  padding:
+    10px
+    14px;
 
   border-bottom:
     2px
@@ -494,7 +565,10 @@ button {
 
   gap: 16px;
 
-  border-bottom: 1px solid var(--border);
+  border-bottom:
+    1px
+    solid
+    var(--border);
 }
 
 .visualizer-heading h2 {
@@ -610,9 +684,14 @@ button {
 
   gap: 10px;
 
-  padding: 12px 14px;
+  padding:
+    12px
+    14px;
 
-  border-bottom: 1px solid var(--border);
+  border-bottom:
+    1px
+    solid
+    var(--border);
 }
 
 .stage-top span {
@@ -687,14 +766,17 @@ button {
 
 .stage pre::-webkit-scrollbar,
 #codeEditor::-webkit-scrollbar,
-#programInput::-webkit-scrollbar {
+#programInput::-webkit-scrollbar,
+.result-panel::-webkit-scrollbar {
   width: 8px;
+
   height: 8px;
 }
 
 .stage pre::-webkit-scrollbar-thumb,
 #codeEditor::-webkit-scrollbar-thumb,
-#programInput::-webkit-scrollbar-thumb {
+#programInput::-webkit-scrollbar-thumb,
+.result-panel::-webkit-scrollbar-thumb {
   background: var(--border);
 
   border-radius: 20px;
@@ -702,7 +784,7 @@ button {
 
 
 /* =========================================================
-   RESPONSIVE
+   MOBILE / TABLET RESPONSIVE
 ========================================================= */
 
 @media (max-width: 900px) {
@@ -713,37 +795,40 @@ button {
     flex-direction: column;
   }
 
-
   .workspace {
     grid-template-columns: 1fr;
   }
 
-
   .editor-panel {
     border-right: 0;
 
-    border-bottom: 1px solid var(--border);
+    border-bottom:
+      1px
+      solid
+      var(--border);
   }
-
 
   .editor-wrap,
   #codeEditor {
     min-height: 360px;
   }
 
-
   .toolbar {
     width: 100%;
   }
-
 
   .visualizer-heading {
     flex-direction: column;
   }
 
 }
+
+
 /* =========================================================
-   FIXED LEFT EDITOR + SCROLLABLE RIGHT ANALYZER
+   DESKTOP:
+   STICKY HEADER
+   FIXED LEFT EDITOR
+   SCROLLABLE RIGHT ANALYZER
 ========================================================= */
 
 @media (min-width: 901px) {
@@ -751,54 +836,99 @@ button {
   html,
   body {
     height: 100%;
+
     overflow: hidden;
   }
 
   .app-shell {
     height: 100vh;
+
     min-height: 0;
+
+    display: flex;
+
+    flex-direction: column;
   }
 
+
+  /* HEADER ALWAYS VISIBLE */
+
   .topbar {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
     flex-shrink: 0;
+
+    background: var(--panel);
   }
+
+
+  /* WORKSPACE FILLS REMAINING SCREEN */
 
   .workspace {
     flex: 1;
+
     min-height: 0;
+
     overflow: hidden;
   }
 
-  /* LEFT SIDE WILL STAY FIXED */
+
+  /* LEFT SIDE WILL NOT MOVE */
+
   .editor-panel {
     height: 100%;
+
     min-height: 0;
+
     overflow: hidden;
   }
+
 
   .editor-wrap {
     flex: 1;
+
     min-height: 0;
   }
+
 
   #codeEditor {
-    min-height: 0;
     height: 100%;
+
+    min-height: 0;
+
     overflow-y: auto;
   }
 
-  /* ONLY RIGHT SIDE WILL SCROLL */
+
+  /* RIGHT ANALYZER ONLY WILL SCROLL */
+
   .result-panel {
     height: 100%;
+
     min-height: 0;
+
     overflow-y: auto;
+
+    overscroll-behavior: contain;
   }
 
-  /* Output / Visualizer tabs stay visible */
+
+  /* OUTPUT / VISUALIZER TAB STAYS AT TOP */
+
   .tabs {
     position: sticky;
+
     top: 0;
-    z-index: 20;
+
+    z-index: 50;
+
+    flex-shrink: 0;
+
     background: var(--panel);
   }
+
 }
