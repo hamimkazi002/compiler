@@ -1,21 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Hamim Code Compiler</title>
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>
+    Hamim Code Compiler
+  </title>
+
 
   <!-- GitHub Pages compatible -->
+
   <link
     rel="stylesheet"
-    href="./style.css?v=70"
+    href="./style.css?v=71"
   />
+
 </head>
+
 
 <body>
 
   <div class="app-shell">
+
 
     <!-- =====================================================
          TOP BAR
@@ -23,11 +36,14 @@
 
     <header class="topbar">
 
+
       <div class="brand-row">
+
 
         <div class="file-badge">
           Py
         </div>
+
 
         <div>
 
@@ -41,10 +57,13 @@
 
         </div>
 
+
       </div>
 
 
+
       <div class="toolbar">
+
 
         <span
           id="backendStatus"
@@ -89,7 +108,9 @@
           Run
         </button>
 
+
       </div>
+
 
     </header>
 
@@ -108,7 +129,9 @@
 
       <section class="editor-panel panel">
 
+
         <div class="panel-head">
+
 
           <div>
 
@@ -122,10 +145,17 @@
 
           </div>
 
+
         </div>
 
 
+
+        <!-- ===============================================
+             CODE EDITOR
+        ================================================ -->
+
         <div class="editor-wrap">
+
 
           <pre
             id="lineNumbers"
@@ -142,22 +172,29 @@ b = 20
 c = a + b
 print(c)</textarea>
 
-        </div>
-
-
-        <div class="input-section">
-
-          <div class="input-title">
-            Program Input
-          </div>
-
-
-          <textarea
-            id="programInput"
-            placeholder="Optional input() values, one per line"
-          ></textarea>
 
         </div>
+
+
+        <!--
+          IMPORTANT:
+
+          Program Input UI removed.
+
+          This hidden textarea is intentionally kept
+          because current script.js still reads
+          programInput.value.
+
+          Keeping it hidden prevents JavaScript errors
+          without showing Program Input on the website.
+        -->
+
+        <textarea
+          id="programInput"
+          hidden
+          aria-hidden="true"
+        ></textarea>
+
 
       </section>
 
@@ -176,6 +213,7 @@ print(c)</textarea>
 
         <div class="tabs">
 
+
           <button
             class="tab active"
             id="outputTab"
@@ -193,6 +231,7 @@ print(c)</textarea>
             Visualizer
           </button>
 
+
         </div>
 
 
@@ -206,10 +245,12 @@ print(c)</textarea>
           class="tab-view active"
         >
 
+
           <pre
             id="outputConsole"
             class="console"
           >Ready. Click Run.</pre>
+
 
         </div>
 
@@ -224,334 +265,475 @@ print(c)</textarea>
           class="tab-view"
         >
 
+
+          <!-- =============================================
+               VISUALIZER HEADING
+          ============================================== -->
+
           <div class="visualizer-heading">
 
+
             <div>
+
 
               <h2>
                 Compiler Pipeline
               </h2>
 
+
               <p id="visualizerSubtitle">
                 Backend-powered Python compiler visualization
               </p>
 
+
             </div>
+
 
             <span class="legend-dot">
               Live stages
             </span>
 
+
           </div>
 
 
 
+          <!-- =============================================
+               PIPELINE
+          ============================================== -->
+
           <div class="pipeline">
 
 
-            <!-- 01 -->
+
+            <!-- ===========================================
+                 01 SOURCE CODE
+            ============================================ -->
 
             <article
               class="stage"
               id="stageSource"
             >
 
+
               <div class="stage-top">
 
-                <span>01</span>
+
+                <span>
+                  01
+                </span>
+
 
                 <h3>
                   Source Code
                 </h3>
 
+
                 <b>
                   Waiting
                 </b>
 
+
               </div>
 
+
               <pre id="sourceOutput">—</pre>
+
 
             </article>
 
 
 
-            <!-- 02 -->
+            <!-- ===========================================
+                 02 LEXICAL ANALYSIS
+            ============================================ -->
 
             <article
               class="stage"
               id="stageLexical"
             >
 
+
               <div class="stage-top">
 
-                <span>02</span>
+
+                <span>
+                  02
+                </span>
+
 
                 <h3>
                   Lexical Analysis
                 </h3>
 
+
                 <b>
                   Waiting
                 </b>
 
+
               </div>
 
+
               <pre id="lexicalOutput">—</pre>
+
 
             </article>
 
 
 
-            <!-- 03 -->
+            <!-- ===========================================
+                 03 SYNTAX ANALYSIS
+            ============================================ -->
 
             <article
               class="stage"
               id="stageSyntax"
             >
 
+
               <div class="stage-top">
 
-                <span>03</span>
+
+                <span>
+                  03
+                </span>
+
 
                 <h3>
                   Syntax Analysis
                 </h3>
 
+
                 <b>
                   Waiting
                 </b>
 
+
               </div>
 
+
               <pre id="syntaxOutput">—</pre>
+
 
             </article>
 
 
 
-            <!-- 04 -->
+            <!-- ===========================================
+                 04 ABSTRACT SYNTAX TREE
+            ============================================ -->
 
             <article
               class="stage"
               id="stageAst"
             >
 
+
               <div class="stage-top">
 
-                <span>04</span>
+
+                <span>
+                  04
+                </span>
+
 
                 <h3>
                   Abstract Syntax Tree
                 </h3>
 
+
                 <b>
                   Waiting
                 </b>
 
+
               </div>
 
+
               <pre id="astOutput">—</pre>
+
 
             </article>
 
 
 
-            <!-- 05 -->
+            <!-- ===========================================
+                 05 SEMANTIC ANALYSIS
+            ============================================ -->
 
             <article
               class="stage"
               id="stageSemantic"
             >
 
+
               <div class="stage-top">
 
-                <span>05</span>
+
+                <span>
+                  05
+                </span>
+
 
                 <h3>
                   Semantic Analysis
                 </h3>
 
+
                 <b>
                   Waiting
                 </b>
 
+
               </div>
 
+
               <pre id="semanticOutput">—</pre>
+
 
             </article>
 
 
 
-            <!-- 06 -->
+            <!-- ===========================================
+                 06 SYMBOL TABLE
+            ============================================ -->
 
             <article
               class="stage"
               id="stageSymbol"
             >
 
+
               <div class="stage-top">
 
-                <span>06</span>
+
+                <span>
+                  06
+                </span>
+
 
                 <h3>
                   Symbol Table
                 </h3>
 
+
                 <b>
                   Waiting
                 </b>
 
+
               </div>
 
+
               <pre id="symbolOutput">—</pre>
+
 
             </article>
 
 
 
-            <!-- 07 -->
+            <!-- ===========================================
+                 07 INTERMEDIATE CODE
+            ============================================ -->
 
             <article
               class="stage"
               id="stageIntermediate"
             >
 
+
               <div class="stage-top">
 
-                <span>07</span>
+
+                <span>
+                  07
+                </span>
+
 
                 <h3>
                   Intermediate Code
                 </h3>
 
+
                 <b>
                   Waiting
                 </b>
 
+
               </div>
 
+
               <pre id="intermediateOutput">—</pre>
+
 
             </article>
 
 
 
-            <!-- 08 -->
+            <!-- ===========================================
+                 08 CODE OPTIMIZATION
+            ============================================ -->
 
             <article
               class="stage"
               id="stageOptimization"
             >
 
+
               <div class="stage-top">
 
-                <span>08</span>
+
+                <span>
+                  08
+                </span>
+
 
                 <h3>
                   Code Optimization
                 </h3>
 
+
                 <b>
                   Waiting
                 </b>
 
+
               </div>
 
+
               <pre id="optimizationOutput">—</pre>
+
 
             </article>
 
 
 
-            <!-- 09 -->
+            <!-- ===========================================
+                 09 TARGET CODE
+            ============================================ -->
 
             <article
               class="stage"
               id="stageTarget"
             >
 
+
               <div class="stage-top">
 
-                <span>09</span>
+
+                <span>
+                  09
+                </span>
+
 
                 <h3>
                   Target Code
                 </h3>
 
+
                 <b>
                   Waiting
                 </b>
 
+
               </div>
 
+
               <pre id="targetOutput">—</pre>
+
 
             </article>
 
 
 
-            <!-- 10 -->
+            <!-- ===========================================
+                 10 BINARY REPRESENTATION
+            ============================================ -->
 
             <article
               class="stage"
               id="stageBinary"
             >
 
+
               <div class="stage-top">
 
-                <span>10</span>
+
+                <span>
+                  10
+                </span>
+
 
                 <h3>
                   Binary Representation
                 </h3>
 
+
                 <b>
                   Waiting
                 </b>
 
+
               </div>
 
+
               <pre id="binaryOutput">—</pre>
+
 
             </article>
 
 
 
-            <!-- 11 -->
+            <!-- ===========================================
+                 11 EXECUTION
+            ============================================ -->
 
             <article
               class="stage"
               id="stageExecution"
             >
 
+
               <div class="stage-top">
 
-                <span>11</span>
+
+                <span>
+                  11
+                </span>
+
 
                 <h3>
                   Execution & Final Output
                 </h3>
 
+
                 <b>
                   Waiting
                 </b>
 
+
               </div>
 
+
               <pre id="executionOutput">—</pre>
+
 
             </article>
 
 
           </div>
 
+
         </div>
+
 
       </section>
 
+
     </main>
+
 
   </div>
 
@@ -566,11 +748,16 @@ print(c)</textarea>
   ></script>
 
 
-  <!-- GitHub Pages compatible -->
+
+  <!-- =====================================================
+       MAIN JAVASCRIPT
+  ====================================================== -->
 
   <script
-    src="./script.js?v=70"
+    src="./script.js?v=71"
   ></script>
 
+
 </body>
+
 </html>
