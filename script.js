@@ -9,7 +9,7 @@
 ========================================================= */
 
 const VERCEL_BACKEND_URL =
-  "https://compiler-git-feature-hamim-kazi.vercel.app";
+  "https://compiler-beige.vercel.app";
 
 
 const IS_GITHUB_PAGES =
