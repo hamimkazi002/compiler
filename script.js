@@ -1,44 +1,30 @@
 /* =========================================================
    HAMIM CODE COMPILER
-   GitHub Pages + Flask Backend
+   GitHub Pages + Vercel Flask Backend
 ========================================================= */
 
 
 /* =========================================================
-   BACKEND CONFIGURATION
+   BACKEND CONFIG
 ========================================================= */
 
-/*
-   IMPORTANT
+const VERCEL_BACKEND_URL =
+  "https://compiler-git-feature-hamim-kazi.vercel.app";
 
-   Render backend deploy করার পর শুধু এই URL change করবে।
-
-   Example:
-
-   const RENDER_BACKEND_URL =
-     "https://hamim-compiler.onrender.com";
-*/
-
-const RENDER_BACKEND_URL =
-  "https://YOUR-RENDER-URL.onrender.com";
-
-
-/*
-   GitHub Pages হলে Render backend use করবে।
-
-   Flask/local/Codespaces-এ same origin use করবে।
-*/
 
 const IS_GITHUB_PAGES =
-  window.location.hostname.endsWith(
-    "github.io"
-  );
+  window.location.hostname.endsWith("github.io");
 
 
 const API_BASE_URL =
   IS_GITHUB_PAGES
-    ? RENDER_BACKEND_URL
+    ? VERCEL_BACKEND_URL
     : "";
+
+
+function apiUrl(path) {
+  return API_BASE_URL + path;
+}
 
 
 /* =========================================================
@@ -46,252 +32,97 @@ const API_BASE_URL =
 ========================================================= */
 
 const codeEditor =
-  document.getElementById(
-    "codeEditor"
-  );
+  document.getElementById("codeEditor");
 
 const lineNumbers =
-  document.getElementById(
-    "lineNumbers"
-  );
+  document.getElementById("lineNumbers");
 
 const programInput =
-  document.getElementById(
-    "programInput"
-  );
+  document.getElementById("programInput");
 
 const outputConsole =
-  document.getElementById(
-    "outputConsole"
-  );
+  document.getElementById("outputConsole");
 
 const runBtn =
-  document.getElementById(
-    "runBtn"
-  );
+  document.getElementById("runBtn");
 
 const visualizeBtn =
-  document.getElementById(
-    "visualizeBtn"
-  );
+  document.getElementById("visualizeBtn");
 
 const clearBtn =
-  document.getElementById(
-    "clearBtn"
-  );
+  document.getElementById("clearBtn");
 
 const themeBtn =
-  document.getElementById(
-    "themeBtn"
-  );
+  document.getElementById("themeBtn");
 
 const backendStatus =
-  document.getElementById(
-    "backendStatus"
-  );
-
-
-/* =========================================================
-   TABS
-========================================================= */
+  document.getElementById("backendStatus");
 
 const outputTab =
-  document.getElementById(
-    "outputTab"
-  );
+  document.getElementById("outputTab");
 
 const visualizerTab =
-  document.getElementById(
-    "visualizerTab"
-  );
+  document.getElementById("visualizerTab");
 
 const outputView =
-  document.getElementById(
-    "outputView"
-  );
+  document.getElementById("outputView");
 
 const visualizerView =
-  document.getElementById(
-    "visualizerView"
-  );
+  document.getElementById("visualizerView");
+
+const visualizerSubtitle =
+  document.getElementById("visualizerSubtitle");
 
 
 /* =========================================================
    STAGES
 ========================================================= */
 
-const stageSource =
-  document.getElementById(
-    "stageSource"
-  );
-
-const stageLexical =
-  document.getElementById(
-    "stageLexical"
-  );
-
-const stageSyntax =
-  document.getElementById(
-    "stageSyntax"
-  );
-
-const stageAst =
-  document.getElementById(
-    "stageAst"
-  );
-
-const stageSemantic =
-  document.getElementById(
-    "stageSemantic"
-  );
-
-const stageSymbol =
-  document.getElementById(
-    "stageSymbol"
-  );
-
-const stageIntermediate =
-  document.getElementById(
-    "stageIntermediate"
-  );
-
-const stageOptimization =
-  document.getElementById(
-    "stageOptimization"
-  );
-
-const stageTarget =
-  document.getElementById(
-    "stageTarget"
-  );
-
-const stageBinary =
-  document.getElementById(
-    "stageBinary"
-  );
-
-const stageExecution =
-  document.getElementById(
-    "stageExecution"
-  );
-
-
-/* =========================================================
-   OUTPUTS
-========================================================= */
-
-const sourceOutput =
-  document.getElementById(
-    "sourceOutput"
-  );
-
-const lexicalOutput =
-  document.getElementById(
-    "lexicalOutput"
-  );
-
-const syntaxOutput =
-  document.getElementById(
-    "syntaxOutput"
-  );
-
-const astOutput =
-  document.getElementById(
-    "astOutput"
-  );
-
-const semanticOutput =
-  document.getElementById(
-    "semanticOutput"
-  );
-
-const symbolOutput =
-  document.getElementById(
-    "symbolOutput"
-  );
-
-const intermediateOutput =
-  document.getElementById(
-    "intermediateOutput"
-  );
-
-const optimizationOutput =
-  document.getElementById(
-    "optimizationOutput"
-  );
-
-const targetOutput =
-  document.getElementById(
-    "targetOutput"
-  );
-
-const binaryOutput =
-  document.getElementById(
-    "binaryOutput"
-  );
-
-const executionOutput =
-  document.getElementById(
-    "executionOutput"
-  );
-
-const visualizerSubtitle =
-  document.getElementById(
-    "visualizerSubtitle"
-  );
-
-
 const stages = [
-
-  stageSource,
-
-  stageLexical,
-
-  stageSyntax,
-
-  stageAst,
-
-  stageSemantic,
-
-  stageSymbol,
-
-  stageIntermediate,
-
-  stageOptimization,
-
-  stageTarget,
-
-  stageBinary,
-
-  stageExecution
-
-];
-
-
-const stageOutputs = [
-
-  sourceOutput,
-
-  lexicalOutput,
-
-  syntaxOutput,
-
-  astOutput,
-
-  semanticOutput,
-
-  symbolOutput,
-
-  intermediateOutput,
-
-  optimizationOutput,
-
-  targetOutput,
-
-  binaryOutput,
-
-  executionOutput
-
+  {
+    el: document.getElementById("stageSource"),
+    output: document.getElementById("sourceOutput")
+  },
+  {
+    el: document.getElementById("stageLexical"),
+    output: document.getElementById("lexicalOutput")
+  },
+  {
+    el: document.getElementById("stageSyntax"),
+    output: document.getElementById("syntaxOutput")
+  },
+  {
+    el: document.getElementById("stageAst"),
+    output: document.getElementById("astOutput")
+  },
+  {
+    el: document.getElementById("stageSemantic"),
+    output: document.getElementById("semanticOutput")
+  },
+  {
+    el: document.getElementById("stageSymbol"),
+    output: document.getElementById("symbolOutput")
+  },
+  {
+    el: document.getElementById("stageIntermediate"),
+    output: document.getElementById("intermediateOutput")
+  },
+  {
+    el: document.getElementById("stageOptimization"),
+    output: document.getElementById("optimizationOutput")
+  },
+  {
+    el: document.getElementById("stageTarget"),
+    output: document.getElementById("targetOutput")
+  },
+  {
+    el: document.getElementById("stageBinary"),
+    output: document.getElementById("binaryOutput")
+  },
+  {
+    el: document.getElementById("stageExecution"),
+    output: document.getElementById("executionOutput")
+  }
 ];
 
 
@@ -300,8 +131,23 @@ const stageOutputs = [
 ========================================================= */
 
 let pyodide = null;
+let pyodidePromise = null;
 
-let pyodideLoadingPromise = null;
+
+async function getPyodide() {
+
+  if (pyodide) {
+    return pyodide;
+  }
+
+  if (!pyodidePromise) {
+    pyodidePromise = loadPyodide();
+  }
+
+  pyodide = await pyodidePromise;
+
+  return pyodide;
+}
 
 
 /* =========================================================
@@ -310,33 +156,17 @@ let pyodideLoadingPromise = null;
 
 function updateLineNumbers() {
 
-  const count =
-    codeEditor.value
-      .split("\n")
-      .length;
-
+  const totalLines =
+    codeEditor.value.split("\n").length;
 
   const numbers = [];
 
-
-  for (
-    let i = 1;
-    i <= count;
-    i++
-  ) {
-
-    numbers.push(
-      i
-    );
-
+  for (let i = 1; i <= totalLines; i++) {
+    numbers.push(i);
   }
 
-
   lineNumbers.textContent =
-    numbers.join(
-      "\n"
-    );
-
+    numbers.join("\n");
 }
 
 
@@ -349,10 +179,8 @@ codeEditor.addEventListener(
 codeEditor.addEventListener(
   "scroll",
   () => {
-
     lineNumbers.scrollTop =
       codeEditor.scrollTop;
-
   }
 );
 
@@ -365,119 +193,69 @@ codeEditor.addEventListener(
   "keydown",
   event => {
 
-    if (
-      event.key !== "Tab"
-    ) {
-
+    if (event.key !== "Tab") {
       return;
-
     }
 
-
     event.preventDefault();
-
 
     const start =
       codeEditor.selectionStart;
 
-
     const end =
       codeEditor.selectionEnd;
 
-
     codeEditor.value =
-
-      codeEditor.value.substring(
-        0,
-        start
-      )
-
+      codeEditor.value.substring(0, start)
       +
-
       "    "
-
       +
-
-      codeEditor.value.substring(
-        end
-      );
-
+      codeEditor.value.substring(end);
 
     codeEditor.selectionStart =
       start + 4;
 
-
     codeEditor.selectionEnd =
       start + 4;
 
-
     updateLineNumbers();
-
   }
 );
 
 
 /* =========================================================
-   TABS
+   OUTPUT / VISUALIZER TABS
 ========================================================= */
 
-function showOutputTab() {
+function showOutput() {
 
-  outputTab.classList.add(
-    "active"
-  );
+  outputTab.classList.add("active");
+  visualizerTab.classList.remove("active");
 
-
-  visualizerTab.classList.remove(
-    "active"
-  );
-
-
-  outputView.classList.add(
-    "active"
-  );
-
-
-  visualizerView.classList.remove(
-    "active"
-  );
-
+  outputView.classList.add("active");
+  visualizerView.classList.remove("active");
 }
 
 
-function showVisualizerTab() {
+function showVisualizer() {
 
-  visualizerTab.classList.add(
-    "active"
-  );
+  visualizerTab.classList.add("active");
+  outputTab.classList.remove("active");
 
-
-  outputTab.classList.remove(
-    "active"
-  );
-
-
-  visualizerView.classList.add(
-    "active"
-  );
-
-
-  outputView.classList.remove(
-    "active"
-  );
-
+  visualizerView.classList.add("active");
+  outputView.classList.remove("active");
 }
 
 
 outputTab.addEventListener(
   "click",
-  showOutputTab
+  showOutput
 );
 
 
 visualizerTab.addEventListener(
   "click",
-  showVisualizerTab
+  showVisualizer
 );
 
 
@@ -487,22 +265,14 @@ visualizerTab.addEventListener(
 
 function loadTheme() {
 
-  const savedTheme =
+  const saved =
     localStorage.getItem(
       "hamimCompilerTheme"
     );
 
-
-  if (
-    savedTheme === "light"
-  ) {
-
-    document.body.classList.add(
-      "light"
-    );
-
+  if (saved === "light") {
+    document.body.classList.add("light");
   }
-
 }
 
 
@@ -514,7 +284,6 @@ themeBtn.addEventListener(
       "light"
     );
 
-
     const theme =
       document.body.classList.contains(
         "light"
@@ -522,31 +291,12 @@ themeBtn.addEventListener(
         ? "light"
         : "dark";
 
-
     localStorage.setItem(
       "hamimCompilerTheme",
       theme
     );
-
   }
 );
-
-
-/* =========================================================
-   API URL
-========================================================= */
-
-function apiUrl(
-  endpoint
-) {
-
-  return (
-    API_BASE_URL
-    +
-    endpoint
-  );
-
-}
 
 
 /* =========================================================
@@ -555,249 +305,551 @@ function apiUrl(
 
 async function checkBackend() {
 
+  backendStatus.textContent =
+    "Backend checking...";
+
   backendStatus.classList.remove(
     "ok",
     "bad"
   );
 
-
-  if (
-    IS_GITHUB_PAGES
-    &&
-    RENDER_BACKEND_URL.includes(
-      "YOUR-RENDER-URL"
-    )
-  ) {
-
-    backendStatus.textContent =
-      "Backend URL Required";
-
-
-    backendStatus.classList.add(
-      "bad"
-    );
-
-
-    return;
-
-  }
-
-
-  backendStatus.textContent =
-    "Backend checking...";
-
-
   try {
 
     const response =
       await fetch(
-
-        apiUrl(
-          "/api/status"
-        ),
-
+        apiUrl("/api/status"),
         {
-          cache:
-            "no-store"
+          cache: "no-store"
         }
-
       );
-
 
     if (!response.ok) {
 
       throw new Error(
-        "Backend unavailable"
+        `HTTP ${response.status}`
       );
-
     }
 
+    const contentType =
+      response.headers.get(
+        "content-type"
+      ) || "";
+
+    if (
+      !contentType.includes(
+        "application/json"
+      )
+    ) {
+
+      throw new Error(
+        "Backend returned HTML instead of JSON"
+      );
+    }
 
     const data =
       await response.json();
 
-
-    if (
-      data.status !== "success"
-    ) {
+    if (data.status !== "success") {
 
       throw new Error(
         "Backend unavailable"
       );
-
     }
-
 
     backendStatus.textContent =
       "Backend Online";
-
 
     backendStatus.classList.add(
       "ok"
     );
 
-  }
+  } catch (error) {
 
-  catch (error) {
+    console.error(
+      "Backend status error:",
+      error
+    );
 
     backendStatus.textContent =
       "Backend Offline";
 
-
     backendStatus.classList.add(
       "bad"
     );
-
   }
-
 }
 
 
 /* =========================================================
-   CLEAR
+   STAGE HELPERS
 ========================================================= */
 
-clearBtn.addEventListener(
-  "click",
-  () => {
+function resetStages() {
 
-    codeEditor.value =
-      "";
+  stages.forEach(
+    stage => {
 
+      stage.el.classList.remove(
+        "running",
+        "done",
+        "error"
+      );
 
-    programInput.value =
-      "";
+      const status =
+        stage.el.querySelector(
+          ".stage-top b"
+        );
 
+      if (status) {
+        status.textContent =
+          "Waiting";
+      }
 
-    outputConsole.textContent =
-      "Ready. Click Run.";
+      stage.output.textContent =
+        "—";
+    }
+  );
 
-
-    updateLineNumbers();
-
-
-    resetVisualizer();
-
-
-    codeEditor.focus();
-
-  }
-);
-
-
-/* =========================================================
-   PYODIDE
-========================================================= */
-
-async function initializePyodide() {
-
-  if (pyodide) {
-
-    return pyodide;
-
-  }
+  visualizerSubtitle.textContent =
+    "Backend-powered Python compiler visualization";
+}
 
 
-  if (
-    pyodideLoadingPromise
-  ) {
+function stageRunning(
+  index,
+  text = "Processing..."
+) {
 
-    return pyodideLoadingPromise;
+  const stage =
+    stages[index];
 
-  }
+  stage.el.classList.remove(
+    "done",
+    "error"
+  );
 
+  stage.el.classList.add(
+    "running"
+  );
 
-  pyodideLoadingPromise =
-    loadPyodide();
+  const status =
+    stage.el.querySelector(
+      ".stage-top b"
+    );
 
-
-  try {
-
-    pyodide =
-      await pyodideLoadingPromise;
-
-
-    return pyodide;
-
+  if (status) {
+    status.textContent =
+      "Processing";
   }
 
-  finally {
+  stage.output.textContent =
+    text;
+}
 
-    pyodideLoadingPromise =
-      null;
 
+function stageDone(
+  index,
+  text
+) {
+
+  const stage =
+    stages[index];
+
+  stage.el.classList.remove(
+    "running",
+    "error"
+  );
+
+  stage.el.classList.add(
+    "done"
+  );
+
+  const status =
+    stage.el.querySelector(
+      ".stage-top b"
+    );
+
+  if (status) {
+    status.textContent =
+      "Completed";
   }
 
+  stage.output.textContent =
+    text ?? "";
+}
+
+
+function stageError(
+  index,
+  text
+) {
+
+  const stage =
+    stages[index];
+
+  stage.el.classList.remove(
+    "running",
+    "done"
+  );
+
+  stage.el.classList.add(
+    "error"
+  );
+
+  const status =
+    stage.el.querySelector(
+      ".stage-top b"
+    );
+
+  if (status) {
+    status.textContent =
+      "Error";
+  }
+
+  stage.output.textContent =
+    text;
 }
 
 
 /* =========================================================
-   RUN PYTHON
+   FORMAT TOKENS
 ========================================================= */
 
-async function runPython() {
-
-  showOutputTab();
-
-
-  const code =
-    codeEditor.value;
-
+function formatTokens(tokens) {
 
   if (
-    !code.trim()
+    !Array.isArray(tokens)
+    ||
+    tokens.length === 0
   ) {
-
-    outputConsole.textContent =
-      "Please write Python code first.";
-
-
-    return;
-
+    return "No tokens generated.";
   }
 
+  const lines = [
+    "TYPE            VALUE             POSITION",
+    "------------------------------------------------------"
+  ];
 
-  runBtn.disabled =
-    true;
+  for (const item of tokens) {
+
+    const type =
+      String(
+        item.type ?? ""
+      ).padEnd(16);
+
+    let value =
+      String(
+        item.value ?? ""
+      );
+
+    if (!value) {
+      value = "[empty]";
+    }
+
+    value =
+      value.padEnd(18);
+
+    lines.push(
+      `${type}${value}Line ${item.line}, Col ${item.column}`
+    );
+  }
+
+  return lines.join("\n");
+}
 
 
-  runBtn.textContent =
-    "Running...";
+/* =========================================================
+   FORMAT SEMANTIC
+========================================================= */
+
+function formatSemantic(data) {
+
+  if (!data) {
+    return "No semantic information.";
+  }
+
+  const lines = [];
+
+  lines.push(
+    `Valid: ${data.valid ? "Yes" : "No"}`
+  );
+
+  lines.push("");
+
+  lines.push("Defined Variables:");
+  lines.push(
+    data.defined_variables?.join(", ")
+    || "None"
+  );
+
+  lines.push("");
+
+  lines.push("Used Variables:");
+  lines.push(
+    data.used_variables?.join(", ")
+    || "None"
+  );
+
+  lines.push("");
+
+  lines.push("Undefined Variables:");
+  lines.push(
+    data.undefined_variables?.join(", ")
+    || "None"
+  );
+
+  if (
+    Array.isArray(data.messages)
+    &&
+    data.messages.length
+  ) {
+
+    lines.push("");
+    lines.push("Messages:");
+
+    data.messages.forEach(
+      message => {
+        lines.push(
+          "• " + message
+        );
+      }
+    );
+  }
+
+  return lines.join("\n");
+}
 
 
-  outputConsole.textContent =
-    "Loading Python runtime...";
+/* =========================================================
+   SYMBOL TABLE
+========================================================= */
+
+function formatSymbolTable(symbols) {
+
+  if (
+    !Array.isArray(symbols)
+    ||
+    symbols.length === 0
+  ) {
+
+    return "No symbols found.";
+  }
+
+  const lines = [
+    "NAME            TYPE                 VALUE",
+    "---------------------------------------------------------"
+  ];
+
+  symbols.forEach(
+    symbol => {
+
+      const name =
+        String(
+          symbol.name ?? ""
+        ).padEnd(16);
+
+      const type =
+        String(
+          symbol.type ?? ""
+        ).padEnd(21);
+
+      const value =
+        String(
+          symbol.value ?? ""
+        );
+
+      lines.push(
+        `${name}${type}${value}`
+      );
+    }
+  );
+
+  return lines.join("\n");
+}
 
 
-  try {
+/* =========================================================
+   OPTIMIZATION
+========================================================= */
 
-    const runtime =
-      await initializePyodide();
+function formatOptimization(
+  optimization,
+  optimizedCode
+) {
 
+  const lines = [
+    "OPTIMIZATION",
+    "============",
+    ""
+  ];
 
-    runtime.globals.set(
-      "__hamim_code",
-      code
+  if (
+    optimization
+    &&
+    Array.isArray(
+      optimization.applied_steps
+    )
+  ) {
+
+    lines.push(
+      "Applied Steps:"
     );
 
-
-    runtime.globals.set(
-      "__hamim_input",
-      programInput.value
+    optimization.applied_steps.forEach(
+      step => {
+        lines.push(
+          "✓ " + step
+        );
+      }
     );
+  }
+
+  lines.push("");
+  lines.push("OPTIMIZED SOURCE");
+  lines.push("================");
+  lines.push("");
+
+  lines.push(
+    optimizedCode
+    ||
+    "No optimized source."
+  );
+
+  return lines.join("\n");
+}
 
 
-    const result =
-      await runtime.runPythonAsync(`
+/* =========================================================
+   TARGET CODE
+========================================================= */
+
+function formatTargetCode(target) {
+
+  if (!target) {
+    return "No target code generated.";
+  }
+
+  if (target.status === "error") {
+
+    return (
+      "Target Code Error\n\n"
+      +
+      (
+        target.message
+        ||
+        "Unknown error"
+      )
+    );
+  }
+
+  if (target.disassembly) {
+
+    return [
+      `Type: ${target.type || "CPython Bytecode"}`,
+      "",
+      "DISASSEMBLY",
+      "===========",
+      "",
+      target.disassembly
+    ].join("\n");
+  }
+
+  return JSON.stringify(
+    target,
+    null,
+    2
+  );
+}
+
+
+/* =========================================================
+   BINARY
+========================================================= */
+
+function formatBinaryCode(binary) {
+
+  if (!binary) {
+    return "No binary representation.";
+  }
+
+  if (binary.status === "error") {
+
+    return (
+      "Binary Error\n\n"
+      +
+      (
+        binary.message
+        ||
+        "Unknown error"
+      )
+    );
+  }
+
+  const lines = [
+    "BINARY REPRESENTATION",
+    "=====================",
+    "",
+    `Type: ${binary.type || ""}`,
+    `Total Bytes: ${binary.byte_count ?? ""}`,
+    "",
+    "BINARY",
+    "======",
+    "",
+    binary.binary
+    ||
+    "Binary unavailable.",
+    "",
+    "HEX",
+    "===",
+    "",
+    binary.hex
+    ||
+    "Hex unavailable."
+  ];
+
+  if (binary.note) {
+
+    lines.push("");
+    lines.push("NOTE");
+    lines.push("====");
+    lines.push("");
+    lines.push(binary.note);
+  }
+
+  return lines.join("\n");
+}
+
+
+/* =========================================================
+   PYTHON RUNNER
+========================================================= */
+
+async function executePython(code) {
+
+  const runtime =
+    await getPyodide();
+
+  runtime.globals.set(
+    "__hamim_code",
+    code
+  );
+
+  runtime.globals.set(
+    "__hamim_input",
+    programInput.value
+  );
+
+  const result =
+    await runtime.runPythonAsync(`
 import sys
 import io
 import traceback
 import contextlib
 
-_stdout = io.StringIO()
-_stderr = io.StringIO()
+_stdout_buffer = io.StringIO()
+_stderr_buffer = io.StringIO()
 
-_stdin = io.StringIO(
+_stdin_buffer = io.StringIO(
     __hamim_input
 )
 
@@ -805,9 +857,9 @@ _old_stdin = sys.stdin
 
 try:
 
-    sys.stdin = _stdin
+    sys.stdin = _stdin_buffer
 
-    with contextlib.redirect_stdout(_stdout), contextlib.redirect_stderr(_stderr):
+    with contextlib.redirect_stdout(_stdout_buffer), contextlib.redirect_stderr(_stderr_buffer):
 
         try:
 
@@ -832,57 +884,78 @@ finally:
     sys.stdin = _old_stdin
 
 
-_output = _stdout.getvalue()
+_output = _stdout_buffer.getvalue()
 
-_error = _stderr.getvalue()
+_error = _stderr_buffer.getvalue()
 
 
 if _error:
 
     if _output:
-
         _output += "\\n"
 
     _output += _error
 
 
 _output
-      `);
+    `);
+
+  const output =
+    String(
+      result ?? ""
+    );
+
+  return output.trim()
+    ? output
+    : "Program finished with no output.";
+}
 
 
-    const text =
-      String(
-        result ?? ""
-      );
+/* =========================================================
+   RUN BUTTON
+========================================================= */
 
+async function runPython() {
+
+  showOutput();
+
+  const code =
+    codeEditor.value;
+
+  if (!code.trim()) {
 
     outputConsole.textContent =
-      text.trim()
-        ? text
-        : "Program finished with no output.";
+      "Please write Python code first.";
 
+    return;
   }
 
-  catch (error) {
+  runBtn.disabled = true;
+  runBtn.textContent = "Running...";
+
+  outputConsole.textContent =
+    "Loading Python runtime...";
+
+  try {
+
+    const output =
+      await executePython(code);
+
+    outputConsole.textContent =
+      output;
+
+  } catch (error) {
 
     outputConsole.textContent =
       "Runtime Error:\n\n"
       +
       error.message;
 
+  } finally {
+
+    runBtn.disabled = false;
+    runBtn.textContent = "Run";
   }
-
-  finally {
-
-    runBtn.disabled =
-      false;
-
-
-    runBtn.textContent =
-      "Run";
-
-  }
-
 }
 
 
@@ -893,302 +966,118 @@ runBtn.addEventListener(
 
 
 /* =========================================================
-   VISUALIZER RESET
-========================================================= */
-
-function resetVisualizer() {
-
-  stages.forEach(
-    stage => {
-
-      stage.classList.remove(
-        "running",
-        "done",
-        "error"
-      );
-
-
-      const status =
-        stage.querySelector(
-          ".stage-top b"
-        );
-
-
-      if (status) {
-
-        status.textContent =
-          "Waiting";
-
-      }
-
-    }
-  );
-
-
-  stageOutputs.forEach(
-    output => {
-
-      output.textContent =
-        "—";
-
-    }
-  );
-
-
-  visualizerSubtitle.textContent =
-    "Backend-powered Python compiler visualization";
-
-}
-
-
-/* =========================================================
-   STAGE HELPERS
-========================================================= */
-
-function setStageRunning(
-  stage,
-  output,
-  message = "Processing..."
-) {
-
-  stage.classList.remove(
-    "done",
-    "error"
-  );
-
-
-  stage.classList.add(
-    "running"
-  );
-
-
-  const status =
-    stage.querySelector(
-      ".stage-top b"
-    );
-
-
-  if (status) {
-
-    status.textContent =
-      "Processing";
-
-  }
-
-
-  output.textContent =
-    message;
-
-}
-
-
-function setStageDone(
-  stage,
-  output,
-  content
-) {
-
-  stage.classList.remove(
-    "running",
-    "error"
-  );
-
-
-  stage.classList.add(
-    "done"
-  );
-
-
-  const status =
-    stage.querySelector(
-      ".stage-top b"
-    );
-
-
-  if (status) {
-
-    status.textContent =
-      "Completed";
-
-  }
-
-
-  output.textContent =
-    content ?? "";
-
-}
-
-
-function setStageError(
-  stage,
-  output,
-  content
-) {
-
-  stage.classList.remove(
-    "running",
-    "done"
-  );
-
-
-  stage.classList.add(
-    "error"
-  );
-
-
-  const status =
-    stage.querySelector(
-      ".stage-top b"
-    );
-
-
-  if (status) {
-
-    status.textContent =
-      "Error";
-
-  }
-
-
-  output.textContent =
-    content;
-
-}
-
-
-/* =========================================================
-   VISUALIZE
+   VISUALIZER
 ========================================================= */
 
 async function visualizeCompiler() {
 
-  showVisualizerTab();
+  showVisualizer();
 
-
-  resetVisualizer();
-
+  resetStages();
 
   const code =
     codeEditor.value;
 
+  if (!code.trim()) {
 
-  if (
-    !code.trim()
-  ) {
-
-    setStageError(
-      stageSource,
-      sourceOutput,
+    stageError(
+      0,
       "Please write Python code first."
     );
 
-
     return;
-
   }
 
-
-  if (
-    IS_GITHUB_PAGES
-    &&
-    RENDER_BACKEND_URL.includes(
-      "YOUR-RENDER-URL"
-    )
-  ) {
-
-    setStageError(
-
-      stageLexical,
-
-      lexicalOutput,
-
-      "Render backend URL has not been added yet."
-
-    );
-
-
-    return;
-
-  }
-
-
-  visualizeBtn.disabled =
-    true;
-
-
+  visualizeBtn.disabled = true;
   visualizeBtn.textContent =
     "Visualizing...";
 
-
   try {
 
-    setStageRunning(
-      stageSource,
-      sourceOutput
+    /* 01 SOURCE */
+
+    stageRunning(
+      0
     );
 
-
-    setStageDone(
-      stageSource,
-      sourceOutput,
+    stageDone(
+      0,
       code
     );
 
 
-    setStageRunning(
-      stageLexical,
-      lexicalOutput,
-      "Sending source code to backend..."
+    /* 02 SEND TO BACKEND */
+
+    stageRunning(
+      1,
+      "Sending source code to Vercel backend..."
     );
 
 
     const response =
       await fetch(
-
-        apiUrl(
-          "/compile"
-        ),
-
+        apiUrl("/api/compile"),
         {
-
-          method:
-            "POST",
+          method: "POST",
 
           headers: {
-
             "Content-Type":
               "application/json"
-
           },
 
           body:
             JSON.stringify({
-
-              language:
-                "python",
-
-              code:
-                code
-
+              language: "python",
+              code: code
             })
-
         }
-
       );
+
+
+    /*
+       Important:
+       If Vercel sends an HTML 404 page,
+       do NOT immediately run response.json().
+    */
+
+    const contentType =
+      response.headers.get(
+        "content-type"
+      ) || "";
+
+
+    if (
+      !contentType.includes(
+        "application/json"
+      )
+    ) {
+
+      const text =
+        await response.text();
+
+      throw new Error(
+        `API did not return JSON. HTTP ${response.status}. ` +
+        `Check /api/compile on Vercel. ` +
+        text.slice(0, 120)
+      );
+    }
 
 
     const data =
       await response.json();
 
 
-    setStageDone(
-      stageLexical,
-      lexicalOutput,
+    /* 02 LEXICAL */
+
+    stageDone(
+      1,
       formatTokens(
         data.lexical_analysis
       )
     );
 
+
+    /* SYNTAX ERROR */
 
     if (
       data.syntax_analysis
@@ -1196,29 +1085,22 @@ async function visualizeCompiler() {
       data.syntax_analysis.valid === false
     ) {
 
-      setStageError(
-
-        stageSyntax,
-
-        syntaxOutput,
-
+      stageError(
+        2,
         [
           "Syntax Error",
+          "============",
           "",
           data.syntax_analysis.message
-            || "",
+          ||
+          "Invalid syntax",
           "",
           `Line: ${data.syntax_analysis.line ?? "Unknown"}`,
           `Column: ${data.syntax_analysis.column ?? "Unknown"}`
-        ].join(
-          "\n"
-        )
-
+        ].join("\n")
       );
 
-
       return;
-
     }
 
 
@@ -1227,211 +1109,208 @@ async function visualizeCompiler() {
       throw new Error(
         data.message
         ||
-        "Backend error"
+        `Backend error ${response.status}`
       );
-
     }
 
 
-    setStageDone(
+    /* 03 SYNTAX */
 
-      stageSyntax,
-
-      syntaxOutput,
-
+    stageDone(
+      2,
       [
         "Syntax Valid: Yes",
         "",
         data.syntax_analysis?.message
         ||
         "Syntax analysis completed."
-      ].join(
-        "\n"
-      )
-
+      ].join("\n")
     );
 
 
-    setStageDone(
-      stageAst,
-      astOutput,
+    /* 04 AST */
+
+    stageDone(
+      3,
       data.ast_tree
       ||
       "No AST generated."
     );
 
 
-    setStageDone(
+    /* 05 SEMANTIC */
 
-      stageSemantic,
-
-      semanticOutput,
-
+    stageDone(
+      4,
       formatSemantic(
         data.semantic_analysis
       )
-
     );
 
 
-    setStageDone(
+    /* 06 SYMBOL TABLE */
 
-      stageSymbol,
-
-      symbolOutput,
-
+    stageDone(
+      5,
       formatSymbolTable(
         data.symbol_table
       )
-
     );
 
 
-    setStageDone(
+    /* 07 INTERMEDIATE CODE */
 
-      stageIntermediate,
-
-      intermediateOutput,
-
-      data.intermediate_code_text
-      ||
-      (
-        data.intermediate_code
-          || []
-      ).join(
-        "\n"
-      )
-
+    stageDone(
+      6,
+      [
+        "Three Address Code / Educational IR",
+        "===================================",
+        "",
+        data.intermediate_code_text
+        ||
+        (
+          Array.isArray(
+            data.intermediate_code
+          )
+            ? data.intermediate_code.join("\n")
+            : "No intermediate code generated."
+        )
+      ].join("\n")
     );
 
 
-    setStageDone(
+    /* 08 OPTIMIZATION */
 
-      stageOptimization,
-
-      optimizationOutput,
-
+    stageDone(
+      7,
       formatOptimization(
         data.code_optimization,
         data.optimized_code
       )
-
     );
 
 
-    setStageDone(
+    /* 09 TARGET CODE */
 
-      stageTarget,
-
-      targetOutput,
-
+    stageDone(
+      8,
       formatTargetCode(
         data.target_code
       )
-
     );
 
 
-    setStageDone(
+    /* 10 BINARY */
 
-      stageBinary,
-
-      binaryOutput,
-
+    stageDone(
+      9,
       formatBinaryCode(
         data.binary_code
       )
-
     );
 
 
-    const executionText =
-      await runForVisualizer(
+    /* 11 EXECUTION */
+
+    stageRunning(
+      10,
+      "Executing with Pyodide..."
+    );
+
+
+    const output =
+      await executePython(
         code
       );
 
 
-    setStageDone(
-
-      stageExecution,
-
-      executionOutput,
-
-      executionText
-
+    stageDone(
+      10,
+      [
+        "EXECUTION",
+        "=========",
+        "",
+        "Runtime: Pyodide",
+        "",
+        "FINAL OUTPUT",
+        "============",
+        "",
+        output
+      ].join("\n")
     );
 
 
     visualizerSubtitle.textContent =
       "Compiler pipeline completed successfully";
 
-  }
 
-  catch (error) {
+    backendStatus.textContent =
+      "Backend Online";
 
-    console.error(
-      error
+    backendStatus.classList.remove(
+      "bad"
     );
 
+    backendStatus.classList.add(
+      "ok"
+    );
 
-    const current =
-      stages.find(
+  } catch (error) {
+
+    console.error(error);
+
+    const runningIndex =
+      stages.findIndex(
         stage =>
-          stage.classList.contains(
+          stage.el.classList.contains(
             "running"
           )
       );
 
 
-    if (current) {
+    if (runningIndex !== -1) {
 
-      const index =
-        stages.indexOf(
-          current
-        );
-
-
-      setStageError(
-
-        current,
-
-        stageOutputs[index],
-
+      stageError(
+        runningIndex,
         "Backend connection failed.\n\n"
         +
         error.message
-
       );
 
+    } else {
+
+      stageError(
+        1,
+        "Backend connection failed.\n\n"
+        +
+        error.message
+      );
     }
 
 
     backendStatus.textContent =
       "Backend Offline";
 
-
     backendStatus.classList.remove(
       "ok"
     );
-
 
     backendStatus.classList.add(
       "bad"
     );
 
-  }
 
-  finally {
+    visualizerSubtitle.textContent =
+      "Compiler pipeline stopped";
+
+  } finally {
 
     visualizeBtn.disabled =
       false;
 
-
     visualizeBtn.textContent =
       "Visualize";
-
   }
-
 }
 
 
@@ -1442,613 +1321,31 @@ visualizeBtn.addEventListener(
 
 
 /* =========================================================
-   FORMAT TOKENS
+   CLEAR
 ========================================================= */
 
-function formatTokens(
-  tokens
-) {
+clearBtn.addEventListener(
+  "click",
+  () => {
 
-  if (
-    !Array.isArray(tokens)
-    ||
-    !tokens.length
-  ) {
+    codeEditor.value = "";
 
-    return "No tokens generated.";
+    programInput.value = "";
 
+    outputConsole.textContent =
+      "Ready. Click Run.";
+
+    updateLineNumbers();
+
+    resetStages();
+
+    codeEditor.focus();
   }
-
-
-  const lines = [
-
-    "TYPE            VALUE             POSITION",
-
-    "---------------------------------------------------"
-
-  ];
-
-
-  tokens.forEach(
-    item => {
-
-      const type =
-        String(
-          item.type ?? ""
-        )
-        .padEnd(
-          16
-        );
-
-
-      let value =
-        String(
-          item.value ?? ""
-        );
-
-
-      if (!value) {
-
-        value =
-          "[empty]";
-
-      }
-
-
-      value =
-        value.padEnd(
-          18
-        );
-
-
-      lines.push(
-
-        `${type}${value}Line ${item.line}, Col ${item.column}`
-
-      );
-
-    }
-  );
-
-
-  return lines.join(
-    "\n"
-  );
-
-}
+);
 
 
 /* =========================================================
-   FORMAT SEMANTIC
-========================================================= */
-
-function formatSemantic(
-  semantic
-) {
-
-  if (!semantic) {
-
-    return "No semantic information.";
-
-  }
-
-
-  const lines = [];
-
-
-  lines.push(
-
-    `Valid: ${semantic.valid ? "Yes" : "No"}`
-
-  );
-
-
-  lines.push(
-    ""
-  );
-
-
-  lines.push(
-    "Defined:"
-  );
-
-
-  lines.push(
-
-    semantic.defined_variables?.join(
-      ", "
-    )
-    ||
-    "None"
-
-  );
-
-
-  lines.push(
-    ""
-  );
-
-
-  lines.push(
-    "Used:"
-  );
-
-
-  lines.push(
-
-    semantic.used_variables?.join(
-      ", "
-    )
-    ||
-    "None"
-
-  );
-
-
-  lines.push(
-    ""
-  );
-
-
-  lines.push(
-    "Undefined:"
-  );
-
-
-  lines.push(
-
-    semantic.undefined_variables?.join(
-      ", "
-    )
-    ||
-    "None"
-
-  );
-
-
-  if (
-    semantic.messages?.length
-  ) {
-
-    lines.push(
-      ""
-    );
-
-
-    semantic.messages.forEach(
-      message => {
-
-        lines.push(
-          "• " + message
-        );
-
-      }
-    );
-
-  }
-
-
-  return lines.join(
-    "\n"
-  );
-
-}
-
-
-/* =========================================================
-   SYMBOL TABLE
-========================================================= */
-
-function formatSymbolTable(
-  symbols
-) {
-
-  if (
-    !Array.isArray(symbols)
-    ||
-    !symbols.length
-  ) {
-
-    return "No symbols found.";
-
-  }
-
-
-  const lines = [
-
-    "NAME          TYPE                  VALUE",
-
-    "------------------------------------------------"
-
-  ];
-
-
-  symbols.forEach(
-    symbol => {
-
-      const name =
-        String(
-          symbol.name ?? ""
-        )
-        .padEnd(
-          14
-        );
-
-
-      const type =
-        String(
-          symbol.type ?? ""
-        )
-        .padEnd(
-          22
-        );
-
-
-      lines.push(
-
-        `${name}${type}${symbol.value ?? ""}`
-
-      );
-
-    }
-  );
-
-
-  return lines.join(
-    "\n"
-  );
-
-}
-
-
-/* =========================================================
-   OPTIMIZATION
-========================================================= */
-
-function formatOptimization(
-  optimization,
-  optimizedCode
-) {
-
-  const lines = [
-
-    "OPTIMIZATION",
-    "============",
-    ""
-
-  ];
-
-
-  if (
-    optimization?.applied_steps
-  ) {
-
-    optimization.applied_steps.forEach(
-      step => {
-
-        lines.push(
-          "✓ " + step
-        );
-
-      }
-    );
-
-  }
-
-
-  lines.push(
-    ""
-  );
-
-
-  lines.push(
-    "OPTIMIZED SOURCE"
-  );
-
-
-  lines.push(
-    "================"
-  );
-
-
-  lines.push(
-    ""
-  );
-
-
-  lines.push(
-    optimizedCode
-    ||
-    "No optimized source."
-  );
-
-
-  return lines.join(
-    "\n"
-  );
-
-}
-
-
-/* =========================================================
-   TARGET CODE
-========================================================= */
-
-function formatTargetCode(
-  target
-) {
-
-  if (!target) {
-
-    return "No target code.";
-
-  }
-
-
-  if (
-    target.disassembly
-  ) {
-
-    return (
-
-      "Type: "
-      +
-      (
-        target.type
-        ||
-        "CPython Bytecode"
-      )
-
-      +
-
-      "\n\n"
-
-      +
-
-      target.disassembly
-
-    );
-
-  }
-
-
-  return JSON.stringify(
-    target,
-    null,
-    2
-  );
-
-}
-
-
-/* =========================================================
-   BINARY CODE
-========================================================= */
-
-function formatBinaryCode(
-  binary
-) {
-
-  if (!binary) {
-
-    return "No binary representation.";
-
-  }
-
-
-  const lines = [
-
-    "BINARY REPRESENTATION",
-
-    "=====================",
-
-    "",
-
-    `Type: ${binary.type || ""}`,
-
-    `Total Bytes: ${binary.byte_count ?? ""}`,
-
-    "",
-
-    "BINARY",
-
-    "======",
-
-    "",
-
-    binary.binary
-    ||
-    "Binary unavailable.",
-
-    "",
-
-    "HEX",
-
-    "===",
-
-    "",
-
-    binary.hex
-    ||
-    "Hex unavailable."
-
-  ];
-
-
-  if (
-    binary.note
-  ) {
-
-    lines.push(
-      ""
-    );
-
-
-    lines.push(
-      "NOTE"
-    );
-
-
-    lines.push(
-      "===="
-    );
-
-
-    lines.push(
-      ""
-    );
-
-
-    lines.push(
-      binary.note
-    );
-
-  }
-
-
-  return lines.join(
-    "\n"
-  );
-
-}
-
-
-/* =========================================================
-   VISUALIZER EXECUTION
-========================================================= */
-
-async function runForVisualizer(
-  code
-) {
-
-  try {
-
-    const runtime =
-      await initializePyodide();
-
-
-    runtime.globals.set(
-      "__visual_code",
-      code
-    );
-
-
-    runtime.globals.set(
-      "__visual_input",
-      programInput.value
-    );
-
-
-    const result =
-      await runtime.runPythonAsync(`
-import sys
-import io
-import traceback
-import contextlib
-
-_out = io.StringIO()
-_err = io.StringIO()
-_in = io.StringIO(__visual_input)
-
-_old_stdin = sys.stdin
-
-try:
-
-    sys.stdin = _in
-
-    with contextlib.redirect_stdout(_out), contextlib.redirect_stderr(_err):
-
-        try:
-
-            exec(
-                compile(
-                    __visual_code,
-                    "<main.py>",
-                    "exec"
-                ),
-                {
-                    "__name__":
-                        "__main__"
-                }
-            )
-
-        except Exception:
-
-            traceback.print_exc()
-
-finally:
-
-    sys.stdin = _old_stdin
-
-
-_text = _out.getvalue()
-
-_error = _err.getvalue()
-
-
-if _error:
-
-    if _text:
-
-        _text += "\\n"
-
-    _text += _error
-
-
-_text
-      `);
-
-
-    const output =
-      String(
-        result ?? ""
-      );
-
-
-    return [
-
-      "EXECUTION",
-      "=========",
-
-      "",
-
-      "Runtime: Pyodide",
-
-      "",
-
-      "FINAL OUTPUT",
-
-      "============",
-
-      "",
-
-      output.trim()
-        ? output
-        : "Program finished with no output."
-
-    ].join(
-      "\n"
-    );
-
-  }
-
-  catch (error) {
-
-    return (
-
-      "Execution Error\n\n"
-      +
-      error.message
-
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   CTRL + ENTER
+   CTRL + ENTER = RUN
 ========================================================= */
 
 codeEditor.addEventListener(
@@ -2063,11 +1360,8 @@ codeEditor.addEventListener(
 
       event.preventDefault();
 
-
       runPython();
-
     }
-
   }
 );
 
@@ -2076,20 +1370,16 @@ codeEditor.addEventListener(
    INITIALIZE
 ========================================================= */
 
-function initializeApp() {
+function init() {
 
   loadTheme();
 
-
   updateLineNumbers();
 
-
-  resetVisualizer();
-
+  resetStages();
 
   checkBackend();
-
 }
 
 
-initializeApp();
+init();
