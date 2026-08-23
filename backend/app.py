@@ -1668,7 +1668,7 @@ def generate_binary_code(
 # =========================================================
 
 @app.route(
-    "/compile",
+    "/api/compile",
     methods=["POST"]
 )
 def compile_code():
