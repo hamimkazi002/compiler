@@ -5,7 +5,7 @@
 
 
 /* =========================================================
-   BACKEND CONFIG
+   BACKEND
 ========================================================= */
 
 const VERCEL_BACKEND_URL =
@@ -13,7 +13,9 @@ const VERCEL_BACKEND_URL =
 
 
 const IS_GITHUB_PAGES =
-  window.location.hostname.endsWith("github.io");
+  window.location.hostname.endsWith(
+    "github.io"
+  );
 
 
 const API_BASE_URL =
@@ -23,7 +25,9 @@ const API_BASE_URL =
 
 
 function apiUrl(path) {
+
   return API_BASE_URL + path;
+
 }
 
 
@@ -32,97 +36,179 @@ function apiUrl(path) {
 ========================================================= */
 
 const codeEditor =
-  document.getElementById("codeEditor");
+  document.getElementById(
+    "codeEditor"
+  );
+
 
 const lineNumbers =
-  document.getElementById("lineNumbers");
+  document.getElementById(
+    "lineNumbers"
+  );
 
-const programInput =
-  document.getElementById("programInput");
 
 const outputConsole =
-  document.getElementById("outputConsole");
+  document.getElementById(
+    "outputConsole"
+  );
+
 
 const runBtn =
-  document.getElementById("runBtn");
+  document.getElementById(
+    "runBtn"
+  );
+
 
 const visualizeBtn =
-  document.getElementById("visualizeBtn");
+  document.getElementById(
+    "visualizeBtn"
+  );
+
 
 const clearBtn =
-  document.getElementById("clearBtn");
+  document.getElementById(
+    "clearBtn"
+  );
+
 
 const themeBtn =
-  document.getElementById("themeBtn");
+  document.getElementById(
+    "themeBtn"
+  );
+
 
 const backendStatus =
-  document.getElementById("backendStatus");
+  document.getElementById(
+    "backendStatus"
+  );
+
 
 const outputTab =
-  document.getElementById("outputTab");
+  document.getElementById(
+    "outputTab"
+  );
+
 
 const visualizerTab =
-  document.getElementById("visualizerTab");
+  document.getElementById(
+    "visualizerTab"
+  );
+
 
 const outputView =
-  document.getElementById("outputView");
+  document.getElementById(
+    "outputView"
+  );
+
 
 const visualizerView =
-  document.getElementById("visualizerView");
+  document.getElementById(
+    "visualizerView"
+  );
+
 
 const visualizerSubtitle =
-  document.getElementById("visualizerSubtitle");
+  document.getElementById(
+    "visualizerSubtitle"
+  );
 
 
 /* =========================================================
-   STAGES
+   7 COMPILER STAGES
 ========================================================= */
 
 const stages = [
+
   {
-    el: document.getElementById("stageSource"),
-    output: document.getElementById("sourceOutput")
+    el:
+      document.getElementById(
+        "stageLexical"
+      ),
+
+    output:
+      document.getElementById(
+        "lexicalOutput"
+      )
   },
+
+
   {
-    el: document.getElementById("stageLexical"),
-    output: document.getElementById("lexicalOutput")
+    el:
+      document.getElementById(
+        "stageSyntax"
+      ),
+
+    output:
+      document.getElementById(
+        "syntaxOutput"
+      )
   },
+
+
   {
-    el: document.getElementById("stageSyntax"),
-    output: document.getElementById("syntaxOutput")
+    el:
+      document.getElementById(
+        "stageSemantic"
+      ),
+
+    output:
+      document.getElementById(
+        "semanticOutput"
+      )
   },
+
+
   {
-    el: document.getElementById("stageAst"),
-    output: document.getElementById("astOutput")
+    el:
+      document.getElementById(
+        "stageIntermediate"
+      ),
+
+    output:
+      document.getElementById(
+        "intermediateOutput"
+      )
   },
+
+
   {
-    el: document.getElementById("stageSemantic"),
-    output: document.getElementById("semanticOutput")
+    el:
+      document.getElementById(
+        "stageOptimization"
+      ),
+
+    output:
+      document.getElementById(
+        "optimizationOutput"
+      )
   },
+
+
   {
-    el: document.getElementById("stageSymbol"),
-    output: document.getElementById("symbolOutput")
+    el:
+      document.getElementById(
+        "stageTarget"
+      ),
+
+    output:
+      document.getElementById(
+        "targetOutput"
+      )
   },
+
+
   {
-    el: document.getElementById("stageIntermediate"),
-    output: document.getElementById("intermediateOutput")
-  },
-  {
-    el: document.getElementById("stageOptimization"),
-    output: document.getElementById("optimizationOutput")
-  },
-  {
-    el: document.getElementById("stageTarget"),
-    output: document.getElementById("targetOutput")
-  },
-  {
-    el: document.getElementById("stageBinary"),
-    output: document.getElementById("binaryOutput")
-  },
-  {
-    el: document.getElementById("stageExecution"),
-    output: document.getElementById("executionOutput")
+    el:
+      document.getElementById(
+        "stageBinary"
+      ),
+
+    output:
+      document.getElementById(
+        "binaryOutput"
+      )
   }
+
 ];
 
 
@@ -131,22 +217,33 @@ const stages = [
 ========================================================= */
 
 let pyodide = null;
+
 let pyodidePromise = null;
 
 
 async function getPyodide() {
 
   if (pyodide) {
+
     return pyodide;
+
   }
+
 
   if (!pyodidePromise) {
-    pyodidePromise = loadPyodide();
+
+    pyodidePromise =
+      loadPyodide();
+
   }
 
-  pyodide = await pyodidePromise;
+
+  pyodide =
+    await pyodidePromise;
+
 
   return pyodide;
+
 }
 
 
@@ -157,31 +254,52 @@ async function getPyodide() {
 function updateLineNumbers() {
 
   const totalLines =
-    codeEditor.value.split("\n").length;
+    codeEditor
+      .value
+      .split("\n")
+      .length;
+
 
   const numbers = [];
 
-  for (let i = 1; i <= totalLines; i++) {
+
+  for (
+    let i = 1;
+    i <= totalLines;
+    i++
+  ) {
+
     numbers.push(i);
+
   }
+
 
   lineNumbers.textContent =
     numbers.join("\n");
+
 }
 
 
 codeEditor.addEventListener(
+
   "input",
+
   updateLineNumbers
+
 );
 
 
 codeEditor.addEventListener(
+
   "scroll",
+
   () => {
+
     lineNumbers.scrollTop =
       codeEditor.scrollTop;
+
   }
+
 );
 
 
@@ -190,36 +308,61 @@ codeEditor.addEventListener(
 ========================================================= */
 
 codeEditor.addEventListener(
+
   "keydown",
+
   event => {
 
-    if (event.key !== "Tab") {
+    if (
+      event.key !== "Tab"
+    ) {
+
       return;
+
     }
 
+
     event.preventDefault();
+
 
     const start =
       codeEditor.selectionStart;
 
+
     const end =
       codeEditor.selectionEnd;
 
+
     codeEditor.value =
-      codeEditor.value.substring(0, start)
+
+      codeEditor.value.substring(
+        0,
+        start
+      )
+
       +
+
       "    "
+
       +
-      codeEditor.value.substring(end);
+
+      codeEditor.value.substring(
+        end
+      );
+
 
     codeEditor.selectionStart =
       start + 4;
 
+
     codeEditor.selectionEnd =
       start + 4;
 
+
     updateLineNumbers();
+
   }
+
 );
 
 
@@ -229,33 +372,67 @@ codeEditor.addEventListener(
 
 function showOutput() {
 
-  outputTab.classList.add("active");
-  visualizerTab.classList.remove("active");
+  outputTab.classList.add(
+    "active"
+  );
 
-  outputView.classList.add("active");
-  visualizerView.classList.remove("active");
+
+  visualizerTab.classList.remove(
+    "active"
+  );
+
+
+  outputView.classList.add(
+    "active"
+  );
+
+
+  visualizerView.classList.remove(
+    "active"
+  );
+
 }
 
 
 function showVisualizer() {
 
-  visualizerTab.classList.add("active");
-  outputTab.classList.remove("active");
+  visualizerTab.classList.add(
+    "active"
+  );
 
-  visualizerView.classList.add("active");
-  outputView.classList.remove("active");
+
+  outputTab.classList.remove(
+    "active"
+  );
+
+
+  visualizerView.classList.add(
+    "active"
+  );
+
+
+  outputView.classList.remove(
+    "active"
+  );
+
 }
 
 
 outputTab.addEventListener(
+
   "click",
+
   showOutput
+
 );
 
 
 visualizerTab.addEventListener(
+
   "click",
+
   showVisualizer
+
 );
 
 
@@ -270,19 +447,30 @@ function loadTheme() {
       "hamimCompilerTheme"
     );
 
-  if (saved === "light") {
-    document.body.classList.add("light");
+
+  if (
+    saved === "light"
+  ) {
+
+    document.body.classList.add(
+      "light"
+    );
+
   }
+
 }
 
 
 themeBtn.addEventListener(
+
   "click",
+
   () => {
 
     document.body.classList.toggle(
       "light"
     );
+
 
     const theme =
       document.body.classList.contains(
@@ -291,11 +479,14 @@ themeBtn.addEventListener(
         ? "light"
         : "dark";
 
+
     localStorage.setItem(
       "hamimCompilerTheme",
       theme
     );
+
   }
+
 );
 
 
@@ -308,32 +499,48 @@ async function checkBackend() {
   backendStatus.textContent =
     "Backend checking...";
 
+
   backendStatus.classList.remove(
     "ok",
     "bad"
   );
 
+
   try {
 
     const response =
       await fetch(
-        apiUrl("/api/status"),
+
+        apiUrl(
+          "/api/status"
+        ),
+
         {
-          cache: "no-store"
+          cache:
+            "no-store"
         }
+
       );
 
-    if (!response.ok) {
+
+    if (
+      !response.ok
+    ) {
 
       throw new Error(
         `HTTP ${response.status}`
       );
+
     }
+
 
     const contentType =
       response.headers.get(
         "content-type"
-      ) || "";
+      )
+      ||
+      "";
+
 
     if (
       !contentType.includes(
@@ -342,51 +549,67 @@ async function checkBackend() {
     ) {
 
       throw new Error(
-        "Backend returned HTML instead of JSON"
+        "Backend returned invalid response"
       );
+
     }
+
 
     const data =
       await response.json();
 
-    if (data.status !== "success") {
+
+    if (
+      data.status !==
+      "success"
+    ) {
 
       throw new Error(
         "Backend unavailable"
       );
+
     }
+
 
     backendStatus.textContent =
       "Backend Online";
+
 
     backendStatus.classList.add(
       "ok"
     );
 
-  } catch (error) {
+  }
+
+  catch (error) {
 
     console.error(
       "Backend status error:",
       error
     );
 
+
     backendStatus.textContent =
       "Backend Offline";
+
 
     backendStatus.classList.add(
       "bad"
     );
+
   }
+
 }
 
 
 /* =========================================================
-   STAGE HELPERS
+   RESET STAGES
 ========================================================= */
 
 function resetStages() {
 
   stages.forEach(
+
     stage => {
 
       stage.el.classList.remove(
@@ -395,25 +618,38 @@ function resetStages() {
         "error"
       );
 
+
       const status =
         stage.el.querySelector(
           ".stage-top b"
         );
 
+
       if (status) {
+
         status.textContent =
           "Waiting";
+
       }
+
 
       stage.output.textContent =
         "—";
+
     }
+
   );
 
+
   visualizerSubtitle.textContent =
-    "Backend-powered Python compiler visualization";
+    "Python compiler analysis pipeline";
+
 }
 
+
+/* =========================================================
+   STAGE RUNNING
+========================================================= */
 
 function stageRunning(
   index,
@@ -423,29 +659,41 @@ function stageRunning(
   const stage =
     stages[index];
 
+
   stage.el.classList.remove(
     "done",
     "error"
   );
 
+
   stage.el.classList.add(
     "running"
   );
+
 
   const status =
     stage.el.querySelector(
       ".stage-top b"
     );
 
+
   if (status) {
+
     status.textContent =
       "Processing";
+
   }
+
 
   stage.output.textContent =
     text;
+
 }
 
+
+/* =========================================================
+   STAGE DONE
+========================================================= */
 
 function stageDone(
   index,
@@ -455,29 +703,41 @@ function stageDone(
   const stage =
     stages[index];
 
+
   stage.el.classList.remove(
     "running",
     "error"
   );
 
+
   stage.el.classList.add(
     "done"
   );
+
 
   const status =
     stage.el.querySelector(
       ".stage-top b"
     );
 
+
   if (status) {
+
     status.textContent =
       "Completed";
+
   }
+
 
   stage.output.textContent =
     text ?? "";
+
 }
 
+
+/* =========================================================
+   STAGE ERROR
+========================================================= */
 
 function stageError(
   index,
@@ -487,32 +747,40 @@ function stageError(
   const stage =
     stages[index];
 
+
   stage.el.classList.remove(
     "running",
     "done"
   );
 
+
   stage.el.classList.add(
     "error"
   );
+
 
   const status =
     stage.el.querySelector(
       ".stage-top b"
     );
 
+
   if (status) {
+
     status.textContent =
       "Error";
+
   }
+
 
   stage.output.textContent =
     text;
+
 }
 
 
 /* =========================================================
-   FORMAT TOKENS
+   FORMAT LEXICAL TOKENS
 ========================================================= */
 
 function formatTokens(tokens) {
@@ -522,154 +790,224 @@ function formatTokens(tokens) {
     ||
     tokens.length === 0
   ) {
+
     return "No tokens generated.";
+
   }
 
+
   const lines = [
+
     "TYPE            VALUE             POSITION",
+
     "------------------------------------------------------"
+
   ];
 
-  for (const item of tokens) {
+
+  for (
+    const item
+    of tokens
+  ) {
 
     const type =
       String(
         item.type ?? ""
-      ).padEnd(16);
+      )
+      .padEnd(16);
+
 
     let value =
       String(
         item.value ?? ""
       );
 
+
     if (!value) {
-      value = "[empty]";
+
+      value =
+        "[empty]";
+
     }
+
 
     value =
       value.padEnd(18);
 
+
     lines.push(
+
       `${type}${value}Line ${item.line}, Col ${item.column}`
+
     );
+
   }
 
-  return lines.join("\n");
+
+  return lines.join(
+    "\n"
+  );
+
 }
 
 
 /* =========================================================
-   FORMAT SEMANTIC
+   FORMAT SEMANTIC ANALYSIS
 ========================================================= */
 
 function formatSemantic(data) {
 
   if (!data) {
+
     return "No semantic information.";
+
   }
+
 
   const lines = [];
 
+
   lines.push(
+
     `Valid: ${data.valid ? "Yes" : "No"}`
+
   );
+
 
   lines.push("");
 
-  lines.push("Defined Variables:");
+
   lines.push(
-    data.defined_variables?.join(", ")
-    || "None"
+    "Defined Variables:"
   );
+
+
+  lines.push(
+
+    data.defined_variables
+      ?.join(", ")
+    ||
+    "None"
+
+  );
+
 
   lines.push("");
 
-  lines.push("Used Variables:");
+
   lines.push(
-    data.used_variables?.join(", ")
-    || "None"
+    "Used Variables:"
   );
+
+
+  lines.push(
+
+    data.used_variables
+      ?.join(", ")
+    ||
+    "None"
+
+  );
+
 
   lines.push("");
 
-  lines.push("Undefined Variables:");
+
   lines.push(
-    data.undefined_variables?.join(", ")
-    || "None"
+    "Undefined Variables:"
   );
+
+
+  lines.push(
+
+    data.undefined_variables
+      ?.join(", ")
+    ||
+    "None"
+
+  );
+
 
   if (
-    Array.isArray(data.messages)
+    Array.isArray(
+      data.messages
+    )
     &&
     data.messages.length
   ) {
 
     lines.push("");
-    lines.push("Messages:");
+
+    lines.push(
+      "Messages:"
+    );
+
 
     data.messages.forEach(
+
       message => {
+
         lines.push(
           "• " + message
         );
+
       }
+
     );
+
   }
 
-  return lines.join("\n");
-}
 
-
-/* =========================================================
-   SYMBOL TABLE
-========================================================= */
-
-function formatSymbolTable(symbols) {
-
-  if (
-    !Array.isArray(symbols)
-    ||
-    symbols.length === 0
-  ) {
-
-    return "No symbols found.";
-  }
-
-  const lines = [
-    "NAME            TYPE                 VALUE",
-    "---------------------------------------------------------"
-  ];
-
-  symbols.forEach(
-    symbol => {
-
-      const name =
-        String(
-          symbol.name ?? ""
-        ).padEnd(16);
-
-      const type =
-        String(
-          symbol.type ?? ""
-        ).padEnd(21);
-
-      const value =
-        String(
-          symbol.value ?? ""
-        );
-
-      lines.push(
-        `${name}${type}${value}`
-      );
-    }
+  return lines.join(
+    "\n"
   );
 
-  return lines.join("\n");
 }
 
 
 /* =========================================================
-   OPTIMIZATION
+   FORMAT INTERMEDIATE CODE
+========================================================= */
+
+function formatIntermediate(data) {
+
+  return [
+
+    "INTERMEDIATE CODE",
+
+    "=================",
+
+    "",
+
+    "Three Address Code / Educational IR",
+
+    "",
+
+    data.intermediate_code_text
+
+    ||
+
+    (
+      Array.isArray(
+        data.intermediate_code
+      )
+
+        ? data.intermediate_code.join(
+            "\n"
+          )
+
+        : "No intermediate code generated."
+    )
+
+  ].join(
+    "\n"
+  );
+
+}
+
+
+/* =========================================================
+   FORMAT OPTIMIZER
 ========================================================= */
 
 function formatOptimization(
@@ -678,10 +1016,15 @@ function formatOptimization(
 ) {
 
   const lines = [
-    "OPTIMIZATION",
-    "============",
+
+    "CODE OPTIMIZATION",
+
+    "=================",
+
     ""
+
   ];
+
 
   if (
     optimization
@@ -695,128 +1038,238 @@ function formatOptimization(
       "Applied Steps:"
     );
 
-    optimization.applied_steps.forEach(
-      step => {
-        lines.push(
-          "✓ " + step
-        );
-      }
-    );
+
+    optimization
+      .applied_steps
+      .forEach(
+
+        step => {
+
+          lines.push(
+            "✓ " + step
+          );
+
+        }
+
+      );
+
   }
 
+
   lines.push("");
-  lines.push("OPTIMIZED SOURCE");
-  lines.push("================");
-  lines.push("");
+
 
   lines.push(
-    optimizedCode
-    ||
-    "No optimized source."
+    "OPTIMIZED SOURCE"
   );
 
-  return lines.join("\n");
+
+  lines.push(
+    "================"
+  );
+
+
+  lines.push("");
+
+
+  lines.push(
+
+    optimizedCode
+
+    ||
+
+    "No optimized source."
+
+  );
+
+
+  return lines.join(
+    "\n"
+  );
+
 }
 
 
 /* =========================================================
-   TARGET CODE
+   FORMAT CODE GENERATOR
 ========================================================= */
 
-function formatTargetCode(target) {
+function formatTargetCode(
+  target
+) {
 
   if (!target) {
-    return "No target code generated.";
+
+    return "No generated code.";
+
   }
 
-  if (target.status === "error") {
+
+  if (
+    target.status ===
+    "error"
+  ) {
 
     return (
-      "Target Code Error\n\n"
+
+      "Code Generation Error\n\n"
+
       +
+
       (
         target.message
         ||
         "Unknown error"
       )
+
     );
+
   }
 
-  if (target.disassembly) {
+
+  if (
+    target.disassembly
+  ) {
 
     return [
+
+      "CODE GENERATOR",
+
+      "==============",
+
+      "",
+
       `Type: ${target.type || "CPython Bytecode"}`,
+
       "",
-      "DISASSEMBLY",
-      "===========",
+
+      "GENERATED CPYTHON BYTECODE",
+
+      "==========================",
+
       "",
+
       target.disassembly
-    ].join("\n");
+
+    ].join(
+      "\n"
+    );
+
   }
+
 
   return JSON.stringify(
     target,
     null,
     2
   );
+
 }
 
 
 /* =========================================================
-   BINARY
+   FORMAT BINARY
 ========================================================= */
 
-function formatBinaryCode(binary) {
+function formatBinaryCode(
+  binary
+) {
 
   if (!binary) {
+
     return "No binary representation.";
+
   }
 
-  if (binary.status === "error") {
+
+  if (
+    binary.status ===
+    "error"
+  ) {
 
     return (
+
       "Binary Error\n\n"
+
       +
+
       (
         binary.message
         ||
         "Unknown error"
       )
+
     );
+
   }
 
+
   const lines = [
+
     "BINARY REPRESENTATION",
+
     "=====================",
+
     "",
+
     `Type: ${binary.type || ""}`,
+
     `Total Bytes: ${binary.byte_count ?? ""}`,
+
     "",
+
     "BINARY",
+
     "======",
+
     "",
+
     binary.binary
     ||
     "Binary unavailable.",
+
     "",
+
     "HEX",
+
     "===",
+
     "",
+
     binary.hex
     ||
     "Hex unavailable."
+
   ];
 
-  if (binary.note) {
+
+  if (
+    binary.note
+  ) {
 
     lines.push("");
-    lines.push("NOTE");
-    lines.push("====");
+
+    lines.push(
+      "NOTE"
+    );
+
+    lines.push(
+      "===="
+    );
+
     lines.push("");
-    lines.push(binary.note);
+
+    lines.push(
+      binary.note
+    );
+
   }
 
-  return lines.join("\n");
+
+  return lines.join(
+    "\n"
+  );
+
 }
 
 
@@ -824,23 +1277,29 @@ function formatBinaryCode(binary) {
    PYTHON RUNNER
 ========================================================= */
 
-async function executePython(code) {
+async function executePython(
+  code
+) {
 
   const runtime =
     await getPyodide();
+
 
   runtime.globals.set(
     "__hamim_code",
     code
   );
 
+
   runtime.globals.set(
     "__hamim_input",
-    programInput.value
+    ""
   );
+
 
   const result =
     await runtime.runPythonAsync(`
+
 import sys
 import io
 import traceback
@@ -859,7 +1318,11 @@ try:
 
     sys.stdin = _stdin_buffer
 
-    with contextlib.redirect_stdout(_stdout_buffer), contextlib.redirect_stderr(_stderr_buffer):
+    with contextlib.redirect_stdout(
+        _stdout_buffer
+    ), contextlib.redirect_stderr(
+        _stderr_buffer
+    ):
 
         try:
 
@@ -892,22 +1355,29 @@ _error = _stderr_buffer.getvalue()
 if _error:
 
     if _output:
+
         _output += "\\n"
 
     _output += _error
 
 
 _output
-    `);
+
+  `);
+
 
   const output =
     String(
       result ?? ""
     );
 
+
   return output.trim()
+
     ? output
+
     : "Program finished with no output.";
+
 }
 
 
@@ -919,49 +1389,81 @@ async function runPython() {
 
   showOutput();
 
+
   const code =
     codeEditor.value;
 
-  if (!code.trim()) {
+
+  if (
+    !code.trim()
+  ) {
 
     outputConsole.textContent =
       "Please write Python code first.";
 
+
     return;
+
   }
 
-  runBtn.disabled = true;
-  runBtn.textContent = "Running...";
+
+  runBtn.disabled =
+    true;
+
+
+  runBtn.textContent =
+    "Running...";
+
 
   outputConsole.textContent =
     "Loading Python runtime...";
 
+
   try {
 
     const output =
-      await executePython(code);
+      await executePython(
+        code
+      );
+
 
     outputConsole.textContent =
       output;
 
-  } catch (error) {
+  }
+
+  catch (error) {
 
     outputConsole.textContent =
+
       "Runtime Error:\n\n"
+
       +
+
       error.message;
 
-  } finally {
-
-    runBtn.disabled = false;
-    runBtn.textContent = "Run";
   }
+
+  finally {
+
+    runBtn.disabled =
+      false;
+
+
+    runBtn.textContent =
+      "Run";
+
+  }
+
 }
 
 
 runBtn.addEventListener(
+
   "click",
+
   runPython
+
 );
 
 
@@ -973,77 +1475,97 @@ async function visualizeCompiler() {
 
   showVisualizer();
 
+
   resetStages();
+
 
   const code =
     codeEditor.value;
 
-  if (!code.trim()) {
+
+  if (
+    !code.trim()
+  ) {
 
     stageError(
+
       0,
+
       "Please write Python code first."
+
     );
 
+
     return;
+
   }
 
-  visualizeBtn.disabled = true;
+
+  visualizeBtn.disabled =
+    true;
+
+
   visualizeBtn.textContent =
     "Visualizing...";
 
+
   try {
 
-    /* 01 SOURCE */
+
+    /* ===============================================
+       01 LEXICAL ANALYZER
+    =============================================== */
 
     stageRunning(
-      0
-    );
 
-    stageDone(
       0,
-      code
-    );
 
+      "Sending source code to compiler backend..."
 
-    /* 02 SEND TO BACKEND */
-
-    stageRunning(
-      1,
-      "Sending source code to Vercel backend..."
     );
 
 
     const response =
       await fetch(
-        apiUrl("/api/compile"),
+
+        apiUrl(
+          "/api/compile"
+        ),
+
         {
-          method: "POST",
+
+          method:
+            "POST",
 
           headers: {
+
             "Content-Type":
               "application/json"
+
           },
 
           body:
             JSON.stringify({
-              language: "python",
-              code: code
+
+              language:
+                "python",
+
+              code:
+                code
+
             })
+
         }
+
       );
 
-
-    /*
-       Important:
-       If Vercel sends an HTML 404 page,
-       do NOT immediately run response.json().
-    */
 
     const contentType =
       response.headers.get(
         "content-type"
-      ) || "";
+      )
+      ||
+      "";
 
 
     if (
@@ -1055,11 +1577,20 @@ async function visualizeCompiler() {
       const text =
         await response.text();
 
+
       throw new Error(
-        `API did not return JSON. HTTP ${response.status}. ` +
-        `Check /api/compile on Vercel. ` +
-        text.slice(0, 120)
+
+        `API did not return JSON. HTTP ${response.status}. `
+
+        +
+
+        text.slice(
+          0,
+          120
+        )
+
       );
+
     }
 
 
@@ -1067,176 +1598,185 @@ async function visualizeCompiler() {
       await response.json();
 
 
-    /* 02 LEXICAL */
-
     stageDone(
-      1,
+
+      0,
+
       formatTokens(
         data.lexical_analysis
       )
+
     );
 
 
-    /* SYNTAX ERROR */
+    /* ===============================================
+       02 SYNTAX ANALYZER
+    =============================================== */
 
     if (
       data.syntax_analysis
       &&
-      data.syntax_analysis.valid === false
+      data.syntax_analysis.valid
+      === false
     ) {
 
       stageError(
-        2,
+
+        1,
+
         [
-          "Syntax Error",
+
+          "SYNTAX ERROR",
+
           "============",
+
           "",
+
           data.syntax_analysis.message
+
           ||
+
           "Invalid syntax",
+
           "",
+
           `Line: ${data.syntax_analysis.line ?? "Unknown"}`,
+
           `Column: ${data.syntax_analysis.column ?? "Unknown"}`
-        ].join("\n")
+
+        ].join(
+          "\n"
+        )
+
       );
+
+
+      visualizerSubtitle.textContent =
+        "Compiler pipeline stopped at Syntax Analyzer";
+
 
       return;
+
     }
 
 
-    if (!response.ok) {
+    if (
+      !response.ok
+    ) {
 
       throw new Error(
+
         data.message
+
         ||
+
         `Backend error ${response.status}`
+
       );
+
     }
 
 
-    /* 03 SYNTAX */
-
     stageDone(
-      2,
+
+      1,
+
       [
+
         "Syntax Valid: Yes",
+
         "",
-        data.syntax_analysis?.message
+
+        data.syntax_analysis
+          ?.message
+
         ||
+
         "Syntax analysis completed."
-      ].join("\n")
+
+      ].join(
+        "\n"
+      )
+
     );
 
 
-    /* 04 AST */
+    /* ===============================================
+       03 SEMANTIC ANALYZER
+    =============================================== */
 
     stageDone(
-      3,
-      data.ast_tree
-      ||
-      "No AST generated."
-    );
 
+      2,
 
-    /* 05 SEMANTIC */
-
-    stageDone(
-      4,
       formatSemantic(
         data.semantic_analysis
       )
+
     );
 
 
-    /* 06 SYMBOL TABLE */
+    /* ===============================================
+       04 INTERMEDIATE CODE GENERATOR
+    =============================================== */
 
     stageDone(
-      5,
-      formatSymbolTable(
-        data.symbol_table
+
+      3,
+
+      formatIntermediate(
+        data
       )
+
     );
 
 
-    /* 07 INTERMEDIATE CODE */
+    /* ===============================================
+       05 CODE OPTIMIZER
+    =============================================== */
 
     stageDone(
-      6,
-      [
-        "Three Address Code / Educational IR",
-        "===================================",
-        "",
-        data.intermediate_code_text
-        ||
-        (
-          Array.isArray(
-            data.intermediate_code
-          )
-            ? data.intermediate_code.join("\n")
-            : "No intermediate code generated."
-        )
-      ].join("\n")
-    );
 
+      4,
 
-    /* 08 OPTIMIZATION */
-
-    stageDone(
-      7,
       formatOptimization(
+
         data.code_optimization,
+
         data.optimized_code
+
       )
+
     );
 
 
-    /* 09 TARGET CODE */
+    /* ===============================================
+       06 CODE GENERATOR
+    =============================================== */
 
     stageDone(
-      8,
+
+      5,
+
       formatTargetCode(
         data.target_code
       )
+
     );
 
 
-    /* 10 BINARY */
+    /* ===============================================
+       07 BINARY REPRESENTATION
+    =============================================== */
 
     stageDone(
-      9,
+
+      6,
+
       formatBinaryCode(
         data.binary_code
       )
-    );
 
-
-    /* 11 EXECUTION */
-
-    stageRunning(
-      10,
-      "Executing with Pyodide..."
-    );
-
-
-    const output =
-      await executePython(
-        code
-      );
-
-
-    stageDone(
-      10,
-      [
-        "EXECUTION",
-        "=========",
-        "",
-        "Runtime: Pyodide",
-        "",
-        "FINAL OUTPUT",
-        "============",
-        "",
-        output
-      ].join("\n")
     );
 
 
@@ -1247,53 +1787,80 @@ async function visualizeCompiler() {
     backendStatus.textContent =
       "Backend Online";
 
+
     backendStatus.classList.remove(
       "bad"
     );
+
 
     backendStatus.classList.add(
       "ok"
     );
 
-  } catch (error) {
+  }
 
-    console.error(error);
+  catch (error) {
+
+    console.error(
+      error
+    );
+
 
     const runningIndex =
       stages.findIndex(
+
         stage =>
+
           stage.el.classList.contains(
             "running"
           )
+
       );
 
 
-    if (runningIndex !== -1) {
+    if (
+      runningIndex !== -1
+    ) {
 
       stageError(
+
         runningIndex,
+
         "Backend connection failed.\n\n"
+
         +
+
         error.message
+
       );
 
-    } else {
+    }
+
+    else {
 
       stageError(
-        1,
+
+        0,
+
         "Backend connection failed.\n\n"
+
         +
+
         error.message
+
       );
+
     }
 
 
     backendStatus.textContent =
       "Backend Offline";
 
+
     backendStatus.classList.remove(
       "ok"
     );
+
 
     backendStatus.classList.add(
       "bad"
@@ -1303,20 +1870,28 @@ async function visualizeCompiler() {
     visualizerSubtitle.textContent =
       "Compiler pipeline stopped";
 
-  } finally {
+  }
+
+  finally {
 
     visualizeBtn.disabled =
       false;
 
+
     visualizeBtn.textContent =
       "Visualize";
+
   }
+
 }
 
 
 visualizeBtn.addEventListener(
+
   "click",
+
   visualizeCompiler
+
 );
 
 
@@ -1325,31 +1900,40 @@ visualizeBtn.addEventListener(
 ========================================================= */
 
 clearBtn.addEventListener(
+
   "click",
+
   () => {
 
-    codeEditor.value = "";
+    codeEditor.value =
+      "";
 
-    programInput.value = "";
 
     outputConsole.textContent =
       "Ready. Click Run.";
 
+
     updateLineNumbers();
+
 
     resetStages();
 
+
     codeEditor.focus();
+
   }
+
 );
 
 
 /* =========================================================
-   CTRL + ENTER = RUN
+   CTRL + ENTER
 ========================================================= */
 
 codeEditor.addEventListener(
+
   "keydown",
+
   event => {
 
     if (
@@ -1360,9 +1944,13 @@ codeEditor.addEventListener(
 
       event.preventDefault();
 
+
       runPython();
+
     }
+
   }
+
 );
 
 
@@ -1374,11 +1962,15 @@ function init() {
 
   loadTheme();
 
+
   updateLineNumbers();
+
 
   resetStages();
 
+
   checkBackend();
+
 }
 
 

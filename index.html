@@ -3,24 +3,21 @@
 
 <head>
 
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
 
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
-  />
+  >
 
   <title>
     Hamim Code Compiler
   </title>
 
-
-  <!-- GitHub Pages compatible -->
-
   <link
     rel="stylesheet"
-    href="./style.css?v=71"
-  />
+    href="./style.css?v=80"
+  >
 
 </head>
 
@@ -30,20 +27,17 @@
   <div class="app-shell">
 
 
-    <!-- =====================================================
-         TOP BAR
-    ====================================================== -->
+    <!-- ================================================
+         HEADER
+    ================================================= -->
 
     <header class="topbar">
 
-
       <div class="brand-row">
-
 
         <div class="file-badge">
           Py
         </div>
-
 
         <div>
 
@@ -57,13 +51,10 @@
 
         </div>
 
-
       </div>
 
 
-
       <div class="toolbar">
-
 
         <span
           id="backendStatus"
@@ -108,30 +99,25 @@
           Run
         </button>
 
-
       </div>
-
 
     </header>
 
 
-
-    <!-- =====================================================
+    <!-- ================================================
          WORKSPACE
-    ====================================================== -->
+    ================================================= -->
 
     <main class="workspace">
 
 
-      <!-- =================================================
-           LEFT SIDE
-      ================================================== -->
+      <!-- ==============================================
+           LEFT SIDE - PYTHON EDITOR
+      =============================================== -->
 
       <section class="editor-panel panel">
 
-
         <div class="panel-head">
-
 
           <div>
 
@@ -145,17 +131,10 @@
 
           </div>
 
-
         </div>
 
 
-
-        <!-- ===============================================
-             CODE EDITOR
-        ================================================ -->
-
         <div class="editor-wrap">
-
 
           <pre
             id="lineNumbers"
@@ -172,51 +151,27 @@ b = 20
 c = a + b
 print(c)</textarea>
 
-
         </div>
-
-
-        <!--
-          IMPORTANT:
-
-          Program Input UI removed.
-
-          This hidden textarea is intentionally kept
-          because current script.js still reads
-          programInput.value.
-
-          Keeping it hidden prevents JavaScript errors
-          without showing Program Input on the website.
-        -->
-
-        <textarea
-          id="programInput"
-          hidden
-          aria-hidden="true"
-        ></textarea>
-
 
       </section>
 
 
-
-      <!-- =================================================
+      <!-- ==============================================
            RIGHT SIDE
-      ================================================== -->
+      =============================================== -->
 
       <section class="result-panel panel">
 
 
-        <!-- ===============================================
+        <!-- ============================================
              TABS
-        ================================================ -->
+        ============================================= -->
 
         <div class="tabs">
 
-
           <button
-            class="tab active"
             id="outputTab"
+            class="tab active"
             type="button"
           >
             Output
@@ -224,41 +179,36 @@ print(c)</textarea>
 
 
           <button
-            class="tab"
             id="visualizerTab"
+            class="tab"
             type="button"
           >
             Visualizer
           </button>
 
-
         </div>
 
 
-
-        <!-- ===============================================
-             OUTPUT
-        ================================================ -->
+        <!-- ============================================
+             NORMAL RUN OUTPUT
+        ============================================= -->
 
         <div
           id="outputView"
           class="tab-view active"
         >
 
-
           <pre
             id="outputConsole"
             class="console"
           >Ready. Click Run.</pre>
 
-
         </div>
 
 
-
-        <!-- ===============================================
-             VISUALIZER
-        ================================================ -->
+        <!-- ============================================
+             COMPILER VISUALIZER
+        ============================================= -->
 
         <div
           id="visualizerView"
@@ -266,25 +216,17 @@ print(c)</textarea>
         >
 
 
-          <!-- =============================================
-               VISUALIZER HEADING
-          ============================================== -->
-
           <div class="visualizer-heading">
 
-
             <div>
-
 
               <h2>
                 Compiler Pipeline
               </h2>
 
-
               <p id="visualizerSubtitle">
-                Backend-powered Python compiler visualization
+                Python compiler analysis pipeline
               </p>
-
 
             </div>
 
@@ -293,470 +235,249 @@ print(c)</textarea>
               Live stages
             </span>
 
-
           </div>
 
-
-
-          <!-- =============================================
-               PIPELINE
-          ============================================== -->
 
           <div class="pipeline">
 
 
-
-            <!-- ===========================================
-                 01 SOURCE CODE
-            ============================================ -->
-
-            <article
-              class="stage"
-              id="stageSource"
-            >
-
-
-              <div class="stage-top">
-
-
-                <span>
-                  01
-                </span>
-
-
-                <h3>
-                  Source Code
-                </h3>
-
-
-                <b>
-                  Waiting
-                </b>
-
-
-              </div>
-
-
-              <pre id="sourceOutput">—</pre>
-
-
-            </article>
-
-
-
-            <!-- ===========================================
-                 02 LEXICAL ANALYSIS
-            ============================================ -->
+            <!-- ========================================
+                 01 LEXICAL ANALYZER
+            ========================================= -->
 
             <article
               class="stage"
               id="stageLexical"
             >
 
-
               <div class="stage-top">
 
-
                 <span>
-                  02
+                  01
                 </span>
 
-
                 <h3>
-                  Lexical Analysis
+                  Lexical Analyzer
                 </h3>
-
 
                 <b>
                   Waiting
                 </b>
 
-
               </div>
 
-
               <pre id="lexicalOutput">—</pre>
-
 
             </article>
 
 
-
-            <!-- ===========================================
-                 03 SYNTAX ANALYSIS
-            ============================================ -->
+            <!-- ========================================
+                 02 SYNTAX ANALYZER
+            ========================================= -->
 
             <article
               class="stage"
               id="stageSyntax"
             >
 
-
               <div class="stage-top">
 
-
                 <span>
-                  03
+                  02
                 </span>
 
-
                 <h3>
-                  Syntax Analysis
+                  Syntax Analyzer
                 </h3>
-
 
                 <b>
                   Waiting
                 </b>
 
-
               </div>
-
 
               <pre id="syntaxOutput">—</pre>
 
-
             </article>
 
 
-
-            <!-- ===========================================
-                 04 ABSTRACT SYNTAX TREE
-            ============================================ -->
-
-            <article
-              class="stage"
-              id="stageAst"
-            >
-
-
-              <div class="stage-top">
-
-
-                <span>
-                  04
-                </span>
-
-
-                <h3>
-                  Abstract Syntax Tree
-                </h3>
-
-
-                <b>
-                  Waiting
-                </b>
-
-
-              </div>
-
-
-              <pre id="astOutput">—</pre>
-
-
-            </article>
-
-
-
-            <!-- ===========================================
-                 05 SEMANTIC ANALYSIS
-            ============================================ -->
+            <!-- ========================================
+                 03 SEMANTIC ANALYZER
+            ========================================= -->
 
             <article
               class="stage"
               id="stageSemantic"
             >
 
-
               <div class="stage-top">
 
-
                 <span>
-                  05
+                  03
                 </span>
 
-
                 <h3>
-                  Semantic Analysis
+                  Semantic Analyzer
                 </h3>
-
 
                 <b>
                   Waiting
                 </b>
 
-
               </div>
-
 
               <pre id="semanticOutput">—</pre>
 
-
             </article>
 
 
-
-            <!-- ===========================================
-                 06 SYMBOL TABLE
-            ============================================ -->
-
-            <article
-              class="stage"
-              id="stageSymbol"
-            >
-
-
-              <div class="stage-top">
-
-
-                <span>
-                  06
-                </span>
-
-
-                <h3>
-                  Symbol Table
-                </h3>
-
-
-                <b>
-                  Waiting
-                </b>
-
-
-              </div>
-
-
-              <pre id="symbolOutput">—</pre>
-
-
-            </article>
-
-
-
-            <!-- ===========================================
-                 07 INTERMEDIATE CODE
-            ============================================ -->
+            <!-- ========================================
+                 04 INTERMEDIATE CODE GENERATOR
+            ========================================= -->
 
             <article
               class="stage"
               id="stageIntermediate"
             >
 
-
               <div class="stage-top">
 
-
                 <span>
-                  07
+                  04
                 </span>
 
-
                 <h3>
-                  Intermediate Code
+                  Intermediate Code Generator
                 </h3>
-
 
                 <b>
                   Waiting
                 </b>
 
-
               </div>
 
-
               <pre id="intermediateOutput">—</pre>
-
 
             </article>
 
 
-
-            <!-- ===========================================
-                 08 CODE OPTIMIZATION
-            ============================================ -->
+            <!-- ========================================
+                 05 CODE OPTIMIZER
+            ========================================= -->
 
             <article
               class="stage"
               id="stageOptimization"
             >
 
-
               <div class="stage-top">
 
-
                 <span>
-                  08
+                  05
                 </span>
 
-
                 <h3>
-                  Code Optimization
+                  Code Optimizer
                 </h3>
-
 
                 <b>
                   Waiting
                 </b>
 
-
               </div>
 
-
               <pre id="optimizationOutput">—</pre>
-
 
             </article>
 
 
-
-            <!-- ===========================================
-                 09 TARGET CODE
-            ============================================ -->
+            <!-- ========================================
+                 06 CODE GENERATOR
+            ========================================= -->
 
             <article
               class="stage"
               id="stageTarget"
             >
 
-
               <div class="stage-top">
 
-
                 <span>
-                  09
+                  06
                 </span>
 
-
                 <h3>
-                  Target Code
+                  Code Generator
                 </h3>
-
 
                 <b>
                   Waiting
                 </b>
 
-
               </div>
 
-
               <pre id="targetOutput">—</pre>
-
 
             </article>
 
 
-
-            <!-- ===========================================
-                 10 BINARY REPRESENTATION
-            ============================================ -->
+            <!-- ========================================
+                 07 BINARY REPRESENTATION
+            ========================================= -->
 
             <article
               class="stage"
               id="stageBinary"
             >
 
-
               <div class="stage-top">
 
-
                 <span>
-                  10
+                  07
                 </span>
-
 
                 <h3>
                   Binary Representation
                 </h3>
 
-
                 <b>
                   Waiting
                 </b>
 
-
               </div>
-
 
               <pre id="binaryOutput">—</pre>
-
-
-            </article>
-
-
-
-            <!-- ===========================================
-                 11 EXECUTION
-            ============================================ -->
-
-            <article
-              class="stage"
-              id="stageExecution"
-            >
-
-
-              <div class="stage-top">
-
-
-                <span>
-                  11
-                </span>
-
-
-                <h3>
-                  Execution & Final Output
-                </h3>
-
-
-                <b>
-                  Waiting
-                </b>
-
-
-              </div>
-
-
-              <pre id="executionOutput">—</pre>
-
 
             </article>
 
 
           </div>
 
-
         </div>
-
 
       </section>
 
-
     </main>
-
 
   </div>
 
 
-
-  <!-- =====================================================
+  <!-- ================================================
        PYODIDE
-  ====================================================== -->
+  ================================================= -->
 
   <script
     src="https://cdn.jsdelivr.net/pyodide/v314.0.4/full/pyodide.js"
   ></script>
 
 
-
-  <!-- =====================================================
-       MAIN JAVASCRIPT
-  ====================================================== -->
+  <!-- ================================================
+       JAVASCRIPT
+  ================================================= -->
 
   <script
-    src="./script.js?v=71"
+    src="./script.js?v=80"
   ></script>
-
 
 </body>
 
